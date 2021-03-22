@@ -1,17 +1,13 @@
 <template>
   <div>
-    <h1>Recyclopedia</h1>
-    <nav-menu></nav-menu>
-    <router-view></router-view>
+    <h3>Are we truly Recycling Conscious?</h3>
   </div>
 </template>
 
 <script>
-import NavMenu from './components/NavMenu.vue'
 
 export default {
   components: {
-    'nav-menu': NavMenu
   }
 }
 </script>
