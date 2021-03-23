@@ -93,7 +93,12 @@ export default {
       
       // implement geolocation
       // TODO: implement another button "Search this area" for users to manually pan then search
-      // in a particular area instead of using the user's location directly
+        // in a particular area instead of using the user's location directly
+      // TODO: menu bar popup on the right when user clicks on a particular pin
+      // TODO: "Directions": enable users to open a particular pin in Google Maps so 
+        // they can navigate there using the full features of the app
+      // TODO: implement support for phone web view - plist (permissions list)
+      // TODO: doesn't work for network server
       let infoWindow = new google.maps.InfoWindow();
       const locationButton = document.createElement("button");
       locationButton.textContent = "Show bins near me";
@@ -116,17 +121,17 @@ export default {
               console.log("pos.lat = " + pos.lat + ", pos.lng = " + pos.lng);
 
               // call One Map API
-              const x = Promise.resolve( this.getBinsFromOneMap(pos));
-              x.then(() => {
-                for (const point of this.points) {
-                  new google.maps.Marker({
-                    position: point,
-                    map: map
-                  });
-                  console.log("point.lat = " + point.lat + ", point.lng = " + point.lng);
-                }
-                console.log("this.points.length = " + this.points.length);
-              });
+              Promise.resolve(this.getBinsFromOneMap(pos))
+                .then(() => {
+                  for (const point of this.points) {
+                    new google.maps.Marker({
+                      position: point,
+                      map: map
+                    });
+                    console.log("point.lat = " + point.lat + ", point.lng = " + point.lng);
+                  }
+                  console.log("this.points.length = " + this.points.length);
+                });
 
               // get all recycle bins within a certain radius
               // iterate over all bins and display on map
