@@ -3,6 +3,7 @@
     <ul>
         <li><router-link to="/" exact>Home</router-link></li>
         <li><router-link to="/map" exact>Find My Bin</router-link></li>
+        <li><router-link to="/encyclopedia/quick-search">Encyclopedia</router-link></li>
     </ul>
   </div>
 </template>
