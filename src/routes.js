@@ -8,6 +8,10 @@ import CanRecycle from './components/encyclopedia/CanRecycle.vue'
 import CategoryInfoPage from './components/encyclopedia/CategoryInfoPage.vue'
 import AddItem from './components/encyclopedia/AddItem.vue'
 
+import Login from './components/User/Login.vue'
+import Register from './components/User/Register.vue'
+import Dashboard from './components/User/Dashboard.vue'
+
 export default [
   { path: '/', component: Home },
   { path: '/map', component: myMap },
@@ -20,5 +24,10 @@ export default [
     ]},
     { path: '/encyclopedia/can-recycle/:id', component: CanRecycle, props: true},        
     { path: '/encyclopedia/add', component: AddItem}
-  ]}
+  ]}, 
+
+  { path: '/login', component: Login }, 
+  { path: '/register', component: Register }, 
+  { path: '/dashboard', component: Dashboard }
+
 ]
