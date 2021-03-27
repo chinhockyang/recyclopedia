@@ -48,9 +48,9 @@ export default {
                category: "",               
                recyclable: false,
                amountRecycled: 0,
+               amountSearched: 0,
                imageUrl: "",
-               description: "",
-               binType: "",
+               description: "",               
                approved: false
            }
         }
@@ -58,8 +58,12 @@ export default {
     
     methods:{
       addItem:function(){
-          this.itemsList.forEach(item => { return item.toLowerCase(); });          
-          if (this.itemsList.includes(this.item.name.toLowerCase())) {              
+          var lowerCaseItemsList = [];
+          for (let i in this.itemsList) {              
+              lowerCaseItemsList.push(this.itemsList[i].toLowerCase());
+          }
+          
+          if (lowerCaseItemsList.includes(this.item.name.toLowerCase())) {              
               alert("You cannot add an existing item");              
           } else {
               database.collection('items').add(this.item);

@@ -63,8 +63,8 @@ export default {
       // pass back the search data to the parent component
       // SearchTool has an event called "searched" that parent component can perform a function on triggered
       // this.search passed up to parent through that function
-      submitSearch: function() {                    
-          this.$emit('searched', this.search);          
+      submitSearch: function() {
+          this.$emit('searched', this.search);      
       }
   },  
 

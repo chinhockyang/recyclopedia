@@ -1,35 +1,35 @@
 <template>
-  <div class>  
-      <h1>{{category.name}}</h1>      
-      <h2>Can Recycle</h2>
-      <ul>
-          <li v-for="item in canRecycle" :key="item.name" v-on:click="item.show = !item.show">              
-              {{item.name}}
-              <item-card v-show="item.show" :item="item"></item-card>
-          </li>
-      </ul>
-
-      <h2>Cannot Recycle</h2>
-      <ul>
-          <li v-for="item in cannotRecycle" :key="item.name" v-on:click="item.show = !item.show">
-              {{item.name}}
-              <item-card v-show="item.show" :item="item" v-on:click="item.show = !item.show"></item-card>
-          </li>
-      </ul>
+  <div class>       
+      <h1>{{category}}</h1>
+      <div>
+        <p>Total Searched: {{totalSearched}}</p>
+        <p>Total Recycled: {{totalRecycled}}</p>
+      </div>      
+      <div style="position: relative; text-align:center">
+        <bar-chart :category="category" :recyclable="true" class="chart-left"></bar-chart>
+        <bar-chart :category="category" :recyclable="false" class="chart-right"></bar-chart>
+      </div>
+      <div style="position: relative">
+        <pie-chart :category="category" chartType="searchCount" class="chart-left"></pie-chart>        
+        <pie-chart :category="category" chartType="itemsCount" class="chart-right"></pie-chart>
+      </div>
   </div>
 </template>
 
 
 <script>
 import database from '../../firebase.js'
-import ItemCard from './ItemCard.vue'
+import BarChart from './charts/BarChart.vue'
+import PieChart from './charts/PieChart.vue'
 
 export default {  
   data(){
     return{                
         category: "",
+        totalSearched: 0,
+        totalRecycled: 0,
         canRecycle: [],
-        cannotRecycle: [],
+        cannotRecycle: []
     }
   }, 
 
@@ -40,12 +40,15 @@ export default {
                 querySnapShot.forEach(doc=>{
                 item=doc.data()
                 item.show=false
-                item.id=doc.id                
-                if (item.approved & item.recyclable) {                                                    
+                item.id=doc.id                                
+                if (item.approved & item.recyclable) { 
                     this.canRecycle.push(item);
+                    this.totalSearched = this.totalSearched + item.amountSearched
+                    this.totalRecycled = this.totalRecycled + item.amountRecycled;                    
                 } else if (item.approved & !item.recyclable) {
                     this.cannotRecycle.push(item);
-                }     
+                    this.totalSearched = this.totalSearched + item.amountSearched
+                }                
             })});         
      }
     },
@@ -59,19 +62,37 @@ export default {
         $route: function(val) {
             this.category = val.params.id.charAt(0).toUpperCase() + val.params.id.slice(1);
             this.canRecycle = [],
-            this.cannotRecycle = []
+            this.cannotRecycle = [],
+            this.totalSearched = 0,
+            this.totalRecycled = 0,
             this.fetchItems();
         }
     },
 
-    components: {
-        'item-card': ItemCard
+    components: {        
+        'bar-chart': BarChart,
+        'pie-chart': PieChart
     }
 }    
 
 </script>
 
 <style scoped>
+
+.chart-left {        
+    text-align: center;    
+    margin-left: 10%;
+    margin-bottom: 2%;
+    float: left;
+}
+
+.chart-right {        
+    text-align: center;    
+    margin-right: 10%;
+    margin-bottom: 2%;
+    float: right;    
+}
+
 .info {    
     margin: 30px auto;
     padding: 0 5px;    

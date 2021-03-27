@@ -3,6 +3,8 @@
       <h2>{{item.name}}</h2>
       <h3>{{item.category}}</h3>
       <p>Reyclable: <span v-if="item.recyclable">Yes</span><span v-else>No</span></p>
+      <p>Amount Recycled: {{item.amountRecycled}}</p>
+      <p>Amount Searched: {{item.amountSearched}}</p>
   </div>
 </template>
 
