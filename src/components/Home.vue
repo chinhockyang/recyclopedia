@@ -1,12 +1,14 @@
 <template>
   <div>
     <div id="intro">
-    <h1 class="text-center" style="color: #0A4C0A; padding: 25px;">Are we truly Recycling Conscious?</h1>
+    <img id="bin" src="https://cna-sg-res.cloudinary.com/image/upload/q_auto,f_auto/image/11788916/16x9/991/557/ffa8cd77c4937126f0956fb24cbcc7bc/nL/waste-singapore---2195670--1-.png">
+    <div id="para1">
+    <h1 style="color: #0A4C0A;">Are we truly Recycling Conscious?</h1>
     <p>Does this clutter look familiar to you?</p>
-    <img src="https://cna-sg-res.cloudinary.com/image/upload/q_auto,f_auto/image/11788916/16x9/991/557/ffa8cd77c4937126f0956fb24cbcc7bc/nL/waste-singapore---2195670--1-.png" width="600" height="300">
     <p>Despite campaigns and efforts made in raising the awareness of Singaporeans towards recycling, most people will likely find the recycling bin here to be a common sight.</p>
-    <p>Furthermore, even with falling waste generation, Singapore's domestic recycling rates also fell from 22% in 2018 to 17% in 2019.</p>
-    <p>This reflects a severe lack of recycling knowledge and efforts among Singaporeans and Recyclopedia is here to help.</p>
+    <p>Furthermore, even with falling waste generation, Singapore's domestic recycling rates fell from 22% in 2018 to 17% in 2019.</p>
+    <p>This reflects a severe lack of recycling knowledge and efforts among Singaporeans and Recyclopedia is here to help.</p> 
+    </div>
     </div>
     <h3 class="text-center" style="color: #0A4C0A">According to a study conducted by SEC in 2018,</h3>
     <div class="container h-1000">
@@ -48,7 +50,15 @@ export default {
 }
 
 #intro {
-  background-color: #DBCFB4
+  background-color: #DBCFB4;
+  height: 550px;
+  overflow: hidden;
+}
+
+#para1 {
+  padding-left: 200px;
+  padding-top: 75px;
+  width: 800px;
 }
 
 .col-md-4 {
@@ -62,5 +72,13 @@ export default {
 
 p {
   font-size: 20px;
+}
+
+#bin {
+  width: 950px;
+  height: 500px;
+  float: right;
+  padding: 50px 200px 0px 0px;
+
 }
 </style>
