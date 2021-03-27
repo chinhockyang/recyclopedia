@@ -1,19 +1,24 @@
 <template> 
-<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
-  <div class="container">
-    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-          <router-link to="/" exact>Home</router-link>
+<header>
+  <div>
+    <nav class="navbar navbar-expand-sm bg-success navbar-light">
+      <a class="navbar-brand">
+        <img src="https://www.recycling.com/wp-content/uploads/recycling%20symbols/black/Black%20Recycling%20Symbol%20%28U%2B267B%29.png" alt="Logo" style="width:40px;">
+      </a>
+      <a class="navbar-brand">Recyclopedia</a>
+      
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/" exact>Home</a>
         </li>
-        <li>
-          <router-link to="/map" exact>Find My Bin</router-link> 
+        <li class="nav-item">
+          <a class="nav-link" href="/map" exact>Find My Bin</a>
         </li>
-        <li>
-          <router-link to="/encyclopedia/quick-search">Encyclopedia</router-link>
+        <li class="nav-item">
+          <a class="nav-link" href="/encyclopedia/quick-search">Encyclopedia</a>
         </li>
-        <li>
-          <router-link to="/login">Account</router-link>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Account</a>
         </li>
       </ul>
     </nav>
