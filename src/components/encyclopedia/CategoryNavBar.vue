@@ -1,7 +1,6 @@
 <template>
    <div>
-    <header>        
-        <h1>Browse by Item Category!</h1>
+    <header style="margin-top: 20px;">         
         <router-link to="/encyclopedia/browse/category-info/plastic">Plastic</router-link>          
         <router-link to="/encyclopedia/browse/category-info/paper">Paper</router-link>  
         <router-link to="/encyclopedia/browse/category-info/glass">Glass</router-link>  
