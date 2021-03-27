@@ -5,8 +5,7 @@
       <a class="navbar-brand">
         <img src="https://www.recycling.com/wp-content/uploads/recycling%20symbols/black/Black%20Recycling%20Symbol%20%28U%2B267B%29.png" alt="Logo" style="width:40px;">
       </a>
-      <a class="navbar-brand">Recyclopedia</a>
-      
+      <a class="navbar-brand">Recyclopedia</a>  
       <ul class="navbar-nav">
         <li class="nav-item active">
           <a class="nav-link" href="/" exact>Home</a>
