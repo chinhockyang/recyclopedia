@@ -1,8 +1,71 @@
 <template>
-  <div class="tab-pane fade show active" id="can-recycle" role="tabpanel" aria-labelledby="can-recycle-tab">
-    <h1>What I {{ topic }} Recycle</h1>    
-    <input type="text" v-model="search" placeholder="Search title.."/><br><br>      
+  <div class=" container tab-pane fade show active" id="can-recycle" role="tabpanel" aria-labelledby="can-recycle-tab">
+    <h1>What I {{ topic }} Recycle</h1>
+
+    <div class="input-group mt-3">
+      <input type="text" class="form-control" v-model="search" placeholder="Search title.."/><br><br>      
+    </div>    
+
+    <button 
+        class="collapsed btn btn-success pl-5 pr-5 m-3"
+        type="button"
+        data-toggle="collapse" 
+        data-target="#filteritem" 
+        aria-expanded="false" 
+        aria-controls="filteritem">
+        Filter
+    </button>
     
+    <div 
+      id="filteritem" 
+      class="collapse w-75 mx-auto mb-3"
+      aria-labelledby="filterheader" 
+      data-parent="#filteraccordion">
+      <div class="card">
+        <div class="card-body">
+          <span><strong>Filter Categories:</strong></span><br>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="plastic" value="Plastic" v-model="checkedList" checked>
+            <label class="form-check-label" for="plastic">Plastic</label>
+          </div>          
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="paper" value="Paper" v-model="checkedList" checked>
+            <label class="form-check-label" for="paper">Paper</label>          
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="glass" value="Glass" v-model="checkedList" checked>
+            <label class="form-check-label" for="glass">Glass</label>            
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="metal" value="Metal" v-model="checkedList" checked>
+            <label class="form-check-label" for="metal">Metal</label>            
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="electronics" value="Electronics" v-model="checkedList" checked>
+            <label class="form-check-label" for="electronics">Electronics</label>            
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="others" value="Others" v-model="checkedList" checked>
+            <label class="form-check-label" for="others">Others</label><br><br>            
+          </div><br>
+          <span><strong>Sort By:</strong></span>
+          <div v-if="canRecycle" class="form-check">
+              <input class="form-check-input" type="radio" id="recycled" value="recycled" v-model="sort">
+              <label class="form-check-label" for="recycled">Sort By Amount Recycled</label><br>
+          </div>          
+          <div v-if="canRecycle" class="form-check">
+              <input class="form-check-input" type="radio" id="searched" value="searched" v-model="sort">
+              <label class="form-check-label" for="searched">Sort By Amount Searched</label><br>
+          </div>
+          <div v-else class="form-check">
+              <input class="form-check-input" type="radio" id="searched" value="searched" v-model="sort" disabled>
+              <label class="form-check-label" for="searched">Sort By Amount Searched</label><br>
+          </div>
+        </div>
+      </div>   
+    </div>   
+    
+
     <pagination 
       :items="filteredList" 
       @page:update="updatePage"
@@ -18,26 +81,6 @@
             <item-card v-show="item.show" :item="item"></item-card>
         </li>
     </ul><br><br>
-
-    <input type="checkbox" id="plastic" value="Plastic" v-model="checkedList" checked>
-    <label for="plastic">Plastic</label>
-    <input type="checkbox" id="paper" value="Paper" v-model="checkedList" checked>
-    <label for="paper">Paper</label>
-    <input type="checkbox" id="glass" value="Glass" v-model="checkedList" checked>
-    <label for="glass">Glass</label>
-    <input type="checkbox" id="metal" value="Metal" v-model="checkedList" checked>
-    <label for="metal">Metal</label>
-    <input type="checkbox" id="electronics" value="Electronics" v-model="checkedList" checked>
-    <label for="electronics">Electronics</label>
-    <input type="checkbox" id="others" value="Others" v-model="checkedList" checked>
-    <label for="others">Others</label><br><br>
-    
-    <div v-if="canRecycle">
-      <input type="radio" id="recycled" value="recycled" v-model="sort">
-      <label for="recycled">Sort By Amount Recycled</label><br>
-      <input type="radio" id="searched" value="searched" v-model="sort">
-      <label for="searched">Sort By Amount Searched</label><br>
-    </div>
   </div>
 </template>
 
@@ -170,9 +213,6 @@ export default {
 </script>
 
 <style scoped>
-#can-recycle {
-  text-align: center;
-}
 
 #itemsList{
     width: 100%;
@@ -194,11 +234,6 @@ li{
     padding: 10px;
     border: 1px solid #222;
     margin: 8px;
-}
-
-input[type="text"]{    
-    padding: 8px;
-    width:50%;
 }
 
 </style>
