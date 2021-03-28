@@ -23,6 +23,7 @@
 import database from '../../firebase.js'
 import SearchTool from './SearchTool.vue'
 import ItemCard from './ItemCard.vue'
+import firebase from "firebase"
 
 export default {  
   data(){
@@ -56,6 +57,7 @@ export default {
       
       // query for item from database based on what is passed from Search Tool
       // assign item to the item.
+      // Amount Searched will increase by 1 for a successful search
       searchItem:function(value) {             
         this.itemSearched = value;
         database.collection('items').where('name', '==', this.itemSearched).get().then((querySnapShot)=>{
@@ -64,7 +66,11 @@ export default {
             item=doc.data()
             item.show=false
             item.id=doc.id
-            if (item.approved) {
+            if (item.approved) {                
+                database.collection('items').doc(doc.id).update({
+                  'amountSearched': firebase.firestore.FieldValue.increment(1)
+                });
+                item.amountSearched++;
                 this.item = item;
             }            
             })})            

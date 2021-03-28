@@ -32,6 +32,12 @@
     <input type="checkbox" id="others" value="Others" v-model="checkedList" checked>
     <label for="others">Others</label><br><br>
     
+    <div v-if="canRecycle">
+      <input type="radio" id="recycled" value="recycled" v-model="sort">
+      <label for="recycled">Sort By Amount Recycled</label><br>
+      <input type="radio" id="searched" value="searched" v-model="sort">
+      <label for="searched">Sort By Amount Searched</label><br>
+    </div>
   </div>
 </template>
 
@@ -65,13 +71,17 @@ export default {
         pageSize: 3,        
 
         //items to be shown (filter)
-        checkedList: ['Plastic', 'Paper', 'Glass', 'Metal', 'Electronics', 'Others']        
+        checkedList: ['Plastic', 'Paper', 'Glass', 'Metal', 'Electronics', 'Others'],
+        sort: "searched"
     }
   },
   
   methods:{
     fetchItems:function(){
-      database.collection('items').get().then((querySnapShot)=>{
+      var sortReq = (this.sort == "searched") ? "amountSearched" : "amountRecycled";
+      database.collection('items')
+      .orderBy(sortReq, "desc")    
+      .get().then((querySnapShot)=>{
         let item={}
         querySnapShot.forEach(doc=>{
             item=doc.data()
@@ -127,6 +137,14 @@ export default {
     // clear the itemsList and retrieve from database again
     $route: function(val) {
       this.canRecycle = eval(val.params.id);
+      this.sort = "searched";
+      this.itemsList = [];
+      this.visibleItems = [];
+      this.fetchItems();
+      this.updateVisibleItems();
+    },
+
+    sort: function() {      
       this.itemsList = [];
       this.visibleItems = [];
       this.fetchItems();
