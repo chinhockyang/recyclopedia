@@ -1,5 +1,5 @@
 <template>
-  <div id="can-recycled">
+  <div class="tab-pane fade show active" id="can-recycle" role="tabpanel" aria-labelledby="can-recycle-tab">
     <h1>What I {{ topic }} Recycle</h1>    
     <input type="text" v-model="search" placeholder="Search title.."/><br><br>      
     

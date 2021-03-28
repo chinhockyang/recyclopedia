@@ -1,5 +1,5 @@
 <template>
-<div id=add-item>
+<div class="tab-pane fade show active" id="add" role="tabpanel" aria-labelledby="add-tab">
     <h1>Add Item to Recyclopedia!</h1>
     <form id="add-item-form">
         <label>Item Name:</label><br>

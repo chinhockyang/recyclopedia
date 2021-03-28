@@ -1,5 +1,5 @@
 <template>
-  <div>      
+  <div class="tab-pane fade show active" id="quick-search" role="tabpanel" aria-labelledby="quick-search-tab">      
     <h1>Welcome to the Recycling Encyclopedia!</h1>
     <h2>Search to see if something is recyclable!</h2>
     
