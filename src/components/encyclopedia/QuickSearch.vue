@@ -1,20 +1,24 @@
 <template>
-  <div class="tab-pane fade show active" id="quick-search" role="tabpanel" aria-labelledby="quick-search-tab">      
-    <h1>Welcome to the Recycling Encyclopedia!</h1>
-    <h2>Search to see if something is recyclable!</h2>
-    
-    <search-tool 
+  <div class="container tab-pane fade show active" id="quick-search" role="tabpanel" aria-labelledby="quick-search-tab">      
+    <div class="jumbotron">
+      <h1 class="display-4">Welcome to the Encyclopedia!</h1>
+      <p class="lead">Search to see if something is recyclable!</p>
+      <search-tool 
       :itemsList="itemsList"
       @searched="searchItem">
-    </search-tool>         
+      </search-tool>
+    </div>                 
 
     <item-card 
       :item="item"
-      v-show="itemSearched">
+      v-show="item">
     </item-card>    
   
-    <p>Not seeing what you are looking for?</p>
-    <a href='/encyclopedia/add' exact>Request for it to be added to Recyclopedia!</a><br><br>
+    <div class="alert alert-warning alert-dismissible" v-if="alert">
+      <button type="button" class="close" data-dismiss="alert" @click="closeAlert">&times;</button>      
+      <p>Not seeing what you are looking for?</p>
+      <a href='/encyclopedia/add' exact>Request for it to be added to Recyclopedia!</a><br><br>
+    </div>
   </div>
 </template>
 
@@ -35,7 +39,9 @@ export default {
         //itemSearched is what is passed from the Search Tool
         //searched by the user
         itemSearched: "",
-        item: {},
+        item: "",
+
+        alert: false
     }
   },
 
@@ -60,6 +66,8 @@ export default {
       // Amount Searched will increase by 1 for a successful search
       searchItem:function(value) {             
         this.itemSearched = value;
+        this.item = "";        
+
         database.collection('items').where('name', '==', this.itemSearched).get().then((querySnapShot)=>{
           let item={}
             querySnapShot.forEach(doc=>{
@@ -72,8 +80,17 @@ export default {
                 });
                 item.amountSearched++;
                 this.item = item;
+                this.alert = false;
             }            
-            })})            
+            })})
+
+            if (this.item === "") {
+              this.alert = true;
+            }
+      },
+
+      closeAlert: function() {
+        this.alert = false;
       }
   },
 
