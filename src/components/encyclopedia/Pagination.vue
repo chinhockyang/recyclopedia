@@ -1,19 +1,29 @@
 <template>
-    <div>
-        <span 
-        v-if="showPreviousLink()"
-        class="pagination-btn"
-        v-on:click="updatePage(currentPage - 1)"> prev </span>
-
-        <span 
-        v-if="totalPages() !=0">
-        {{ currentPage + 1 }}</span>
-        <span v-else>{{ currentPage }}</span> of {{ totalPages() }}    
-
-        <span 
-        v-if="showNextLink()"
-        class="pagination-btn"
-        v-on:click="updatePage(currentPage + 1)"> next </span>  
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-2">
+                <button
+                    v-if="showPreviousLink()"
+                    class="btn btn-warning"
+                    v-on:click="updatePage(currentPage - 1)"> Prev </button>                        
+                <button v-else class="btn btn-secondary" disabled> Prev </button>
+            </div>            
+            <div class="col-4">
+                <span 
+                    v-if="totalPages() !=0">
+                    {{ currentPage + 1 }}</span>
+                    <span v-else>{{ currentPage }}</span> of {{ totalPages() }}    
+            </div>
+            <div class="col-2">
+                <button
+                    v-if="showNextLink()"
+                    class="btn btn-warning"
+                    v-on:click="updatePage(currentPage + 1)"> Next </button>                
+                <button v-else class="btn btn-secondary" disabled> Next </button>                        
+            </div>
+            <div class="col-2"></div>
+        </div>                            
     </div>        
 </template>
 

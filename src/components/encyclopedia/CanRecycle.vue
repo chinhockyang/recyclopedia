@@ -7,13 +7,13 @@
     </div>    
 
     <button 
-        class="collapsed btn btn-success pl-5 pr-5 m-3"
+        class="collapsed btn btn-outline-secondary w-50 m-3"
         type="button"
         data-toggle="collapse" 
         data-target="#filteritem" 
         aria-expanded="false" 
         aria-controls="filteritem">
-        Filter
+        Tools
     </button>
     
     <div 
@@ -59,7 +59,15 @@
           </div>
           <div v-else class="form-check">
               <input class="form-check-input" type="radio" id="searched" value="searched" v-model="sort" disabled>
-              <label class="form-check-label" for="searched">Sort By Amount Searched</label><br>
+              <label class="form-check-label" for="searched">Sort By Amount Searched</label>
+          </div><br>          
+          <span><strong>Items per Page:</strong></span><br><br>          
+          <div class="form-group">
+              <select class="form-control" v-model="pageSize" disabled>    
+                <option v-for="n in 10" :key="n">
+                  {{n}}
+                </option>   
+              </select>
           </div>
         </div>
       </div>   
@@ -73,14 +81,21 @@
       :pageSize="pageSize">
     </pagination>
 
-    <ul>
+    <ul class="row justify-content-center bg-light p-3">
         <li v-for="item in visibleItems"
-            v-bind:key="item.name"
-            v-on:click="item.show = !item.show">
-            {{item.name}}            
-            <item-card v-show="item.show" :item="item"></item-card>
+            class="col-s-8 col-m-6 col-l-4 m-3"  
+            style="max-width: 285px;"
+            v-bind:key="item.name">            
+            <item-card :item="item"></item-card>
         </li>
-    </ul><br><br>
+    </ul>
+    
+    <pagination 
+      :items="filteredList" 
+      @page:update="updatePage"
+      :currentPage="currentPage"
+      :pageSize="pageSize">
+    </pagination>
   </div>
 </template>
 
@@ -221,19 +236,20 @@ export default {
     padding: 0 5px;
     box-sizing: border-box;
 }
+
 ul{
     display: flex;
     flex-wrap: wrap;
     list-style-type: none;
-    padding: 0;
+    padding: 0;    
 }
-li{
+
+li{  
     flex-grow: 1;
     flex-basis: 300px;
     text-align: center;
-    padding: 10px;
-    border: 1px solid #222;
-    margin: 8px;
+    margin-left: 3%;
+    margin-right: 3%;    
 }
 
 </style>

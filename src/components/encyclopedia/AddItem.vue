@@ -10,15 +10,15 @@
                     <input type="text" class="form-control" v-model="item.name" required/>
                 </div>
 
-                <span style="color:black">Is the Item Recyclable?</span>
-                <div class="form-check">        
+                <p style="color:black">Is the Item Recyclable?</p>
+                <div class="form-check form-check-inline">        
                     <input class="form-check-input" type="radio" id="recyclable" v-model="item.recyclable" :value=true>            
                     <label class="form-check-label" for="recyclable">Yes</label>            
                 </div>      
-                <div class="form-check">            
+                <div class="form-check form-check-inline">            
                     <input class="form-check-input" type="radio" id="non-recyclable" v-model="item.recyclable" :value=false>
                     <label class="form-check-label" for="non-recyclable">No</label>            
-                </div><br>
+                </div><br><br>
 
                 <div class="form-group">            
                     <label>Category:</label>
@@ -27,7 +27,7 @@
                             {{option}}
                         </option>
                     </select>            
-                </div><br>
+                </div>
 
                 <div class="form-group">
                     <label>Additional Instructions:</label><br>      
