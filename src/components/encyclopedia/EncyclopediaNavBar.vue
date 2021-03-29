@@ -1,13 +1,63 @@
 <template>
-   <div>    
-        <h3>The Recycling Encyclopedia</h3> 
-        <ul>
-            <li><router-link to="/encyclopedia/quick-search">Quick Search </router-link></li> 
-            <li><router-link to="/encyclopedia/browse">Browse by Category </router-link></li>
-            <li><router-link to="/encyclopedia/can-recycle/true">What Can I Recycle? </router-link></li>
-            <li><router-link to="/encyclopedia/can-recycle/false">What Can't I Recycle?</router-link></li>
-            <li><router-link to="/encyclopedia/add">Add to Recyclopedia</router-link></li>
-        </ul>               
+   <div class="container">
+       <nav class="nav nav-light justify-content-center">
+           <ul class="nav nav-tabs mt-4 mb-5 mx-auto" id="pills-tab" role="tablist">
+               <li>
+                    <router-link to="/encyclopedia/quick-search" 
+                    class="nav-link active"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    aria-controls="quick-search" 
+                    aria-selected="true"
+                    >Quick Search </router-link>
+               </li>
+
+                <li>
+                    <router-link to="/encyclopedia/browse" 
+                    class="nav-link"
+                    id="browse-tab" 
+                    data-toggle="pill"
+                    role="tab" 
+                    aria-controls="browse" 
+                    aria-selected="false"
+                    >Browse by Category</router-link>
+               </li>
+
+               <li>
+                    <router-link to="/encyclopedia/can-recycle/true" 
+                    class="nav-link"
+                    id="can-recycle-tab" 
+                    data-toggle="pill"
+                    role="tab" 
+                    aria-controls="can-recycle" 
+                    aria-selected="false"
+                    >What Can I Recycle?</router-link>
+               </li>
+
+               <li>
+                    <router-link to="/encyclopedia/can-recycle/false" 
+                    class="nav-link"
+                    id="can-recycle-tab" 
+                    data-toggle="pill"
+                    role="tab" 
+                    aria-controls="can-recycle" 
+                    aria-selected="false"
+                    >What Can't I Recycle?</router-link>
+               </li>
+
+               <li>
+                    <router-link to="/encyclopedia/add" 
+                    class="nav-link"
+                    id="add-tab" 
+                    data-toggle="pill"
+                    role="tab" 
+                    aria-controls="add" 
+                    aria-selected="false"
+                    >Add to Recyclopedia</router-link>
+               </li>
+           </ul>                        
+       </nav>        
     </div>
 </template>
 
@@ -18,33 +68,17 @@ export default {
 
 <style scoped>
 
-div {
-    background: darkolivegreen;
+.nav-tabs > li > a {
+    color: black;
+}
+
+.nav-tabs > li > a:hover {
+    background-color: lightgray;
+}
+
+.nav-tabs > li > a.active {
     color: white;
-    border-style: solid;
-    border-color:black;
-    border-width: 2px;            
-    min-width: 50%;
-    max-width: 75%;
-    margin-left: auto;
-    margin-right: auto;
-    font-family: Avenir, Helvetica, Arial, sans-serif;
+    background-color: olivedrab;
 }
 
-li {
-    list-style-type: none;
-    display: inline-block;
-}
-
-a{
-    color: #fff;
-    text-decoration: none;    
-    padding: 2px 4px;
-    margin: 5px;
-    border-radius: 6px;
-}
-.router-link-active{
-    background: #eee;
-    color: #444;
-}
 </style>

@@ -1,5 +1,5 @@
 <template>
-<div id="browse-category">    
+<div class="tab-pane fade show active" id="browse" role="tabpanel" aria-labelledby="browse-tab">    
     <category-navbar></category-navbar>
     <router-view></router-view>    
 </div>

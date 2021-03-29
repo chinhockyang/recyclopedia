@@ -1,10 +1,11 @@
 <template>
-  <div class="item-card"> 
-      <h2>{{item.name}}</h2>
-      <h3>{{item.category}}</h3>
-      <p>Reyclable: <span v-if="item.recyclable">Yes</span><span v-else>No</span></p>
-      <p>Amount Recycled: {{item.amountRecycled}}</p>
-      <p>Amount Searched: {{item.amountSearched}}</p>
+  <div class="card" style="height:450px;"> 
+      <img :src="item.imageUrl" class="card-img-top img-thumbnail" alt="No image yet!" onerror="this.onerror=this.src='https://www.brandturbo.com/images/images/en/imageNoImageSmall.gif';">
+      <div class="card-body">
+        <h5 class="card-title">{{item.name}}</h5>
+        <h6 class="card-subtitle mb-2">{{item.category}}</h6>
+        <p class="card-text">Reyclable: <span v-if="item.recyclable">Yes</span><span v-else>No</span></p>        
+      </div>            
   </div>
 </template>
 
@@ -27,8 +28,8 @@ export default {
     margin: 30px auto;
     padding: 0 5px;    
     box-sizing: border-box;
-    width: 100%;
-    max-width: 1000px;
+    width: 100%;    
+    max-width: 1000px;    
     border-color: black;
     border-style: solid;
 }
