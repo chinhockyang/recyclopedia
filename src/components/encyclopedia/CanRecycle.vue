@@ -67,7 +67,7 @@
                 <option v-for="n in 10" :key="n">
                   {{n}}
                 </option>   
-              </select>
+              </select>              
           </div>
         </div>
       </div>   
@@ -81,9 +81,9 @@
       :pageSize="pageSize">
     </pagination>
 
-    <ul class="row justify-content-center bg-light p-3">
+    <ul class="row justify-content-center bg-light">
         <li v-for="item in visibleItems"
-            class="col-s-8 col-m-6 col-l-4 m-3"  
+            class="col-s-8 col-m-6 col-l-4 m-3 justify-content-center"  
             style="max-width: 285px;"
             v-bind:key="item.name">            
             <item-card :item="item"></item-card>

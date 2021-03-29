@@ -1,13 +1,11 @@
 <template>
-   <div>
-    <header style="margin-top: 20px;">         
+   <div>         
         <router-link to="/encyclopedia/browse/category-info/plastic">Plastic</router-link>          
         <router-link to="/encyclopedia/browse/category-info/paper">Paper</router-link>  
         <router-link to="/encyclopedia/browse/category-info/glass">Glass</router-link>  
         <router-link to="/encyclopedia/browse/category-info/metal">Metal</router-link>  
         <router-link to="/encyclopedia/browse/category-info/electronics">Electronics</router-link>  
-        <router-link to="/encyclopedia/browse/category-info/others">Others</router-link>  
-    </header>
+        <router-link to="/encyclopedia/browse/category-info/others">Others</router-link>      
     </div>
   
 </template>

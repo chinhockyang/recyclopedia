@@ -1,7 +1,7 @@
 <template>
-<div>
-    <h3>{{category}} <span v-if="chartType=='searchCount'">searched</span> in Recyclopedia</h3>    
-    <chart :category="category" :chartType="chartType" :height="300" :width="500"></chart>
+<div class="containter w-75">
+    <h5 class="lead"><span v-if="chartType=='searchCount'">Searches</span><span v-else>{{category}}</span> in Recyclopedia</h5>    
+    <chart :category="category" :chartType="chartType" :height="150" :width="150"></chart>
 </div>
 </template>
 

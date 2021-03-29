@@ -1,18 +1,47 @@
 <template>
-  <div class>       
-      <h1>{{category}}</h1>
-      <div>
-        <p>Total Searched: {{totalSearched}}</p>
-        <p>Total Recycled: {{totalRecycled}}</p>
-      </div>      
-      <div style="position: relative; text-align:center">
-        <bar-chart :category="category" :recyclable="true" class="chart-left"></bar-chart>
-        <bar-chart :category="category" :recyclable="false" class="chart-right"></bar-chart>
+  <div class="containter mb-3">            
+      <div class="card m-3 p-3">
+          <h1 class="card-title display-4">{{category}}</h1>
+          <p class="card-subtitle text-muted">Total Searched: {{totalSearched}}</p>
+          <p class="card-subtitle text-muted">Total Recycled: {{totalRecycled}}</p>
       </div>
-      <div style="position: relative">
-        <pie-chart :category="category" chartType="searchCount" class="chart-left"></pie-chart>        
-        <pie-chart :category="category" chartType="itemsCount" class="chart-right"></pie-chart>
-      </div>
+      <div class="row">    
+          <div class="col-s-2"></div>              
+          <div class="col">              
+              <div class="card p-3">
+                <div class="row">
+                    <div class="col">
+                        <div class="chart justify-content-center">
+                            <bar-chart :category="category" :recyclable="true" class="chart-canvas"></bar-chart>
+                        </div>
+                    </div>
+                    <div class="col mt-3">
+                        <div class="chart">
+                            <bar-chart :category="category" :recyclable="false" class="chart-canvas"></bar-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="col">
+                <div class="card p-2">
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-5 ml-3">
+                            <div class="chart mt-1">
+                                <pie-chart :category="category" chartType="itemsCount" class="chart-canvas"></pie-chart>                                      
+                            </div>
+                        </div>       
+                        <div class="col-5">
+                            <div class="chart">                    
+                                <pie-chart :category="category" chartType="searchCount" class="chart-canvas"></pie-chart>
+                            </div>
+                        </div>                                                                                          
+                    </div>      
+                </div>
+            </div>
+            <div class="col-s-2"></div>        
+        </div>        
   </div>
 </template>
 

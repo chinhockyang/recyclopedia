@@ -8,11 +8,17 @@
       @searched="searchItem">
       </search-tool>
     </div>                 
-
-    <item-card 
-      :item="item"
-      v-show="item">
-    </item-card>    
+    
+    <div class="containter row mb-5">
+      <div class="col"></div>
+      <div class="col">
+          <item-card 
+            :item="item"
+            v-show="item">
+          </item-card>    
+      </div>
+      <div class="col"></div>
+    </div>
   
     <div class="alert alert-warning alert-dismissible" v-if="alert">
       <button type="button" class="close" data-dismiss="alert" @click="closeAlert">&times;</button>      
@@ -41,7 +47,18 @@ export default {
         itemSearched: "",
         item: "",
 
-        alert: false
+        alert: false,
+
+        dummyItem:{
+               name:"For Testing",
+               category: "For Testing",               
+               recyclable: true,
+               amountRecycled: 0,
+               amountSearched: 0,
+               imageUrl: "",
+               description: "",               
+               approved: true
+           }
     }
   },
 
