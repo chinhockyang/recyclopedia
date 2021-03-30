@@ -14,7 +14,7 @@
                </li>
 
                 <li>
-                    <router-link to="/encyclopedia/browse" 
+                    <router-link to="/encyclopedia/browse/category-info/plastic" 
                     class="nav-link"
                     id="browse-tab" 
                     data-toggle="pill"
