@@ -12,7 +12,8 @@ export default {
                 datasets: [{
                     label: "Number",
                     backgroundColor: [],
-                    data: []
+                    data: [],
+                    maxBarThickness: 30
                   }]                
             },
             options: {

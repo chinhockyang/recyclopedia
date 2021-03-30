@@ -1,14 +1,14 @@
 <template>
 <div>
-    <h3>Commonly searched 
+    <h5 class="lead">Commonly searched 
         <span v-if="recyclable">Recyclable</span>
-        <span v-else>Non-Recyclable</span> {{category}}</h3>
+        <span v-else>Non-Recyclable</span> {{category}}</h5>
 
     <chart 
     :category="category" 
     :recyclable="recyclable" 
-    :height="300" 
-    :width="500"></chart>
+    :height="150" 
+    :width="150"></chart>
 </div>
 </template>
 

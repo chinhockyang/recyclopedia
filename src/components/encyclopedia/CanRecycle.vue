@@ -63,16 +63,15 @@
           </div><br>          
           <span><strong>Items per Page:</strong></span><br><br>          
           <div class="form-group">
-              <select class="form-control" v-model="pageSize" disabled>    
+              <select class="form-control" v-model.number="pageSize">    
                 <option v-for="n in 10" :key="n">
                   {{n}}
                 </option>   
-              </select>
+              </select>              
           </div>
         </div>
       </div>   
     </div>   
-    
 
     <pagination 
       :items="filteredList" 
@@ -81,9 +80,9 @@
       :pageSize="pageSize">
     </pagination>
 
-    <ul class="row justify-content-center bg-light p-3">
+    <ul class="row justify-content-center bg-light">
         <li v-for="item in visibleItems"
-            class="col-s-8 col-m-6 col-l-4 m-3"  
+            class="col-s-8 col-m-6 col-l-4 m-3 justify-content-center"  
             style="max-width: 285px;"
             v-bind:key="item.name">            
             <item-card :item="item"></item-card>
@@ -159,13 +158,12 @@ export default {
 
       //updates the page number of pagination
       updatePage: function(pageNumber) {
-        this.currentPage = pageNumber;
-        this.updateVisibleItems();
+        this.currentPage = pageNumber;        
       },
 
       //slice filteredList to get only the items on the current page
       updateVisibleItems: function() {
-        this.visibleItems = this.filteredList.slice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize);
+        this.visibleItems = this.filteredList.slice(this.currentPage * this.pageSize, parseInt((this.currentPage * this.pageSize) + this.pageSize));
 
         // if there are 0 items on current page, go back 1 page
         if (this.visibleItems.length == 0 && this.currentPage > 0) {
@@ -208,6 +206,7 @@ export default {
       this.fetchItems();
       this.updateVisibleItems();
     }
+
   },
 
   created() {    

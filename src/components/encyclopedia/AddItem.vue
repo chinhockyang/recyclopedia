@@ -6,11 +6,11 @@
         <div class="col-10 col-m-8 col-l-6 bg-light rounded p-3">            
             <form class="containter px-3"> 
                 <div class="form-group">
-                    <label>Item Name:</label>
+                    <label>Item Name:<span style="color:red;" title="required"> *</span></label>
                     <input type="text" class="form-control" v-model="item.name" required/>
                 </div>
 
-                <p style="color:black">Is the Item Recyclable?</p>
+                <p class="lead"><small>Is the Item Recyclable?<span style="color:red;" title="required"> *</span></small></p>
                 <div class="form-check form-check-inline">        
                     <input class="form-check-input" type="radio" id="recyclable" v-model="item.recyclable" :value=true>            
                     <label class="form-check-label" for="recyclable">Yes</label>            
@@ -21,12 +21,19 @@
                 </div><br><br>
 
                 <div class="form-group">            
-                    <label>Category:</label>
+                    <label>Category:<span style="color:red;" title="required"> *</span></label>
                     <select class="form-control" v-model="item.category">          
                         <option  v-for="option in categoryOption" :key="option">
                             {{option}}
                         </option>
                     </select>            
+                </div>
+                
+                <div class="form-group">
+                    <label for="image-url">Image URL:</label>                        
+                    <input type="url" class="form-control" id="image-url" v-model="item.imageUrl">
+                    <span class="lead" v-show="item.imageUrl"><small>Image Preview:</small></span><br>
+                    <img :src="item.imageUrl" v-show="item.imageUrl" class="img-thumbnail w-25" alt="Please fill in a valid Image URL">                    
                 </div>
 
                 <div class="form-group">

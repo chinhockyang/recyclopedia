@@ -1,7 +1,7 @@
 <template>
    <div class="container">
        <nav class="nav nav-light justify-content-center">
-           <ul class="nav nav-tabs mt-4 mb-5 mx-auto" id="pills-tab" role="tablist">
+           <ul class="nav nav-tabs mt-4 mb-3 mx-auto" id="pills-tab" role="tablist">
                <li>
                     <router-link to="/encyclopedia/quick-search" 
                     class="nav-link active"
@@ -14,7 +14,7 @@
                </li>
 
                 <li>
-                    <router-link to="/encyclopedia/browse" 
+                    <router-link to="/encyclopedia/browse/category-info/plastic" 
                     class="nav-link"
                     id="browse-tab" 
                     data-toggle="pill"
