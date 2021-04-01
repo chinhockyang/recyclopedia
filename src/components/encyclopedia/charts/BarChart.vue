@@ -1,9 +1,5 @@
 <template>
 <div>
-    <h5 class="lead">Commonly searched 
-        <span v-if="recyclable">Recyclable</span>
-        <span v-else>Non-Recyclable</span> {{category}}</h5>
-
     <chart 
     :category="category" 
     :recyclable="recyclable" 

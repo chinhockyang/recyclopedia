@@ -4,7 +4,8 @@ import database from '../../../firebase.js'
 export default {
     extends: Pie,
     data: function() {
-        return {            
+        return {
+            title: '',      
             datapacket: {
                 'Recyclable': 0,
                 'Non-Recyclable': 0,
@@ -19,10 +20,11 @@ export default {
                   }]                
             },
             options: {
-                legend: { display: false },
+                legend: { 
+                    display: false,                                        
+                },
                 title: {
-                  display: true,
-                  text: 'Number of Items'
+                  display: false,                  
                 },
                 responsive: true,
                 maintainAspectRatio: false                           
@@ -69,7 +71,7 @@ export default {
             this.datapacket['Recyclable'] = 0
             this.datapacket['Non-Recyclable'] = 0
             this.datacollection.datasets[0].data = []            
-            this.category = val.params.id.charAt(0).toUpperCase() + val.params.id.slice(1);            
+            this.category = val.params.id.charAt(0).toUpperCase() + val.params.id.slice(1);                   
             this.fetchItems();
         }
     },
@@ -82,7 +84,7 @@ export default {
         }
     },
 
-    created() {        
+    created() {
         this.fetchItems();        
     }
 };
