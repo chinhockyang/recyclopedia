@@ -4,7 +4,7 @@
            <ul class="nav nav-tabs mt-4 mb-3 mx-auto" id="pills-tab" role="tablist">
                <li>
                     <router-link to="/encyclopedia/quick-search" 
-                    class="nav-link active"
+                    class="nav-link"
                     id="quick-search-tab" 
                     data-toggle="pill"                     
                     role="tab" 
@@ -14,7 +14,7 @@
                </li>
 
                 <li>
-                    <router-link to="/encyclopedia/browse/category-info/plastic" 
+                    <router-link to="/encyclopedia/browse" 
                     class="nav-link"
                     id="browse-tab" 
                     data-toggle="pill"
@@ -80,5 +80,6 @@ export default {
     color: white;
     background-color: olivedrab;
 }
+
 
 </style>
