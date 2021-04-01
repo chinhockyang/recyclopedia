@@ -11,6 +11,7 @@ import AddItem from './components/encyclopedia/AddItem.vue'
 import Login from './components/User/Login.vue'
 import Register from './components/User/Register.vue'
 import Dashboard from './components/User/Dashboard.vue'
+import addNewRecord from './components/User/addNewRecord.vue'
 
 export default [
   { path: '/', component: Home },
@@ -28,6 +29,7 @@ export default [
 
   { path: '/login', component: Login }, 
   { path: '/register', component: Register }, 
-  { path: '/dashboard', component: Dashboard }
+  { path: '/dashboard', component: Dashboard },
+  { path: '/addNewRecord', component: addNewRecord }
 
 ]

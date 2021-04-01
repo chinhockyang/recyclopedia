@@ -1,7 +1,10 @@
 <template>
   <div> 
     <p v-if="user">Welcome {{user.data.displayName}}!</p>   
+    <router-link to="/addNewRecord"><button>Add New Recycling Record</button></router-link>
+    <br><br>
     <button @click.prevent="signOut">Sign out</button>
+
   </div>
 </template>
 

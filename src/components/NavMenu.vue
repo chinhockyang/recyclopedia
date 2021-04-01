@@ -17,7 +17,12 @@
           <a class="nav-link" href="/encyclopedia/quick-search">Encyclopedia</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/login">Account</a>
+          <template v-if="user.loggedIn">
+            <a class="nav-link" href="/dashboard">My Account</a>
+          </template> 
+          <template v-else>
+            <a class="nav-link" href="/login">Account</a>
+          </template>
         </li>
       </ul>
     </nav>
@@ -25,6 +30,18 @@
 </header>
 </template> 
 
+<script> 
+import { mapGetters } from "vuex";
+
+
+export default {
+  computed: {
+    ...mapGetters({
+      user: "user"
+    })
+  },
+}
+</script>
 
 
 <style>
