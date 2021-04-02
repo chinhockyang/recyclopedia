@@ -11,7 +11,9 @@ Vue.use(VueRouter);
 
 const myRouter = new VueRouter({
   routes: Routes,
-  mode: 'history'
+  mode: 'history',
+  linkActiveClass: "active", // active class for non-exact links.
+  linkExactActiveClass: "active" // active class for *exact* links.
 });
 
 firebaseApp.auth().onAuthStateChanged(user => {

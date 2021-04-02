@@ -138,7 +138,7 @@
                 <div class="carousel-item active">
                     <div class="container mb-3">
                         <div class="row">               
-                          <div class="col-1"></div>                                             
+                          <div class="col-l-1"></div>                                             
                           <span v-for="i in mostRecycled.slice(0,3)" :key="i.name">                                
                                 <div class="col-10 mt-1">
                                   <div class="card mx-2" style="pointer-events:none">
@@ -146,7 +146,7 @@
                                   </div>                                
                                 </div>                                
                           </span>                          
-                          <div class="col-1"></div>                                             
+                          <div class="col-l-1"></div>                                             
                         </div>                         
                     </div>
                 </div>
@@ -180,13 +180,15 @@
           <div class="col col-s-4">              
               <div class="card p-3">
                 <div class="row">
-                    <div class="col">
+                    <div class="col mt-3">
                         <div class="chart justify-content-center">
+                            <h5 class="lead">Commonly searched Recyclable {{category}}</h5>
                             <bar-chart :category="category" :recyclable="true" class="chart-canvas"></bar-chart>
                         </div>
                     </div>
                     <div class="col mt-3">
                         <div class="chart">
+                            <h5 class="lead">Commonly searched Non-Recyclable {{category}}</h5>
                             <bar-chart :category="category" :recyclable="false" class="chart-canvas"></bar-chart>
                         </div>
                     </div>
@@ -199,11 +201,13 @@
                         <div class="col-1"></div>
                         <div class="col-5">
                             <div class="chart mt-1">
+                              <h5 class="lead">Items in Recyclopedia</h5>    
                                 <pie-chart :category="category" chartType="itemsCount" class="chart-canvas"></pie-chart>                                      
                             </div>
                         </div>       
                         <div class="col-5">
-                            <div class="chart">                    
+                            <div class="chart">       
+                                <h5 class="lead">Searches in Recyclopedia</h5>                 
                                 <pie-chart :category="category" chartType="searchCount" class="chart-canvas"></pie-chart>
                             </div>
                         </div>                                                                                          

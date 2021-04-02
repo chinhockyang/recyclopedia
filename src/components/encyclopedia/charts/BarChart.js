@@ -19,8 +19,7 @@ export default {
             options: {
                 legend: { display: false },
                 title: {
-                  display: true,
-                  text: 'Number of times Searched'
+                  display: false                  
                 },
                 responsive: true,
                 maintainAspectRatio: false,
