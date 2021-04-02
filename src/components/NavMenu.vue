@@ -18,7 +18,7 @@
         </li>
         <li class="nav-item">
           <template v-if="user.loggedIn">
-            <a class="nav-link" href="/dashboard">My Account</a>
+            <a class="nav-link" href="/dashboard">Account</a>
           </template> 
           <template v-else>
             <a class="nav-link" href="/login">Account</a>
