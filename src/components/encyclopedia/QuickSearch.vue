@@ -5,6 +5,7 @@
       <p class="lead">Search to see if something is recyclable!</p>              
       <search-tool 
         :itemsList="itemsList"
+        :buttonName="'Search'"
         @searched="searchItem">
       </search-tool>
     </div>                 

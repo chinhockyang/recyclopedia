@@ -10,7 +10,7 @@
                     <input type="text" class="form-control" v-model="item.name" required/>
                 </div>
 
-                <p class="lead"><small>Is the Item Recyclable?<span style="color:red;" title="required"> *</span></small></p>
+                <p class="lead mb-0"><small>Is the Item Recyclable?<span style="color:red;" title="required"> *</span></small></p>
                 <div class="form-check form-check-inline">        
                     <input class="form-check-input" type="radio" id="recyclable" v-model="item.recyclable" :value=true>            
                     <label class="form-check-label" for="recyclable">Yes</label>            
@@ -29,33 +29,82 @@
                     </select>            
                 </div>
                 
+                <p class="lead mt-2 pb-0 mb-1" v-show="item.category"><small>Common Item Information:</small></p>
+                <table class="table table-bordered table-hover bg-white mb-3" v-show="item.category">
+                    <tbody>                        
+                        <tr>
+                            <td style="width: 30%" class="table-active border border-secondary">Instruction</td>
+                            <td style="width: 70%" class="table-light border border-secondary"><strong>{{item.instruction}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="table-default border border-secondary">
+                                <span>Pick a common item instruction:</span><br>
+                                <small>List shown is based on the Category and Recyclability of the item.</small><br>                
+                                <search-tool 
+                                    :itemsList="instructionsList"
+                                    :buttonName="'Select'"
+                                    @searched="addInstruction"
+                                    style="margin-top: 5px;">
+                                </search-tool>
+                                <small>
+                                    <em>Note: Press the Select button in order for the instruction picked to be selected</em><br>
+                                    <em>The input will be cleared when the Item's Category or Recyclability is changed</em>
+                                </small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 30%" class="table-active border border-secondary">Method of Disposal</td>
+                            <td style="width: 70%" class="table-light border-secondary"><strong>{{item.disposal}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="table-default border border-secondary"> 
+                                <span>Pick a common method of disposal:</span><br>
+                                <small>List shown is based on the Category and Recyclability of the item.</small>
+                                <search-tool 
+                                    :itemsList="disposalList"
+                                    :buttonName="'Select'"
+                                    @searched="addDisposal"
+                                    style="margin-top: 5px;">
+                                </search-tool>   
+                                <small>
+                                    <em>Note: Press the Select button in order for the method picked to be selected</em><br>
+                                    <em>The input will be cleared when the Item's Category or Recyclability is changed</em>
+                                </small>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 <div class="form-group">
                     <label for="image-url">Image URL:</label>                        
                     <input type="url" class="form-control" id="image-url" v-model="item.imageUrl">
-                    <span class="lead" v-show="item.imageUrl"><small>Image Preview:</small></span><br>
-                    <img :src="item.imageUrl" v-show="item.imageUrl" class="img-thumbnail w-25" alt="Please fill in a valid Image URL">                    
+                    <small>You can see an image preview if the link provided is a working Image URL</small>
+                    <p class="lead mb-0 mt-1" v-show="item.imageUrl"><small>Image Preview:</small></p>
+                    <img :src="item.imageUrl" v-show="item.imageUrl" class="img-thumbnail w-25 mb-3" alt="Please fill in a valid Image URL">                    
                 </div>
 
-                <div class="form-group">
-                    <label>Additional Instructions:</label><br>      
-                    <textarea class="form-control" v-model="item.description" form="add-item-form">
+                <div class="form-group mt-4">
+                    <label>Additional Item Descriptions:</label><br>      
+                    <textarea class="form-control" v-model="item.addDescription" form="add-item-form">
                         Enter text here...
                     </textarea>
                 </div>
                 
-                <div class="form-group">
-                    <span class="lead"><small>Similar Items:</small></span><br>
+                <div class="form-group mt-3">
+                    <label class="mb-0">Similar Items:</label><br>                    
+                    <small class="mt-0 pt-0"><em>Note: You can add multiple similar items.</em></small><br>
                     <div class="btn-group mx-1 my-1" role="group" v-for="i in item.similarItem" :key="i">
-                        <h5><badge class="badge badge-info p-1">{{i}}</badge></h5>
+                        <h5><badge class="badge badge-success p-1">{{i}}</badge></h5>
                         <button type="button" class="close mb-2" aria-label="Close" @click.prevent="removeSimilarItem(i);">
                             <span aria-hidden="true">&times;</span>
                         </button>                        
                     </div>
                     <search-tool 
                     :itemsList="similarItemList"
+                    :buttonName="'Add Item'"
                     @searched="addSimilarItem"
                     style="display: flex; flex-grow:2;">
-                    </search-tool>    
+                    </search-tool>                    
                 </div>
 
                 <button type="submit" class="btn btn-success" v-on:click.prevent="addItem" aria-label="Close">Add Item</button>
@@ -76,6 +125,9 @@ export default {
         return{           
             itemsList: [],
             similarItemList: [],
+            
+            instructionsList: [],
+            disposalList: [],
 
             categoryOption: [
                    "Plastic",
@@ -85,6 +137,7 @@ export default {
                    "Electronics",
                    "Others"
                ],
+
            item:{
                name:"",
                category: "",               
@@ -92,10 +145,12 @@ export default {
                amountRecycled: 0,
                amountSearched: 0,
                imageUrl: "",
-               description: "",               
+               instruction: "",
+               disposal: "",
+               addDescription: "",               
                approved: false,
                similarItem: []
-           }
+           },                      
         }
     },
     
@@ -136,7 +191,7 @@ export default {
                 this.itemsList.push(item.name)            
                 this.similarItemList.push(item.name)
             }            
-            })})    
+            })});  
       },
 
       addSimilarItem: function(val) {
@@ -157,6 +212,55 @@ export default {
               this.item.similarItem.splice(index, 1);
           }
           this.similarItemList.push(val);          
+      },
+
+      addInstruction: function(val) {
+          if (!this.instructionsList.includes(val)) {
+              return;
+          }   
+          this.item.instruction = val;       
+      },
+
+      clearInstructionList: function() {              
+          this.instructionsList = [];
+          this.item.instruction = '';
+      },
+
+      addDisposal: function(val) {
+          if (this.disposalList.includes(val)) {
+              this.item.disposal = val;
+          }          
+      },
+
+      clearDisposalList: function() {                                   
+          this.disposalList = [];
+          this.item.disposal = '';
+      },
+  },
+
+  watch: {
+      'item.category': function(val) {
+        this.clearInstructionList();         
+        database.collection('instructions').where('category', '==', val).get().then((querySnapShot)=>{
+        let item={}
+        querySnapShot.forEach(doc=>{
+            item=doc.data()
+            item.show=false
+            item.id=doc.id     
+            this.instructionsList.push(item.detail)
+            })});
+      },
+
+      'item.recyclable': function(val) {                
+        this.clearDisposalList();
+        database.collection('disposal').where('recyclable', '==', val).get().then((querySnapShot)=>{
+        let item={}
+        querySnapShot.forEach(doc=>{
+            item=doc.data()
+            item.show=false
+            item.id=doc.id     
+            this.disposalList.push(item.detail)
+            })});
       }
   },
 

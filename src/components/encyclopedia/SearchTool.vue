@@ -6,7 +6,7 @@
               <small>^</small>              
           </button>          
           <div class="input-group-append">            
-            <button @click.prevent="submitSearch" class="btn btn-outline-success">Search</button>
+            <button @click.prevent="submitSearch" class="btn btn-outline-success">{{buttonName}}</button>
           </div>
           <div class="container">                        
             <ul v-if="modal == true">      
@@ -41,7 +41,8 @@ export default {
 
   props: {
       // Array of items to be searched for
-      itemsList: Array
+      itemsList: Array,
+      buttonName: String
   },
 
   methods:{
@@ -72,7 +73,7 @@ export default {
       // this.search passed up to parent through that function
       submitSearch: function() {
           this.modal = false;
-          this.$emit('searched', this.search);      
+          this.$emit('searched', this.search);           
       }
   },  
 
