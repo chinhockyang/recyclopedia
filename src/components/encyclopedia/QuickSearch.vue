@@ -2,10 +2,10 @@
   <div class="container tab-pane fade show active" id="quick-search" role="tabpanel" aria-labelledby="quick-search-tab">      
     <div class="jumbotron">
       <h1 class="display-4">Welcome to the Encyclopedia!</h1>
-      <p class="lead">Search to see if something is recyclable!</p>
+      <p class="lead">Search to see if something is recyclable!</p>              
       <search-tool 
-      :itemsList="itemsList"
-      @searched="searchItem">
+        :itemsList="itemsList"
+        @searched="searchItem">
       </search-tool>
     </div>                 
     

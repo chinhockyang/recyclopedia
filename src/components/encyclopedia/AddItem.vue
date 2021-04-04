@@ -42,7 +42,23 @@
                         Enter text here...
                     </textarea>
                 </div>
-                <button type="submit" class="btn btn-success" v-on:click.prevent="addItem">Add Item</button>
+                
+                <div class="form-group">
+                    <span class="lead"><small>Similar Items:</small></span><br>
+                    <div class="btn-group mx-1 my-1" role="group" v-for="i in item.similarItem" :key="i">
+                        <h5><badge class="badge badge-info p-1">{{i}}</badge></h5>
+                        <button type="button" class="close mb-2" aria-label="Close" @click.prevent="removeSimilarItem(i);">
+                            <span aria-hidden="true">&times;</span>
+                        </button>                        
+                    </div>
+                    <search-tool 
+                    :itemsList="similarItemList"
+                    @searched="addSimilarItem"
+                    style="display: flex; flex-grow:2;">
+                    </search-tool>    
+                </div>
+
+                <button type="submit" class="btn btn-success" v-on:click.prevent="addItem" aria-label="Close">Add Item</button>
             </form>
 
         </div>
@@ -53,11 +69,14 @@
 
 <script>
 import database from '../../firebase.js'
+import SearchTool from './SearchTool.vue'
 
 export default {
     data(){
         return{           
             itemsList: [],
+            similarItemList: [],
+
             categoryOption: [
                    "Plastic",
                    "Paper",
@@ -74,7 +93,8 @@ export default {
                amountSearched: 0,
                imageUrl: "",
                description: "",               
-               approved: false
+               approved: false,
+               similarItem: []
            }
         }
     },
@@ -90,10 +110,9 @@ export default {
           }
 
           var lowerCaseItemsList = [];
-          for (let i in this.itemsList) {              
+          for (let i in this.itemsList) {                            
               lowerCaseItemsList.push(this.itemsList[i].toLowerCase());
-          }
-          
+          }          
           if (lowerCaseItemsList.includes(this.item.name.toLowerCase())) {              
               alert("You cannot add an existing item");              
           } else {
@@ -101,6 +120,8 @@ export default {
               alert(this.item.name + " is being submitted!");
               this.item.name="";
               this.item.category="";
+              this.similarItemList= [];
+              this.item.similarItem= [];
           }          
       },
 
@@ -110,10 +131,37 @@ export default {
         querySnapShot.forEach(doc=>{
             item=doc.data()
             item.show=false
-            item.id=doc.id            
-            this.itemsList.push(item.name) 
+            item.id=doc.id
+            if (item.approved) {
+                this.itemsList.push(item.name)            
+                this.similarItemList.push(item.name)
+            }            
             })})    
-      }      
+      },
+
+      addSimilarItem: function(val) {
+          if (!this.similarItemList.includes(val)) {
+              return;
+          }
+
+          var index = this.similarItemList.indexOf(val);
+          if (index > -1) {
+              this.similarItemList.splice(index, 1);
+          }
+          this.item.similarItem.push(val);          
+      },
+
+      removeSimilarItem: function(val) {
+          var index = this.item.similarItem.indexOf(val);
+          if (index > -1) {
+              this.item.similarItem.splice(index, 1);
+          }
+          this.similarItemList.push(val);          
+      }
+  },
+
+  components: {
+    'search-tool': SearchTool
   },
   
   created() {

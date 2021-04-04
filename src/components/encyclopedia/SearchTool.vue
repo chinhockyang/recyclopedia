@@ -1,13 +1,12 @@
 <template>
-  <div class="form-group row">
-    <div class="col-1 col-s-2 col-m-3"></div>
-    <div class="input-group col-10 col-s-8 col-m-6">
+  <div class="form-group">    
+    <div class="input-group">
           <input type="text" class="form-control" v-model="search" @focus="modal = true">                                          
           <button class ="btn btn-outline-secondary" v-show="modal == true" @click="modal = false"  title="Close Recommendations">
               <small>^</small>              
           </button>          
           <div class="input-group-append">            
-            <button @click="submitSearch" class="btn btn-outline-success">Search</button>
+            <button @click.prevent="submitSearch" class="btn btn-outline-success">Search</button>
           </div>
           <div class="container">                        
             <ul v-if="modal == true">      
@@ -20,8 +19,7 @@
               </li>
             </ul>                                                                    
           </div>                              
-    </div>
-    <div class="col-1 col-s-2 col-m-3"></div>
+    </div>    
   </div>
 </template>
 
