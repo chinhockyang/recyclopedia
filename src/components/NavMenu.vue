@@ -25,11 +25,15 @@
             <li class="nav-item">
               <template v-if="user.loggedIn">            
                 <a class="nav-link" href="/dashboard">Account</a>
-            </template> 
-            <template v-else>  
+              </template> 
+              <template v-else>  
                 <a class="nav-link" href="/login">Account</a> 
-            </template>
-          </li>
+              </template>
+            </li>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/Quiz">Quiz</router-link>
+            </li>
           </ul>      
       </div>
     </nav>
