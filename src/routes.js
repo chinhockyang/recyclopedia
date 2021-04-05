@@ -20,7 +20,7 @@ export default [
   { path: '/encyclopedia', component: EncyclopediaHome, children: [
     { path: '', component: QuickSearch},
     { path: '/encyclopedia/quick-search', component: QuickSearch},
-    { path: '/encyclopedia/browse', component: BrowseCategory, children: [        
+    { path: '/encyclopedia/browse/', component: BrowseCategory, children: [        
         { path: '/encyclopedia/browse/category-info/:id', component: CategoryInfoPage, props: true}
     ]},
     { path: '/encyclopedia/can-recycle/:id', component: CanRecycle, props: true},        
