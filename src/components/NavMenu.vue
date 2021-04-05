@@ -25,6 +25,9 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/login">Account</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/Quiz">Quiz</router-link>
+            </li>
           </ul>      
       </div>
     </nav>
