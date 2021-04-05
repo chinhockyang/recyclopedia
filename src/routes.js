@@ -37,7 +37,7 @@ export default [
   { path: '/addNewRecord', component: addNewRecord },
   { path: '/points', component: Points},
   { path: '/donation', component: Donation}, 
-  { path: '/past', component: Past}
+  { path: '/past', component: Past},
   { path: '/quiz', component: Quiz }
 
 ]
