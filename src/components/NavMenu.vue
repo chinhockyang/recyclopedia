@@ -17,11 +17,11 @@
           <a class="nav-link" href="/encyclopedia/quick-search">Encyclopedia</a>
         </li>
         <li class="nav-item">
-          <template v-if="user.loggedIn">
+          <template v-if="user.loggedIn">            
             <a class="nav-link" href="/dashboard">Account</a>
           </template> 
-          <template v-else>
-            <a class="nav-link" href="/login">Account</a>
+          <template v-else>  
+            <a class="nav-link" href="/login">Account</a> 
           </template>
         </li>
       </ul>
@@ -49,4 +49,6 @@ export default {
   background-color: #E3E9BB;
   height: 100px;
 }
+
+
 </style>
