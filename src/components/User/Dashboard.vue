@@ -4,6 +4,18 @@
     <h3 v-if="user">Welcome {{user.data.displayName}}!</h3>
     <br>  
     <div> 
+      <h6>Your Points: {{ countPoints }}</h6>
+      <div class="progress">
+         <div class="progress-bar progress-bar-success" role="progressbar" id="pointsBar" value="" max="200" style="width: ''">{{ remaining }}%</div>
+      </div>
+      <div class="level">
+        <p style="font-size: 15px">Welcome Greener</p>
+        <span>Bronze Greener</span>
+      </div>
+      <button v-on:click="this.updatePointsBar"></button>
+    </div>
+    <br>
+    <div> 
       <h6>Past Recycling Records</h6>
       <table> 
         <tr>
@@ -37,7 +49,9 @@ export default {
   data() {
     return {
       pastRecords: [], 
-      d: ""
+      d: "",
+      countPoints: 0,
+      remaining: 0
     }
   },
   computed: {
@@ -63,6 +77,25 @@ export default {
           }
         })
       })
+    }, 
+
+    fetchPoints() {
+      database.collection('users').get().then((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+
+          if (doc.data().username == this.user.data.displayName) {
+            this.countPoints += doc.data().pts
+            this.remaining = (this.countPoints/200) * 100
+          }
+        })
+      })
+    }, 
+
+    updatePointsBar() {
+      var pb = document.getElementById("pointsBar")
+      pb.value = this.countPoints
+      pb.style.width = this.remaining + "%"
+    
     }
     
   
@@ -70,7 +103,12 @@ export default {
 
   created() {
     this.fetchRecords()
-  }
+    this.fetchPoints()
+    this.updatePointsBar()
+  }, 
+
+
+
 };
 </script>
 
@@ -92,6 +130,36 @@ th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+}
+
+.progress {
+  position:relative;
+  height:70px;
+  width: 60%;
+}
+
+.progress-bar {
+  background-color: rgb(96, 126, 45);
+}
+
+.raised {
+  position:absolute;
+  left:10px;
+  top:9px;
+}
+.goal {
+  position:absolute;
+  right:10px;
+  top:9px;
+}
+
+.level > p {
+  display: inline;
+}
+
+.level span {
+  margin-left: 41.5%;
+  display: inline;
 }
 
 </style>

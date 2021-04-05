@@ -39,8 +39,8 @@
         </div>
         <div class="form-group">
           <button @click.prevent="submitRecord" class="btn btn-success" >Submit</button>
-          <p>Thank you for recycling today!</p>
           <p id="error" v-if="error">{{error}}</p>
+          <p>Thank you for recycling today!</p>
         </div>
     </form>
     
@@ -70,6 +70,10 @@ export default {
         quantity:"", 
         points: 0
       },
+      pointsRecord: {
+        username: "", 
+        pts: 0
+      },
       error: null
     };
   },
@@ -79,14 +83,21 @@ export default {
           this.error=null
           if (this.form.serialNo == "" || this.form.itemCat == "" || this.form.quantity=="") {
               this.error = "Please fill in all fields"
+          } else if (this.form.serialNo.length != 6) {
+              this.error = "Invalid Bin Serial Number!"
+          } else if (this.form.quantity == 0) {
+              this.error = "Invalid quantity!"
           } else {
-            this.form.date = new Date()
-            var options = {month: 'long'}
-            var d = new Intl.DateTimeFormat('en-US', options)
-            var month = d.format(this.form.date)
-            this.form.date= this.form.date.getDate() + ' ' + month + ' ' + this.form.date.getFullYear()
-            this.form.username = this.user.data.displayName
-            this.form.points = this.form.quantity*5
+              this.form.date = new Date()
+              var options = {month: 'long'}
+              var d = new Intl.DateTimeFormat('en-US', options)
+              var month = d.format(this.form.date)
+              this.form.date= this.form.date.getDate() + ' ' + month + ' ' + this.form.date.getFullYear()
+              this.form.username = this.user.data.displayName
+              this.pointsRecord.username = this.user.data.displayName
+              this.form.points = this.form.quantity*5
+              this.pointsRecord.pts = this.form.quantity*5
+              database.collection('users').add(this.pointsRecord);
               database.collection('records').add(this.form).then(() => {
                   if (this.error==null) {
                      this.$router.push({path: './dashboard'})
@@ -94,6 +105,7 @@ export default {
                   }
              
             })
+
           }
 
       }
