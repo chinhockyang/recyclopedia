@@ -2,26 +2,26 @@
   <div class="container tab-pane fade show active" id="quick-search" role="tabpanel" aria-labelledby="quick-search-tab">      
     <div class="jumbotron">
       <h1 class="display-4">Welcome to the Encyclopedia!</h1>
-      <p class="lead">Search to see if something is recyclable!</p>              
-      <search-tool 
-        :itemsList="itemsList"
-        :buttonName="'Search'"
-        @searched="searchItem">
-      </search-tool>
-    </div>                 
-    
-    <div class="containter row mb-5">
-      <div class="col"></div>
+      <p class="lead">Search to see if something is recyclable!</p>
+      <div class="container w-75 mx-auto">           
+        <search-tool        
+          :itemsList="itemsList"
+          :buttonName="'Search'"
+          @searched="searchItem">
+        </search-tool>
+      </div>
+    </div>           
+
+    <div class="containter row mb-5">      
       <div class="col">
-          <item-card 
+          <item-info            
             :item="item"
             v-show="item">
-          </item-card>    
-      </div>
-      <div class="col"></div>
+          </item-info>
+      </div>      
     </div>
-  
-    <div class="alert alert-warning alert-dismissible" v-if="alert">
+
+    <div class="alert alert-warning alert-dismissible" v-show="alert">
       <button type="button" class="close" data-dismiss="alert" @click="closeAlert">&times;</button>      
       <p>Not seeing what you are looking for?</p>
       <a href='/encyclopedia/add' exact>Request for it to be added to Recyclopedia!</a><br><br>
@@ -33,7 +33,7 @@
 <script>
 import database from '../../firebase.js'
 import SearchTool from './SearchTool.vue'
-import ItemCard from './ItemCard.vue'
+import ItemInfo from './ItemInfo.vue'
 import firebase from "firebase"
 
 export default {  
@@ -46,7 +46,7 @@ export default {
         //itemSearched is what is passed from the Search Tool
         //searched by the user
         itemSearched: "",
-        item: "",
+        item: "",        
 
         alert: false,
 
@@ -82,7 +82,7 @@ export default {
       // query for item from database based on what is passed from Search Tool
       // assign item to the item.
       // Amount Searched will increase by 1 for a successful search
-      searchItem:function(value) {             
+      searchItem:function(value) {        
         this.itemSearched = value;
         this.item = "";        
 
@@ -100,11 +100,11 @@ export default {
                 this.item = item;
                 this.alert = false;
             }            
-            })})
+            })});
 
-            if (this.item === "") {
+            if (this.item == "") {
               this.alert = true;
-            }
+            }             
       },
 
       closeAlert: function() {
@@ -114,11 +114,11 @@ export default {
 
   created() {
     this.fetchItems();    
-  },
+  },  
 
   components: {
     'search-tool': SearchTool,
-    'item-card': ItemCard,    
+    'item-info': ItemInfo,    
   }
 }
 

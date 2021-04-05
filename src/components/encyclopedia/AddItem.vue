@@ -2,8 +2,8 @@
 <div class="container tab-pane fade show active" id="add" role="tabpanel" aria-labelledby="add-tab">
     <h1>Add Item to Recyclopedia!</h1>
     <div class="row p-3 mb-5">
-        <div class="col-1 col-m-2 col-l-3"></div>
-        <div class="col-10 col-m-8 col-l-6 bg-light rounded p-3">            
+        <div class="col-1 col-md-2 col-l-3"></div>
+        <div class="col-10 col-md-8 col-l-6 bg-light rounded p-3">            
             <form class="containter px-3"> 
                 <div class="form-group">
                     <label>Item Name:<span style="color:red;" title="required"> *</span></label>
@@ -29,16 +29,16 @@
                     </select>            
                 </div>
                 
-                <p class="lead mt-2 pb-0 mb-1" v-show="item.category"><small>Common Item Information:</small></p>
+                <p class="lead mt-2 pb-0 mb-1" v-show="item.category"><small>Common Recycling Information:</small></p>
                 <table class="table table-bordered table-hover bg-white mb-3" v-show="item.category">
                     <tbody>                        
-                        <tr>
+                        <tr v-show="item.recyclable">
                             <td style="width: 30%" class="table-active border border-secondary">Instruction</td>
                             <td style="width: 70%" class="table-light border border-secondary"><strong>{{item.instruction}}</strong></td>
                         </tr>
-                        <tr>
+                        <tr v-show="item.recyclable">
                             <td colspan="2" class="table-default border border-secondary">
-                                <span>Pick a common item instruction:</span><br>
+                                <span>Pick a common Recycling instruction:</span><br>
                                 <small>List shown is based on the Category and Recyclability of the item.</small><br>                
                                 <search-tool 
                                     :itemsList="instructionsList"
@@ -48,7 +48,8 @@
                                 </search-tool>
                                 <small>
                                     <em>Note: Press the Select button in order for the instruction picked to be selected</em><br>
-                                    <em>The input will be cleared when the Item's Category or Recyclability is changed</em>
+                                    <em>The input will be cleared when the Item's Category or Recyclability is changed</em><br>
+                                    <em>Press the ^ button to refresh the list of recommendations</em>
                                 </small>
                             </td>
                         </tr>
@@ -68,7 +69,8 @@
                                 </search-tool>   
                                 <small>
                                     <em>Note: Press the Select button in order for the method picked to be selected</em><br>
-                                    <em>The input will be cleared when the Item's Category or Recyclability is changed</em>
+                                    <em>The input will be cleared when the Item's Category or Recyclability is changed</em><br>
+                                    <em>Press the ^ button to refresh the list of recommendations</em>
                                 </small>
                             </td>
                         </tr>
@@ -92,7 +94,7 @@
                 
                 <div class="form-group mt-3">
                     <label class="mb-0">Similar Items:</label><br>                    
-                    <small class="mt-0 pt-0"><em>Note: You can add multiple similar items.</em></small><br>
+                    <small class="mt-0 pt-0"><em>Note: You can add up to 4 similar items.</em></small><br>
                     <div class="btn-group mx-1 my-1" role="group" v-for="i in item.similarItem" :key="i">
                         <h5><badge class="badge badge-success p-1">{{i}}</badge></h5>
                         <button type="button" class="close mb-2" aria-label="Close" @click.prevent="removeSimilarItem(i);">
@@ -107,11 +109,11 @@
                     </search-tool>                    
                 </div>
 
-                <button type="submit" class="btn btn-success" v-on:click.prevent="addItem" aria-label="Close">Add Item</button>
+                <button type="submit" class="btn btn-success w-50 mt-4" v-on:click.prevent="addItem" aria-label="Close">Add Item</button>
             </form>
 
         </div>
-        <div class="col-1 col-m-2 col-l-3"></div>
+        <div class="col-1 col-md-2 col-l-3"></div>
     </div>
 </div>
 </template>
@@ -194,11 +196,10 @@ export default {
             })});  
       },
 
-      addSimilarItem: function(val) {
-          if (!this.similarItemList.includes(val)) {
+      addSimilarItem: function(val) {          
+          if (!this.similarItemList.includes(val) | this.item.similarItem.length > 3) {
               return;
-          }
-
+          }          
           var index = this.similarItemList.indexOf(val);
           if (index > -1) {
               this.similarItemList.splice(index, 1);
@@ -211,7 +212,7 @@ export default {
           if (index > -1) {
               this.item.similarItem.splice(index, 1);
           }
-          this.similarItemList.push(val);          
+          this.similarItemList.push(val);
       },
 
       addInstruction: function(val) {
@@ -240,7 +241,8 @@ export default {
 
   watch: {
       'item.category': function(val) {
-        this.clearInstructionList();         
+        this.clearInstructionList();
+        this.clearDisposalList();
         database.collection('instructions').where('category', '==', val).get().then((querySnapShot)=>{
         let item={}
         querySnapShot.forEach(doc=>{
@@ -248,6 +250,17 @@ export default {
             item.show=false
             item.id=doc.id     
             this.instructionsList.push(item.detail)
+            })});
+
+        database.collection('disposal').where('category', '==', val).get().then((querySnapShot)=>{
+        let item={}
+        querySnapShot.forEach(doc=>{
+            item=doc.data()
+            item.show=false
+            item.id=doc.id
+            if (item.recyclable == this.item.recyclable) {
+                this.disposalList.push(item.detail)
+            }            
             })});
       },
 
@@ -258,8 +271,10 @@ export default {
         querySnapShot.forEach(doc=>{
             item=doc.data()
             item.show=false
-            item.id=doc.id     
-            this.disposalList.push(item.detail)
+            item.id=doc.id
+            if (item.category == this.item.category) {
+                this.disposalList.push(item.detail);
+            }            
             })});
       }
   },

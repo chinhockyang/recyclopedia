@@ -82,7 +82,7 @@
 
     <ul class="row justify-content-center bg-light">
         <li v-for="item in visibleItems"
-            class="col-s-8 col-m-6 col-l-4 m-3 justify-content-center"  
+            class="col-s-8 col-md-6 col-l-4 m-3 justify-content-center"  
             style="max-width: 285px;"
             v-bind:key="item.name">            
             <item-card :item="item"></item-card>
