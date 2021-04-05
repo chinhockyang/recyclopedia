@@ -1,5 +1,6 @@
 import Home from './components/Home.vue'
 import myMap from './components/Map.vue'
+import Quiz from './components/Quiz.vue'
 
 import EncyclopediaHome from './components/encyclopedia/EncyclopediaHome.vue'
 import QuickSearch from './components/encyclopedia/QuickSearch.vue'
@@ -37,5 +38,6 @@ export default [
   { path: '/points', component: Points},
   { path: '/donation', component: Donation}, 
   { path: '/past', component: Past}
+  { path: '/quiz', component: Quiz }
 
 ]
