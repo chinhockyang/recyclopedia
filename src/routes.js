@@ -13,6 +13,9 @@ import Login from './components/User/Login.vue'
 import Register from './components/User/Register.vue'
 import Dashboard from './components/User/Dashboard.vue'
 import addNewRecord from './components/User/addNewRecord.vue'
+import Points from './components/User/Points.vue'
+import Donation from './components/User/Donation.vue'
+import Past from './components/User/Past.vue'
 
 export default [
   { path: '/', component: Home },
@@ -32,6 +35,9 @@ export default [
   { path: '/register', component: Register }, 
   { path: '/dashboard', component: Dashboard },
   { path: '/addNewRecord', component: addNewRecord },
+  { path: '/points', component: Points},
+  { path: '/donation', component: Donation}, 
+  { path: '/past', component: Past},
   { path: '/quiz', component: Quiz }
 
 ]
