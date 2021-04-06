@@ -1,6 +1,6 @@
 import Home from './components/Home.vue'
-import myMap from './components/Map.vue'
 import Quiz from './components/Quiz.vue'
+import myMap from './components/map/Map.vue'
 
 import EncyclopediaHome from './components/encyclopedia/EncyclopediaHome.vue'
 import QuickSearch from './components/encyclopedia/QuickSearch.vue'

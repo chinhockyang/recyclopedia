@@ -10,16 +10,26 @@
 <script>
 // import axios from 'axios'
 import gmapsInit from './Map.js';
+// import OneMap_token_response from './GetOneMapToken.js';
+// if (Math.floor(new Date().getTime()/1000.0) > this.OneMap_token_expiry) {
+//   // update OneMap token if current one has expired
+//   this.OneMap_token_expiry = Number(OneMap_token_response.expiry_timestamp);
+//   this.OneMap_API_KEY = OneMap_token_response.access_token;
+// }
+
+
 import axios from 'axios';
 
 export default {
   data () {
     return {
       // map: ,
-      src: "http://drive.google.com/uc?id=1WrA6xSjaGgZel3Ii8JZR_cKzRrCmv4ag",
+      src: "http://drive.google.com/uc?id=1WrA6xSjaGgZel3Ii8JZR_cKzRrCmv4ag", // kml file source
       // src: "http://drive.google.com/uc?id=1xG70dBfmZVsuLt27GyV9PmY-c1PF9OMk",
       // kmlLayer
-      points: []
+      points: [],
+      OneMap_API_KEY: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjczMjcsInVzZXJfaWQiOjczMjcsImVtYWlsIjoiZGFycmVsbC5sYWlAZ21haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNjE3NzAyNzU4LCJleHAiOjE2MTgxMzQ3NTgsIm5iZiI6MTYxNzcwMjc1OCwianRpIjoiNGU2ZjkzMmJhODQxNTRkM2UwMzJkZTFlZGEwNTcyNzUifQ.X-pQ8Z3Wkb6u-7BB7Ud7t2gEu4dzukZ9lkyEfAGpZ34',
+      OneMap_token_expiry: 9999999999
     }
   },
   methods: {
@@ -34,6 +44,9 @@ export default {
       );
       infoWindow.open(map);
     },
+    getOneMapToken: function() {
+      axios.get()
+    },
     getKMradius: function(lat, lng) {
       // return coordinates of bounding box of 2km x 2km
         // just need 2 corners
@@ -41,9 +54,9 @@ export default {
 
     },
     getExtentsQuery: function(bb) {
-      let extents = bb.topright[0] + ",%20" + bb.topright[1] + "," + bb.bottomleft[0] + ",%20" + bb.bottomleft[1];
-      const OneMap_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjczMjcsInVzZXJfaWQiOjczMjcsImVtYWlsIjoiZGFycmVsbC5sYWlAZ21haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNjE2MDU1ODM5LCJleHAiOjE2MTY0ODc4MzksIm5iZiI6MTYxNjA1NTgzOSwianRpIjoiNWM5M2I4YjEyY2RhZmMxZTExMjg4Yzc1NDkyZjY2ODYifQ.u6nK05TZgIWESiYV5YU1caHs7Z_pWsaZJEPwhYQGBbo';
-      let query = `https://developers.onemap.sg/privateapi/themesvc/retrieveTheme?queryName=recyclingbins&token=${OneMap_API_KEY}&extents=` + extents;
+      let extents = bb.bottomleft[0] + ",%20" + bb.bottomleft[1] + "," + bb.topright[0] + ",%20" + bb.topright[1];
+      // const OneMap_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjczMjcsInVzZXJfaWQiOjczMjcsImVtYWlsIjoiZGFycmVsbC5sYWlAZ21haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNjE2NTUzNzcyLCJleHAiOjE2MTY5ODU3NzIsIm5iZiI6MTYxNjU1Mzc3MiwianRpIjoiY2IzOGRmMTk2ZjE5Zjg0YTYxZjdlYjYxOThjNGEzODQifQ.Yl5twCCgDANzVIezHqLwJoCQz_tzpu9evMV2qj8Gap8'
+      let query = `https://developers.onemap.sg/privateapi/themesvc/retrieveTheme?queryName=recyclingbins&token=${this.OneMap_API_KEY}&extents=` + extents;
       console.log("query: " + query);
       return query;
     },
@@ -124,6 +137,7 @@ export default {
               Promise.resolve(this.getBinsFromOneMap(pos))
                 .then(() => {
                   for (const point of this.points) {
+                    // TODO: style each marker to look like a recycle bin
                     new google.maps.Marker({
                       position: point,
                       map: map
