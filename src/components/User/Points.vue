@@ -18,7 +18,7 @@
         <p style="font-size: 15px">Your donation will go towards supporting the research and outreach efforts to help protect, conserve and enhance our natural heritage.</p>
         <p style="font-size: 15px">Learn more at <a href= "https://www.gardencityfund.gov.sg/">https://www.gardencityfund.gov.sg/</a></p>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL9bNIk4c3ib8JXCfzqcOzqYxnAFzZQIGmjOa-WCNWJpzNisCg4aUzVD5KYTRmL4AeveU&usqp=CAU" style="display: inline">
-        <router-link to="/donation"><button style="margin-left: 60px" class="btn btn-success" >Click to Donate</button></router-link>
+        <button style="margin-left: 60px" v-on:click="checkPoints" class="btn btn-success" >Click to Donate</button>
         <br>
         <p style="font-size: 15px"><strong>Terms and Conditions</strong></p>
         <ul> 
@@ -65,17 +65,22 @@ export default {
       pb.value = this.countPoints
       pb.style.width = this.remaining + "%"
     
-    }
+    },
     
-  
+    checkPoints() {
+        if (this.countPoints < 300) {
+            alert("Sorry, you do not have enough points to make a donation!")
+        } else {
+            this.$router.push({path: '/donation'});
+        }
+    }
+      
   }, 
 
   created() {
     this.fetchPoints()
     this.updatePointsBar()
   }, 
-
-
 
 };
 </script>
