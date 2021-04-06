@@ -68,7 +68,7 @@ export default {
 };
 </script>
 
-<style> 
+<style scoped> 
 table {
   font-family: "Inconsolata", sans-serif;
   border-collapse: collapse;

@@ -6,11 +6,11 @@
         <div class="col-10 col-md-8 col-l-6 bg-light rounded p-3">            
             <form class="containter px-3"> 
                 <div class="form-group">
-                    <label>Item Name:<span style="color:red;" title="required"> *</span></label>
+                    <label>Item Name:<span style="color:red;" v-b-tooltip.hover.bottom title="Required"> *</span></label>
                     <input type="text" class="form-control" v-model="item.name" required/>
                 </div>
 
-                <p class="lead mb-0"><small>Is the Item Recyclable?<span style="color:red;" title="required"> *</span></small></p>
+                <p class="lead mb-0"><small>Is the Item Recyclable?<span style="color:red;" v-b-tooltip.hover.bottom title="Required"> *</span></small></p>
                 <div class="form-check form-check-inline">        
                     <input class="form-check-input" type="radio" id="recyclable" v-model="item.recyclable" :value=true>            
                     <label class="form-check-label" for="recyclable">Yes</label>            
@@ -21,7 +21,7 @@
                 </div><br><br>
 
                 <div class="form-group">            
-                    <label>Category:<span style="color:red;" title="required"> *</span></label>
+                    <label>Category:<span style="color:red;" v-b-tooltip.hover.bottom title="Required"> *</span></label>
                     <select class="form-control" v-model="item.category">          
                         <option  v-for="option in categoryOption" :key="option">
                             {{option}}
@@ -43,14 +43,17 @@
                                 <search-tool 
                                     :itemsList="instructionsList"
                                     :buttonName="'Select'"
-                                    @searched="addInstruction"
+                                    :toolTip="'Close Recommendation or Refresh List'"
+                                    @searched="addInstruction"                                    
+                                    id="popover-info"
                                     style="margin-top: 5px;">
                                 </search-tool>
-                                <small>
-                                    <em>Note: Press the Select button in order for the instruction picked to be selected</em><br>
-                                    <em>The input will be cleared when the Item's Category or Recyclability is changed</em><br>
-                                    <em>Press the ^ button to refresh the list of recommendations</em>
-                                </small>
+                                <b-popover ref="popover" target="popover-info" title="Recycling Instruction" triggers="hover">                                
+                                    <ul>
+                                        <li>Press the Select button in order for the instruction picked to be selected</li>
+                                        <li>The input will be cleared when the Item's Category or Recyclability is changed</li>                                        
+                                    </ul>
+                                </b-popover>
                             </td>
                         </tr>
                         <tr>
@@ -64,14 +67,17 @@
                                 <search-tool 
                                     :itemsList="disposalList"
                                     :buttonName="'Select'"
+                                    :toolTip="'Close Recommendation or Refresh List'"
                                     @searched="addDisposal"
+                                    id="popover-disposal"
                                     style="margin-top: 5px;">
                                 </search-tool>   
-                                <small>
-                                    <em>Note: Press the Select button in order for the method picked to be selected</em><br>
-                                    <em>The input will be cleared when the Item's Category or Recyclability is changed</em><br>
-                                    <em>Press the ^ button to refresh the list of recommendations</em>
-                                </small>
+                                <b-popover ref="popover" target="popover-disposal" title="Method of Disposal" triggers="hover">                                
+                                    <ul>
+                                        <li>Press the Select button in order for the method picked to be selected</li>
+                                        <li>The input will be cleared when the Item's Category or Recyclability is changed</li>                                        
+                                    </ul>
+                                </b-popover>
                             </td>
                         </tr>
                     </tbody>
@@ -93,9 +99,8 @@
                 </div>
                 
                 <div class="form-group mt-3">
-                    <label class="mb-0">Similar Items:</label><br>                    
-                    <small class="mt-0 pt-0"><em>Note: You can add up to 4 similar items.</em></small><br>
-                    <div class="btn-group mx-1 my-1" role="group" v-for="i in item.similarItem" :key="i">
+                    <label class="mb-1">Similar Items:</label><br>                                        
+                    <div class="btn-group mx-1 mb-1" role="group" v-for="i in item.similarItem" :key="i">
                         <h5><badge class="badge badge-success p-1">{{i}}</badge></h5>
                         <button type="button" class="close mb-2" aria-label="Close" @click.prevent="removeSimilarItem(i);">
                             <span aria-hidden="true">&times;</span>
@@ -197,7 +202,7 @@ export default {
       },
 
       addSimilarItem: function(val) {          
-          if (!this.similarItemList.includes(val) | this.item.similarItem.length > 3) {
+          if (!this.similarItemList.includes(val)) {
               return;
           }          
           var index = this.similarItemList.indexOf(val);

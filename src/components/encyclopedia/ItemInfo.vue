@@ -12,13 +12,13 @@
     <div class="row">
       <table class="table table-hover table-bordered col-12 col-md-8 mx-auto mt-3">
         <tbody>
-          <tr class="bg-light">
+          <tr class="bg-light" v-if="item.recyclable">
             <td colspan="2">
               <h5>Basic Instructions</h5>
             </td>
           </tr>
           
-          <tr>
+          <tr v-if="item.recyclable">
             <td style="width: 30%">
               <img :src="instruction.imageUrl" class="img-thumbnail mx-auto" style="max-width: 150px;" alt="No image yet!" onerror="this.onerror=this.src='https://www.brandturbo.com/images/images/en/imageNoImageSmall.gif';">
             </td>

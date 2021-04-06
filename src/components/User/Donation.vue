@@ -10,7 +10,7 @@
 </div>
 </template>
 
-<style> 
+<style scoped> 
 img {
   display: block;
   margin-left: auto;
