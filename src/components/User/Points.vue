@@ -18,7 +18,7 @@
         <p style="font-size: 15px">Your donation will go towards supporting the research and outreach efforts to help protect, conserve and enhance our natural heritage.</p>
         <p style="font-size: 15px">Learn more at <a href= "https://www.gardencityfund.gov.sg/">https://www.gardencityfund.gov.sg/</a></p>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL9bNIk4c3ib8JXCfzqcOzqYxnAFzZQIGmjOa-WCNWJpzNisCg4aUzVD5KYTRmL4AeveU&usqp=CAU" style="display: inline">
-        <router-link to="/donation"><button style="margin-left: 30px" class="btn btn-success" >Click to Donate</button></router-link>
+        <router-link to="/donation"><button style="margin-left: 60px" class="btn btn-success" >Click to Donate</button></router-link>
         <br>
         <p style="font-size: 15px"><strong>Terms and Conditions</strong></p>
         <ul> 
