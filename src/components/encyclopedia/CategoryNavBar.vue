@@ -1,5 +1,5 @@
 <template>
-   <div>         
+   <div>
         <router-link to="/encyclopedia/browse/category-info/plastic" exact>Plastic</router-link>          
         <router-link to="/encyclopedia/browse/category-info/paper" exact>Paper</router-link>  
         <router-link to="/encyclopedia/browse/category-info/glass">Glass</router-link>  

@@ -11,175 +11,179 @@
         <div class="col-2"></div>
       </div>
       
-      <h3>About Recycling {{category}}</h3>
-      <div class="row mt-3 mb-5">
-        <div class="col-s-3"></div>
-        <div class="col-s-6 container">
-          <div
-            id="carouselBasicExample"
-            class="carousel slide carousel-fade"
-            data-ride="carousel"
-          >
-  
-              <!-- Indicators -->
-              <ol class="carousel-indicators">
-                <li
-                  type="button"      
-                  data-target="#carouselBasicExample"
-                  data-slide-to="0"
-                  class="active"
-                  aria-current="true"
-                  aria-label="Slide 1"
-                ></li>
-                <li
-                  type="button"      
-                  data-target="#carouselBasicExample"
-                  data-slide-to="1"
-                  aria-label="Slide 2"
-                ></li>                
-              </ol>
-
-              <!-- Inner -->
-              <div class="carousel-inner">
-                  <!-- Single item -->
-                  <div class="carousel-item active">
-                      <img
-                          src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg"
-                          class="d-block w-100"
-                          alt="..."
-                      />
-                      <div class="carousel-caption d-none d-md-block">
-                          <h5>First slide label</h5>
-                          <p>
-                              Nulla vitae elit libero, a pharetra augue mollis interdum.
-                          </p>
-                      </div>
-                  </div>
-
-                  <!-- Single item -->
-                  <div class="carousel-item">
-                      <img
-                          src="https://mdbootstrap.com/img/Photos/Slides/img%20(22).jpg"
-                          class="d-block w-100"
-                          alt="..."
-                      />
-                      <div class="carousel-caption d-none d-md-block">
-                          <h5>Second slide label</h5>
-                          <p>
-                              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                          </p>
-                      </div>
-                </div>    
-              </div>
-              <!-- Inner -->
-
-              <!-- Controls -->
-              <button
-                class="carousel-control-prev"
-                type="button"
-                data-target="#carouselBasicExample"
-                data-slide="prev"
-                style="border: none; background-color: transparent; cursor:pointer;"
-              >
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>    
-              </button>
-              
-              <button
-                  class="carousel-control-next"
-                  type="button"
-                  data-target="#carouselBasicExample"
-                  data-slide="next"
-                  style="border: none; background-color: transparent; cursor:pointer;" 
-              >
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>    
-              </button>
-            </div>
-          </div>          
-        <div class="col-s-3"></div>
-      </div>
-
-      <h3>Most Recycled {{category}}</h3>
-      <div class="row mt-3 mb-5">
-        <div class="col-2"></div>
-        <div class="col-8">
-            <!-- Carousel wrapper -->
-            <div
-              id="carouselMultiItemExample"
-              class="carousel slide carousel-dark text-center"
-              data-ride="carousel"
-            >
-            <!-- Controls -->
-            <ol class="carousel-indicator d-flex justify-content-center mb-4">
-              <li
-                class="carousel-control-prev position-relative m-3 p-1"
-                style="background-color:green;"
-                type="button"
-                data-target="#carouselMultiItemExample"
-                data-slide="prev"
-                v-show="mostRecycled.length > 3"
-                >
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>      
-              </li>
-              <li      
-                class="carousel-control-next position-relative m-3 p-1"
-                style="background-color:green;"
-                type="button"
-                data-target="#carouselMultiItemExample"
-                data-slide="next"                
-                v-show="mostRecycled.length > 3"
-              >
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>      
-              </li>
-            </ol>
-            
-            <!-- Inner -->
-            <div class="carousel-inner">
-                <!-- Single item -->
-                <div class="carousel-item active">
-                    <div class="container mb-3">
-                        <div class="row">               
-                          <div class="col-l-1"></div>                                             
-                          <span v-for="i in mostRecycled.slice(0,3)" :key="i.name">                                
-                                <div class="col-10 mt-1">
-                                  <div class="card mx-2" style="pointer-events:none">
-                                    <item-card :item="i" style="width: 280px;"></item-card>
-                                  </div>                                
-                                </div>                                
-                          </span>                          
-                          <div class="col-l-1"></div>                                             
-                        </div>                         
-                    </div>
-                </div>
-
-                <div class="carousel-item">
-                    <div class="container mb-3">                        
-                        <div class="row">               
-                          <div class="col-1"></div>                                             
-                          <span v-for="i in mostRecycled.slice(3,6)" :key="i.name">                                
-                                <div class="col-10 mt-1">
-                                  <div class="card mx-2" style="pointer-events:none">
-                                    <item-card :item="i" style="width: 280px;"></item-card>
-                                  </div>                                
-                                </div>                                
-                          </span>                          
-                          <div class="col-1"></div>                                             
-                        </div>            
-                    </div>
-                </div>
-            </div>
-            <!-- Inner -->
+      <div class="accordion col-12 col-md-8 mx-auto" role="tablist">
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <button class="btn btn-outline-light" style="text-decoration:none; color:green;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h5>About Recycling {{category}}</h5>
+            </button>               
           </div>
-            <!-- Carousel wrapper -->
-        </div>
-        <div class="col-2"></div>
-      </div>
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                  <div class="col-s-6 container">
+                        <div
+                          id="carouselBasicExample"
+                          class="carousel slide carousel-fade"
+                          data-ride="carousel"
+                        >
+  
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li
+                              type="button"      
+                              data-target="#carouselBasicExample"
+                              data-slide-to="0"
+                              class="active"
+                              aria-current="true"
+                              aria-label="Slide 1"
+                            ></li>
+                            <li
+                              type="button"      
+                              data-target="#carouselBasicExample"
+                              data-slide-to="1"
+                              aria-label="Slide 2"
+                            ></li>                
+                          </ol>
 
-      <h3>Recyclopedia Statistics of {{category}}</h3>
-      <div class="row m-5">    
-          <div class="col-s-2"></div>              
-          <div class="col col-s-4">              
-              <div class="card p-3">
-                <div class="row">
+                        <!-- Inner -->
+                        <div class="carousel-inner">
+                            <!-- Single item -->
+                            <div class="carousel-item active">
+                                <img
+                                  src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg"
+                                  class="d-block w-100"
+                                  alt="..."
+                                />
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>First slide label</h5>
+                                    <p>
+                                        Nulla vitae elit libero, a pharetra augue mollis interdum.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Single item -->
+                            <div class="carousel-item" style="overflow-x: auto; white-space: nowrap;">
+                                <img
+                                  src="https://mdbootstrap.com/img/Photos/Slides/img%20(22).jpg"
+                                  class="d-block w-100"
+                                  alt="..."
+                                />
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>Second slide label</h5>
+                                    <p>
+                                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </p>
+                                </div>
+                            </div>    
+                        
+                          <!-- Inner -->
+
+                          <!-- Controls -->
+                          <button
+                            class="carousel-control-prev"
+                            type="button"
+                            data-target="#carouselBasicExample"
+                            data-slide="prev"
+                            style="border: none; background-color: transparent; cursor:pointer;"
+                          >
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>    
+                          </button>
+
+                          <button
+                            class="carousel-control-next"
+                            type="button"
+                            data-target="#carouselBasicExample"
+                            data-slide="next"
+                            style="border: none; background-color: transparent; cursor:pointer;" 
+                          >
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>    
+                          </button>
+                    </div>
+              </div>                        
+                  </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="headingTwo">
+            <button class="btn btn-outline-light" style="text-decoration:none; color:green;" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <h5>Most Recycled {{category}}</h5>
+            </button>            
+          </div>
+          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body mb-3">
+              <div
+                    id="carouselMultiItemExample"
+                    class="carousel slide carousel-dark text-center"
+                    data-ride="carousel"
+                  >
+                  
+                  <!-- Controls -->                  
+                  <ol class="carousel-indicator d-flex justify-content-center mb-4">
+                      <li
+                        class="carousel-control-prev position-relative m-3 p-1"
+                        style="background-color:green;"
+                        type="button"
+                        data-target="#carouselMultiItemExample"
+                        data-slide="prev"
+                        v-show="mostRecycled.length > 3"
+                      >
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>      
+                      </li>
+                      
+                      <li      
+                        class="carousel-control-next position-relative m-3 p-1"
+                        style="background-color:green;"
+                        type="button"
+                        data-target="#carouselMultiItemExample"
+                        data-slide="next"                
+                        v-show="mostRecycled.length > 3"
+                      >
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>      
+                      </li>
+                    </ol>
+                    
+                    <!-- Inner -->
+                    <div class="carousel-inner">
+                        <!-- Single item -->
+                        <div class="carousel-item active">
+                            <div class="container" style="overflow-x: auto; white-space: nowrap;">
+                              <span v-for="i in mostRecycled.slice(0,3)" :key="i.name">                                  
+                                  <div class="card mx-2" style="pointer-events:none; display:inline-block; white-space: normal;">
+                                      <item-card :item="i" style="width: 250px;"></item-card>
+                                  </div>                                 
+                              </span>            
+                          </div>
+                        </div>
+                    
+                    
+                        <!-- Single item -->
+                        <div class="carousel-item">
+                            <div class="container" style="overflow-x: auto; white-space: nowrap;">
+                              <span v-for="i in mostRecycled.slice(3,6)" :key="i.name">                                  
+                                  <div class="card mx-2" style="pointer-events:none; display:inline-block; white-space: normal;">
+                                      <item-card :item="i" style="width: 250px;"></item-card>
+                                  </div>                              
+                              </span>                                             
+                            </div>
+                      </div>
+                    </div>
+                    <!-- Inner -->
+                  </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class="card-header" id="headingOne">            
+              <button class="btn btn-outline-light" style="text-decoration:none; color:green;" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                <h5>Recyclopedia Statistics of {{category}}</h5>
+              </button>            
+          </div>
+          <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordion">
+            <div class="card-body">
+                <div class="card p-3">
+                  <div class="row">
                     <div class="col mt-3">
                         <div class="chart justify-content-center">
                             <h5 class="lead">Commonly searched Recyclable {{category}}</h5>
@@ -192,10 +196,8 @@
                             <bar-chart :category="category" :recyclable="false" class="chart-canvas"></bar-chart>
                         </div>
                     </div>
+                  </div>
                 </div>
-              </div>
-          </div>
-          <div class="col col-s-4">
                 <div class="card p-3">
                     <div class="row">
                         <div class="col-1"></div>
@@ -214,9 +216,11 @@
                     </div>      
                 </div>
             </div>
-            <div class="col-s-2"></div>        
-        </div>          
+          </div>
+        </div>      
+      </div>
   </div>
+  
 </template>
 
 
