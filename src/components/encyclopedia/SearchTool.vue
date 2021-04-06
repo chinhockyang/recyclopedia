@@ -1,24 +1,31 @@
 <template>
-  <div>    
-    <input type="text" v-model="search" @focus="modal = true"> 
-
-    <ul v-if="modal == true">      
-      <li 
-        v-for="item in filteredList"
-        :key="item"
-        @click="selectSearch(item)"
-        >
-        {{item}}
-      </li>
-    </ul>    
-    
-    <button v-show="modal == true" @click="modal = false">Close Suggestion</button><br>       
-    <button @click="submitSearch">Search</button>
+  <div class="form-group">    
+    <div class="input-group">
+          <input type="text" class="form-control" v-model="search" @focus="modal = true">                                          
+          <button class ="btn btn-outline-secondary" v-show="modal == true" @click="modal = false"  title="Close Recommendations">
+              <small>^</small>              
+          </button>          
+          <div class="input-group-append">            
+            <button @click.prevent="submitSearch" class="btn btn-outline-success">{{buttonName}}</button>
+          </div>
+          <div class="container">                        
+            <ul v-if="modal == true">      
+              <li 
+                v-for="item in filteredList"
+                :key="item"
+                @click="selectSearch(item)"
+                  >
+                {{item}}
+              </li>
+            </ul>                                                                    
+          </div>                              
+    </div>    
   </div>
 </template>
 
 
 <script>
+
 export default {  
   data(){
     return{  
@@ -34,7 +41,8 @@ export default {
 
   props: {
       // Array of items to be searched for
-      itemsList: Array
+      itemsList: Array,
+      buttonName: String
   },
 
   methods:{
@@ -63,8 +71,9 @@ export default {
       // pass back the search data to the parent component
       // SearchTool has an event called "searched" that parent component can perform a function on triggered
       // this.search passed up to parent through that function
-      submitSearch: function() {                    
-          this.$emit('searched', this.search);          
+      submitSearch: function() {
+          this.modal = false;
+          this.$emit('searched', this.search);           
       }
   },  
 
@@ -80,6 +89,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style scoped>
@@ -94,21 +104,14 @@ li{
     padding: 5px;
     margin-top: 0%;
     border: 1px solid #222;
-    margin-left: auto;    
-    margin-right: auto;    
-    width:50%;
+    margin-right: 100px;
+    margin-left: auto;            
     background-color: lightgray;
 }
 
 li:hover {
   background-color: darkslategray;
   color: white;
-}
-
-input[type="text"]{    
-    padding: 8px;
-    width:50%;
-    margin-bottom: 0%;
 }
 
 </style>

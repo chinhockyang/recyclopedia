@@ -1,5 +1,5 @@
 <template>
-<div id="browse-category">    
+<div class="tab-pane fade show active" id="browse" role="tabpanel" aria-labelledby="browse-tab">    
     <category-navbar></category-navbar>
     <router-view></router-view>    
 </div>
@@ -30,29 +30,6 @@ export default {
 </script>
 
 <style scoped>
-#browse-category {
-  text-align: center;
-}
-
-ul{    
-    list-style-type: none;    
-    display: flex;
-    flex-wrap: wrap;    
-}
-
-li {
-  width: 46%;
-  margin-left: 2%;
-  margin-right: 2%;
-}
-
-#itemsList{
-    width: 100%;
-    max-width: 1000px;
-    margin: 30px auto;
-    padding: 0 5px;
-    box-sizing: border-box;
-}
 
 .router-link-active{
     background: #444;

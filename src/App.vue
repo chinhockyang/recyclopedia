@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Recyclopedia</h1>
     <nav-menu></nav-menu>
     <router-view></router-view>
   </div>
