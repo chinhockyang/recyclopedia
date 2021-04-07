@@ -192,7 +192,7 @@ export default {
     // if $route param changed to false (cannot recycle)
     // clear the itemsList and retrieve from database again
     $route: function(val) {
-      this.canRecycle = eval(val.params.id);
+      this.canRecycle = eval(val.params.id);      
       this.sort = "searched";
       this.itemsList = [];
       this.visibleItems = [];
@@ -209,7 +209,10 @@ export default {
 
   },
 
-  created() {    
+  created() {     
+    if (this.$route.params.category) {
+      this.checkedList = [this.$route.params.category];
+    }
     this.canRecycle = eval(this.$route.params.id);    
     this.fetchItems();    
   },  

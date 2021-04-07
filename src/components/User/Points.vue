@@ -18,7 +18,7 @@
         <p style="font-size: 15px">Your donation will go towards supporting the research and outreach efforts to help protect, conserve and enhance our natural heritage.</p>
         <p style="font-size: 15px">Learn more at <a href= "https://www.gardencityfund.gov.sg/">https://www.gardencityfund.gov.sg/</a></p>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL9bNIk4c3ib8JXCfzqcOzqYxnAFzZQIGmjOa-WCNWJpzNisCg4aUzVD5KYTRmL4AeveU&usqp=CAU" style="display: inline">
-        <router-link to="/donation"><button style="margin-left: 30px" class="btn btn-success" >Click to Donate</button></router-link>
+        <button style="margin-left: 100px" v-on:click="checkPoints" class="btn btn-success" >Click to Donate</button>
         <br>
         <p style="font-size: 15px"><strong>Terms and Conditions</strong></p>
         <ul> 
@@ -38,7 +38,8 @@ export default {
   data() {
     return {
       countPoints: 0,
-      remaining: 0
+      remaining: 0, 
+      level: ""
     }
   },
   computed: {
@@ -53,7 +54,17 @@ export default {
         snapshot.docs.forEach((doc) => {
 
           if (doc.data().username == this.user.data.displayName) {
-            this.countPoints += doc.data().pts
+            this.countPoints += doc.data().pts 
+            if (this.countPoints < 200) {
+                this.level = "Welcome Greener"
+            } else if (this.countPoints >= 200 && this.countPoints < 600) {
+                this.level = "Bronze Greener"
+            } else if (this.countPoints >= 600 && this.countPoints < 1000) {
+                this.level = "Silver Greener" 
+            } else {
+                this.level = "Gold Greener"
+            }
+            database.collection('tier').doc(this.user.data.displayName).set({"level": this.level}) 
             this.remaining = (this.countPoints/200) * 100
           }
         })
@@ -65,9 +76,16 @@ export default {
       pb.value = this.countPoints
       pb.style.width = this.remaining + "%"
     
-    }
+    },
     
-  
+    checkPoints() {
+        if (this.countPoints < 300) {
+            alert("Sorry, you do not have enough points to make a donation!")
+        } else {
+            this.$router.push({path: '/donation'});
+        }
+    }
+      
   }, 
 
   created() {
@@ -75,12 +93,10 @@ export default {
     this.updatePointsBar()
   }, 
 
-
-
 };
 </script>
 
-<style> 
+<style scoped> 
 .progress {
   position:relative;
   height:70px;
@@ -97,6 +113,7 @@ export default {
 
 .level span {
   margin-left: 41.5%;
+  position: relative;
   display: inline;
 }
 

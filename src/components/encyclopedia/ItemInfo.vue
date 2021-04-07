@@ -10,15 +10,15 @@
         </div>        
     </div>
     <div class="row">
-      <table class="table table-hover table-bordered col-12 col-md-8 mx-auto mt-3">
+      <table class="table table-hover table-bordered col-12 col-md-8 mx-auto mt-3 mb-0">
         <tbody>
-          <tr class="bg-light">
+          <tr class="bg-light" v-if="item.recyclable && item.instruction">
             <td colspan="2">
               <h5>Basic Instructions</h5>
             </td>
           </tr>
           
-          <tr>
+          <tr v-if="item.recyclable && item.instruction" style="overflow-x: hidden;">
             <td style="width: 30%">
               <img :src="instruction.imageUrl" class="img-thumbnail mx-auto" style="max-width: 150px;" alt="No image yet!" onerror="this.onerror=this.src='https://www.brandturbo.com/images/images/en/imageNoImageSmall.gif';">
             </td>
@@ -41,32 +41,33 @@
               <p>{{disposal.detail}}</p>
             </td>
           </tr>
-      
-          <tr class="bg-light">
+          <tr class="bg-light" v-if="similarItems.length > 0">
             <td colspan="2">
               <h5>Similar Items</h5>
             </td>
-          </tr>
-
+          </tr>              
+        </tbody>
+      </table>
+      <table class="table table-hover col-12 col-md-8 mx-auto mt-0" style="display: block; overflow-x: auto; white-space: nowrap;" v-if="similarItems.length > 0">
+        <tbody>          
           <tr>
             <td colspan="2">          
-              <div class="container">
-                <ul class="row">
+              <div class="container" style="pointer-events:none;"> 
+                <ul>                                            
                   <li  v-for="i in similarItems" :key="i.name"
-                    class="col-s-6 col-m-4 mx-auto mt-3"                
+                    class="mt-3 mx-2" style="display: inline-block;"
                   >            
                     <div class="card" style="width: 200px;">
-                      <img :src="i.imageUrl" class="card-img-thumbnail mx-auto" style="width: 100%" alt="No image yet!" onerror="this.onerror=this.src='https://www.brandturbo.com/images/images/en/imageNoImageSmall.gif';">                    
+                      <img :src="i.imageUrl" class="card-img-thumbnail" style="width: 100%" alt="No image yet!" onerror="this.onerror=this.src='https://www.brandturbo.com/images/images/en/imageNoImageSmall.gif';">
                       <p class="card-body">
                         {{i.name}}
-                      </p>  
+                      </p>                        
                     </div>
                   </li>
                 </ul>
               </div>
             </td>
           </tr>
-      
         </tbody>
       </table>
     </div>
