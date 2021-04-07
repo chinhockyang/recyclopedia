@@ -1,35 +1,47 @@
 <template>
   <div class="container">
-    <h3>Register</h3>
+    <br>
+    <h2 id="center">Register</h2>
+    <div class="row p-3 mb-5">
+    <div class="col-1 col-md-2 col-l-3"></div>
+    <div class="col-10 col-md-8 col-l-6 bg-light rounded p-3">
+      <div id="center">
       <form> 
         <div>
           <label for="username">Username</label>
-            <br><input type="text" id="username" name="username" required v-model="form.username"/>
+            <br><input type="text" class="form-control" id="username" name="username" required v-model="form.username"/>
         </div>
         <br>
         <div>
           <label for="email">Email</label>
-            <br><input type="email" id="email" name="email" required v-model="form.email"/>       
+            <br><input type="email" class="form-control" id="email" name="email" required v-model="form.email"/>       
         </div>
         <br>
         <div>
           <label for="password">Password</label>
-            <br><input type="password" id="password" name="password" required v-model="form.password"/>       
+            <br><input type="password" class="form-control" id="password" name="password" required v-model="form.password"/>       
         </div>
         <br>
         <div>
           <label for="cfmpassword">Confirm Password</label>
-            <br><input type="password" id="cfmpassword" name="cfmpassword" required v-model="form.cfmpassword"/>       
+            <br><input type="password" class="form-control" id="cfmpassword" name="cfmpassword" required v-model="form.cfmpassword"/>       
         </div>
-        <br>
         <div>   
-
-          <p v-if="error">{{error}}</p>
+          <div id="center">
+          <p id="error" v-if="error">{{error}}</p>
+          </div>
           <br>
-              <button @click.prevent="submit">Register</button>
+          <div id="center">
+              <button @click.prevent="submit" class="btn btn-success">Register</button>
+          </div>
         </div>
+        <div id="center">
         <p>Already have an account? <router-link to="/login">Login here!</router-link></p>
+        </div>
       </form>
+      </div>
+    </div>
+    </div>
   </div>
 </template>
 
