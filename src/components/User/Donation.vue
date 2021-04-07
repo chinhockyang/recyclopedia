@@ -128,7 +128,7 @@ export default {
 }
 </script>
 
-<style> 
+<style scoped> 
 #tree {
   display: block;
   margin-left: auto;

@@ -1,10 +1,10 @@
 <template>
   <div class="form-group">    
     <div class="input-group">
-          <input type="text" class="form-control" v-model="search" @focus="modal = true">                                          
-          <button class ="btn btn-outline-secondary" v-show="modal == true" @click="modal = false"  title="Close Recommendations">
-              <small>^</small>              
-          </button>          
+          <input type="text" class="form-control" v-model="search" @focus="modal = true">                      
+          <b-button v-b-tooltip.hover.bottom :title="toolTipText" variant="outline-secondary" v-if="modal == true" @click="modal = false">
+              <small>^</small>
+          </b-button>          
           <div class="input-group-append">            
             <button @click.prevent="submitSearch" class="btn btn-outline-success">{{buttonName}}</button>
           </div>
@@ -35,14 +35,17 @@ export default {
         search: '',
 
         // if modal: true, the list of recommendations gets displayed
-        modal: false
+        modal: false,
+
+        toolTipText: 'Close Recommendation'
     }
   },
 
   props: {
       // Array of items to be searched for
       itemsList: Array,
-      buttonName: String
+      buttonName: String,
+      toolTip: String
   },
 
   methods:{
@@ -75,20 +78,27 @@ export default {
           this.modal = false;
           this.$emit('searched', this.search);           
       }
-  },  
+  }, 
+  
+  created() {
+    if (this.toolTip) {
+      this.toolTipText = this.toolTip;
+    }
+  },
 
   beforeUpdate() {
     // to get an updated recommendation list 
-    this.filterList();
+    this.filterList();    
   },
 
   watch: {
     // if search is changed, update the filtered list
     search: function() {
       this.filterList();
-    }
+    }    
   }
 }
+
 
 </script>
 

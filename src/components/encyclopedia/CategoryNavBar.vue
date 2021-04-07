@@ -1,5 +1,5 @@
 <template>
-   <div>         
+   <div>
         <router-link to="/encyclopedia/browse/category-info/plastic" exact>Plastic</router-link>          
         <router-link to="/encyclopedia/browse/category-info/paper" exact>Paper</router-link>  
         <router-link to="/encyclopedia/browse/category-info/glass">Glass</router-link>  
@@ -21,6 +21,11 @@ a {
     text-decoration: none;
     padding: 6px 8px;
     border-radius: 10px;
+}
+
+a:hover {    
+    color: olivedrab;
+    text-decoration: none;
 }
 
 a.active {
