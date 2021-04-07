@@ -1,22 +1,48 @@
 <template>
   <div class="containter px-3"> 
-    <br>
-    <h3 v-if="user">Welcome {{user.data.displayName}}!</h3>
-    <div>
-          <ul class="navbar-nav m-3">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/addNewRecord" exact>Add New Recycling Record</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/points">My Points</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/past">View Past Records</router-link>
-            </li>
-          </ul>
+    <nav class="nav nav-light justify-content-center">
+           <ul class="nav nav-tabs mt-4 mb-3 mx-auto" id="pills-tab" role="tablist">
+               <li>
+                    <router-link to="/addNewRecord" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >Add New Record</router-link>
+               </li>
+
+                <li>
+                    <router-link to="/points" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >My Points</router-link>
+               </li>
+
+               <li>
+                    <router-link to="/past" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >View Past Records</router-link>
+               </li>
+           </ul>                        
+       </nav> 
+    <div id="center">
+      <h3 v-if="user">Welcome {{user.data.displayName}}!</h3>
     </div>
-    
-    <button @click.prevent="signOut">Sign out</button>
+    <div id="center">
+      <div id = "level">
+        <img src="https://static.wikia.nocookie.net/farmville/images/e/e3/Sunrise_Seed-icon.png/revision/latest?cb=20130305213231" style="width: 30px"><p id="tier"> Welcome Greener</p>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div id="center">
+      <button class="btn btn-success" @click.prevent="signOut">Sign out</button>
+    </div>
   </div>
 </template>
 
@@ -31,6 +57,7 @@ export default {
     
     }
   },
+  
   computed: {
     ...mapGetters({
       user: "user"
@@ -48,5 +75,14 @@ export default {
 </script>
 
 <style> 
+#tier {
+  display: inline;
+  font-size: 15px;
+  color: green
+}
 
+#level {
+  background-color: rgb(221, 221, 130);
+  width: 13%
+}
 </style>

@@ -63,7 +63,7 @@ export default {
   methods: {
     
     fetchRecords() {
-      database.collection('records').get().then((snapshot) => {
+      database.collection('records').orderBy("date").get().then((snapshot) => {
         let rec = {}
         snapshot.docs.forEach((doc) => {
           if (doc.data().username == this.user.data.displayName) {
@@ -75,7 +75,7 @@ export default {
     }, 
 
     fetchDonations() {
-        database.collection('donation').get().then((snapshot) => {
+        database.collection('donation').orderBy("date").get().then((snapshot) => {
             let donation = {}
             snapshot.docs.forEach((doc) => {
                 if (doc.data().username == this.user.data.displayName) {

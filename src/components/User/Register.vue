@@ -8,22 +8,22 @@
       <div id="center">
       <form> 
         <div>
-          <label for="username">Username</label>
+          <label for="username">Username:<span style="color:red;" title="required"> *</span></label>
             <br><input type="text" class="form-control" id="username" name="username" required v-model="form.username"/>
         </div>
         <br>
         <div>
-          <label for="email">Email</label>
+          <label for="email">Email:<span style="color:red;" title="required"> *</span></label>
             <br><input type="email" class="form-control" id="email" name="email" required v-model="form.email"/>       
         </div>
         <br>
         <div>
-          <label for="password">Password</label>
+          <label for="password">Password:<span style="color:red;" title="required"> *</span></label>
             <br><input type="password" class="form-control" id="password" name="password" required v-model="form.password"/>       
         </div>
         <br>
         <div>
-          <label for="cfmpassword">Confirm Password</label>
+          <label for="cfmpassword">Confirm Password:<span style="color:red;" title="required"> *</span></label>
             <br><input type="password" class="form-control" id="cfmpassword" name="cfmpassword" required v-model="form.cfmpassword"/>       
         </div>
         <div>   

@@ -23,15 +23,15 @@
               <router-link class="nav-link" id="nav-bar-encyclopedia" to="/encyclopedia/">Encyclopedia</router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" to="/Quiz">Quiz</router-link>
+            </li>
+            <li class="nav-item">
               <template v-if="user.loggedIn">            
                 <a class="nav-link" href="/dashboard">Account</a>
               </template> 
               <template v-else>  
                 <a class="nav-link" href="/login">Account</a> 
               </template>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/Quiz">Quiz</router-link>
             </li>
           </ul>      
       </div>
