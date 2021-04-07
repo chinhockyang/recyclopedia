@@ -22,6 +22,22 @@
     <div> 
         <h5>Past Points Transactions</h5>
     </div>
+    <br>
+    <div> 
+        <h5>Past Donations</h5>
+        <table> 
+        <tr>
+          <th>No.</th>
+          <th>Date Donated</th>
+          <th>Organization/Honoree Name</th> 
+          <th>Donation Amount</th>
+        </tr>
+        <tr v-for="(item, index) in pastDonations" v-bind:key="index">
+          <td>{{ index + 1}}</td>
+          <td v-for="(value, key, index) in item" v-bind:key="index">{{ value }}</td>
+        </tr>
+      </table>
+    </div>
 </div>
 
 </template>
@@ -34,6 +50,7 @@ export default {
   data() {
     return {
       pastRecords: [], 
+      pastDonations: [], 
     
     }
   },
@@ -46,7 +63,7 @@ export default {
   methods: {
     
     fetchRecords() {
-      database.collection('records').get().then((snapshot) => {
+      database.collection('records').orderBy("date").get().then((snapshot) => {
         let rec = {}
         snapshot.docs.forEach((doc) => {
           if (doc.data().username == this.user.data.displayName) {
@@ -56,11 +73,24 @@ export default {
         })
       })
     }, 
+
+    fetchDonations() {
+        database.collection('donation').orderBy("date").get().then((snapshot) => {
+            let donation = {}
+            snapshot.docs.forEach((doc) => {
+                if (doc.data().username == this.user.data.displayName) {
+                    donation = [doc.data().date, doc.data().who,'$2.00'] 
+                    this.pastDonations.push(donation)
+                }
+            })
+        })
+    }
   
   }, 
 
   created() {
     this.fetchRecords()
+    this.fetchDonations()
   }, 
 
 
