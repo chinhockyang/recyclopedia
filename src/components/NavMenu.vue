@@ -33,6 +33,11 @@
                 <a class="nav-link" href="/login">Account</a> 
               </template>
             </li>
+
+            <li class="nav-item">
+              <router-link class="nav-link" to="/quiz">Quiz</router-link>
+            </li>
+
           </ul>      
       </div>
     </nav>
