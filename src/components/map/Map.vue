@@ -48,7 +48,7 @@ export default {
     getKMradius: function(lat, lng) {
       // return coordinates of bounding box of 2km x 2km
         // just need 2 corners
-      return {topright: [lat+0.02, lng + 0.02], bottomleft: [lat-0.02, lng-0.02]};
+      return {topright: [lng + 0.01, lat+0.01], bottomleft: [lng-0.01, lat-0.01]};
       // return {topright: [lat+0.1, lng + 0.1], bottomleft: [lat-0.1, lng-0.1]};
     },
     getExtentsQuery: function(bb) {
@@ -72,6 +72,63 @@ export default {
           }
         })
       })
+    },
+    calculateDistances: async function(origin) {
+      const addresses = [];
+      const destinations = [];
+
+      // only get bins that are reasonably nearby
+      this.map.data.forEach((bin) => {
+        const binLoc = bin.getGeometry().get();
+        const diff_lng = Math.abs(origin.lat - binLoc.lat());
+        const diff_lat = Math.abs(origin.lng - binLoc.lng());        
+        if (diff_lat < 0.1 && diff_lng < 0.1) {
+          addresses.push(bin.getProperty('address'));
+          destinations.push(binLoc);
+        }
+      });
+
+      // Retrieve the distances of each store from the origin
+      // The returned list will be in the same order as the destinations list
+      const service = new this.google.maps.DistanceMatrixService();
+      const getDistanceMatrix = 
+        (service, parameters) => new Promise((resolve, reject) => {
+          service.getDistanceMatrix(parameters, (response, status) => {
+            if (status != this.google.maps.DistanceMatrixStatus.OK) {
+              reject(response);
+            } else {
+              const distances = [];
+              const results = response.rows[0].elements;
+              for (let j = 0; j < results.length; j++) {
+                const element = results[j];
+                const distanceText = element.distance.text;
+                const distanceVal = element.distance.value;
+                const distanceObject = {
+                  address: addresses[j],
+                  distanceText: distanceText,
+                  distanceVal: distanceVal,
+                  coordinates: destinations[j],
+                };
+                distances.push(distanceObject);
+              }
+
+              resolve(distances);
+            }
+          });
+        });
+        
+      const distancesList = await getDistanceMatrix(service, {
+        origins: [origin],
+        destinations: destinations,
+        travelMode: 'WALKING',
+        unitSystem: this.google.maps.UnitSystem.METRIC,
+      });
+
+      distancesList.sort((first, second) => {
+        return first.distanceVal - second.distanceVal;
+      });
+
+      return distancesList.slice(10);
     },
     fetchAndRenderBins: async function(center) {
       // Fetch the Bins from the data source
@@ -126,16 +183,25 @@ export default {
         }
         this.map.setCenter(results[0].geometry.location);
         this.map.fitBounds(results[0].geometry.viewport);
+        this.map.setZoom(11);
       });
 
       // Load the GeoJson bins data onto the map 
       try {
         console.log('loading GeoJson here!');
+        // file hosted using Google Drive, doesn't bypass CORS issue with Chrome
         // map.data.loadGeoJson('http://drive.google.com/uc?id=1_LivKGKN37UCxgIMlBqJRPzj4lBY8rip');
-        // map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/recyclebinsnew.json'); 
-        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/testbins.json'); 
+
+        // file hosted on Web Server for Chrome, bypasses CORS issues
+        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/recyclebinsnew.json'); 
+        // this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/testbins.json');
+        
+        // file taken from local directory, only works on Firefox
         // this.map.data.loadGeoJson('./testbins.json'); 
         // map.data.loadGeoJson(String.raw`C:\Users\darre\Documents\zzz Old files\NUS Y2S2\BT3103\project\bt3103-project\src\components\map\testbins.json`);
+        
+        // Hide markers
+        // this.map.data.setStyle({visible: false});
       } catch(error) {
         console.log('Error happened here!');
         console.error(error);
@@ -158,7 +224,37 @@ export default {
         infoWindow.setOptions({pixelOffset: new this.google.maps.Size(0, -30)});
         infoWindow.open(this.map);
       });
-      
+
+      // Build and add the search bar
+      const card = document.createElement('div');
+      const titleBar = document.createElement('div');
+      const title = document.createElement('div');
+      const container = document.createElement('div');
+      const input = document.createElement('input');
+      const options = {
+        types: ['address'],
+        componentRestrictions: {country: 'sg'},
+      };
+
+      card.setAttribute('id', 'pac-card');
+      title.setAttribute('id', 'title');
+      title.textContent = 'Find the nearest bin';
+      titleBar.appendChild(title);
+      container.setAttribute('id', 'pac-container');
+      input.setAttribute('id', 'pac-input');
+      input.setAttribute('type', 'text');
+      input.setAttribute('placeholder', 'Enter an address');
+      container.appendChild(input);
+      card.appendChild(titleBar);
+      card.appendChild(container);
+      this.map.controls[this.google.maps.ControlPosition.TOP_RIGHT].push(card);
+
+      // Make the search bar into a Places Autocomplete search bar and select
+      // which detail fields should be returned about the place that
+      // the user selects from the suggestions
+      const autocomplete = new this.google.maps.places.Autocomplete(input, options);
+      autocomplete.setFields(['address_components', 'geometry','name']);
+
       // implement geolocation
       // TODO: implement another button "Search this area" for users to manually pan then search
         // in a particular area instead of using the user's location directly
@@ -168,28 +264,54 @@ export default {
       // TODO: implement support for phone web view - plist (permissions list)
       // TODO: doesn't work for network server
       // let infoWindow = new google.maps.InfoWindow();
-      // const locationButton = document.createElement("button");
-      // locationButton.textContent = "Show bins near me";
-      // locationButton.classList.add("custom-map-control-button");
-      // map.controls[this.google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-      // locationButton.addEventListener("click", async () => {
-      //   // Try HTML5 geolocation.
-      //   if (navigator.geolocation) {
-      //     navigator.geolocation.getCurrentPosition(
-      //       (position) => {
-      //         const pos = {
-      //           lat: position.coords.latitude,
-      //           lng: position.coords.longitude,
-      //         };
-      //         // infoWindow.setPosition(pos);
-      //         // infoWindow.setContent("Location found.");
-      //         // infoWindow.open(map);
-      //         map.setCenter(pos);
-      //         map.setZoom(14);
-      //         console.log("pos.lat = " + pos.lat + ", pos.lng = " + pos.lng);
+      const nearMe = document.createElement("button");
+      nearMe.textContent = "Show bins near me";
+      nearMe.classList.add("custom-map-control-button");
+      this.map.controls[this.google.maps.ControlPosition.TOP_CENTER].push(nearMe);
+      nearMe.addEventListener("click", async () => {
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              // const pos = // initialize pos directly to the POsition object?
+              // infoWindow.setPosition(pos);
+              // infoWindow.setContent("Location found.");
+              // infoWindow.open(map);
+              this.map.setCenter(pos);
+              this.map.setZoom(14);
+              console.log("pos.lat = " + pos.lat + ", pos.lng = " + pos.lng);
+              this.calculateDistances(pos).then((distanceObjects) => {
+                for (const distObj in distanceObjects) {
+                  const bin = distObj.coordinates;
+                  new this.google.maps.Marker({
+                    position: bin,
+                    map: this.map
+                  }).addListener('click', (event) => {
+                    console.log('event is ----- ' + event);
+                    const address = event.feature.getProperty('address');
+                    const postcode = event.feature.getProperty('postcode');
+                    const position = event.feature.getGeometry().get();
+                    const content = `<h4>${address}</h4><p>${postcode}</p>`;
 
+                    infoWindow.setContent(content);
+                    infoWindow.setPosition(position);
+                    infoWindow.setOptions({pixelOffset: new this.google.maps.Size(0, -30)});
+                    infoWindow.open(this.map);
+                  });
+                }
+              });
+            });
+        } else {
+          // Browser doesn't support Geolocation
+          this.handleLocationError(false, infoWindow, this.map.getCenter(), this.map);
+        }
+      });
       //         // call One Map API
-      //         Promise.resolve(this.getBinsFromOneMap(pos))
+      //         Promise.resolve(this.)
       //           .then(() => {
       //             for (const point of this.points) {
       //               // TODO: style each marker to look like a recycle bin
@@ -201,23 +323,11 @@ export default {
       //             }
       //             // console.log("this.points.length = " + this.points.length);
       //           });
-
-      //         // get all recycle bins within a certain radius
-      //         // iterate over all bins and display on map
-      //         // const randomBin = {lat: 1.30367485182574,lng: 103.782905325792};
-      //         // const randomBin2 = {lat: 1.30790649968423,lng: 103.782958922488};
-      //         // const randomBin3 = {lat: 1.30846777384426,lng: 103.78649944798};
-      //         // const randomBinArr = [randomBin, randomBin2, randomBin3];
       //       },
       //       () => {
       //         this.handleLocationError(true, infoWindow, map.getCenter());
       //       }
       //     );
-      //   } else {
-      //     // Browser doesn't support Geolocation
-      //     this.handleLocationError(false, infoWindow, map.getCenter(), map);
-      //   }
-      // });
     } catch (error) {
       console.error(error);
     }
@@ -250,5 +360,84 @@ export default {
     background-color: #ECECFB;
     border: thin solid #333;
     border-left: none;
+  }
+  /* Styling for Autocomplete search bar */
+  #pac-card {
+    background-color: #fff;
+    border-radius: 2px 0 0 2px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    font-family: Roboto;
+    margin: 10px 10px 0 0;
+    -moz-box-sizing: border-box;
+    outline: none;
+  }
+  
+  #pac-container {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-right: 12px;
+  }
+  
+  #pac-input {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 400px;
+  }
+  
+  #pac-input:focus {
+    border-color: #4d90fe;
+  }
+  
+  #title {
+    color: #fff;
+    background-color: #acbcc9;
+    font-size: 18px;
+    font-weight: 400;
+    padding: 6px 12px;
+  }
+  
+  .hidden {
+    display: none;
+  }
+
+  /* Styling for an info pane that slides out from the left. 
+    * Hidden by default. */
+  #panel {
+    height: 100%;
+    width: null;
+    background-color: white;
+    position: fixed;
+    z-index: 1;
+    overflow-x: hidden;
+    transition: all .2s ease-out;
+  }
+  
+  .open {
+    width: 250px;
+  }
+  
+  .place {
+    font-family: 'open sans', arial, sans-serif;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-block-end: 0px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  
+  .distanceText {
+    color: silver;
+    font-family: 'open sans', arial, sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    margin-block-start: 0.25em;
+    padding-left: 18px;
+    padding-right: 18px;
   }
 </style>
