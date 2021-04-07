@@ -31,7 +31,7 @@
               </template>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/Quiz">Quiz</router-link>
+              <router-link class="nav-link" to="/quiz">Quiz</router-link>
             </li>
           </ul>      
       </div>
