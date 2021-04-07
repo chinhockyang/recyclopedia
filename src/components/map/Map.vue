@@ -73,12 +73,12 @@ export default {
         })
       })
     },
-    calculateDistances: async function(origin) {
+    calculateDistances: async function(data, origin) {
       const addresses = [];
       const destinations = [];
 
       // only get bins that are reasonably nearby
-      this.map.data.forEach((bin) => {
+      data.forEach((bin) => {
         const binLoc = bin.getGeometry().get();
         const diff_lng = Math.abs(origin.lat - binLoc.lat());
         const diff_lat = Math.abs(origin.lng - binLoc.lng());        
@@ -129,6 +129,48 @@ export default {
       });
 
       return distancesList.slice(10);
+    },
+    showBinsList(data, bins) {
+      if (bins.length == 0) {
+        console.log('no bins');
+        return;
+      }
+
+      let panel = document.createElement('div');
+      // If the panel already exists, use it. Else, create it and add to the page.
+      if (document.getElementById('panel')) {
+        panel = document.getElementById('panel');
+        // If panel is already open, close it
+        if (panel.classList.contains('open')) {
+          panel.classList.remove('open');
+        }
+      } else {
+        panel.setAttribute('id', 'panel');
+        const body = document.body;
+        body.insertBefore(panel, body.childNodes[0]);
+      }
+
+      // Clear the previous details
+      while (panel.lastChild) {
+        panel.remove(panel.lastChild);
+      }
+
+      bins.forEach((bin) => {
+        // Add store details with text formatting
+        const name = document.createElement('p');
+        name.classList.add('place');
+        const currentBin = data.getFeatureById(bin.address);
+        name.textContent = currentBin.getProperty('address');
+        panel.appendChild(name);
+        const distanceText = document.createElement('p');
+        distanceText.classList.add('distanceText');
+        distanceText.textContent = bin.distanceText;
+        panel.appendChild(distanceText);
+      });
+
+      // Open the panel
+      panel.classList.add('open');
+      return;
     },
     fetchAndRenderBins: async function(center) {
       // Fetch the Bins from the data source
@@ -193,15 +235,37 @@ export default {
         // map.data.loadGeoJson('http://drive.google.com/uc?id=1_LivKGKN37UCxgIMlBqJRPzj4lBY8rip');
 
         // file hosted on Web Server for Chrome, bypasses CORS issues
-        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/recyclebinsnew.json'); 
-        // this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/testbins.json');
+        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/recyclebinsGeo.json'); 
+        // this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/testbins.json');
         
         // file taken from local directory, only works on Firefox
         // this.map.data.loadGeoJson('./testbins.json'); 
         // map.data.loadGeoJson(String.raw`C:\Users\darre\Documents\zzz Old files\NUS Y2S2\BT3103\project\bt3103-project\src\components\map\testbins.json`);
         
+        // Style data
+        // const svgMarker = {
+        //   path:
+        //     "M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
+        //   fillColor: "blue",
+        //   fillOpacity: 0.6,
+        //   strokeWeight: 0,
+        //   rotation: 0,
+        //   scale: 2,
+        //   anchor: new this.google.maps.Point(15, 30),
+        // };
+        this.map.data.setStyle({
+          // icon: 'http://127.0.0.1:8887/src/components/map/icons/recycle-bin.png',
+          // icon: svgMarker
+        });
+
         // Hide markers
-        // this.map.data.setStyle({visible: false});
+        const toggleAllBins = document.createElement("button");
+        toggleAllBins.textContent = "Show All Bins";
+        toggleAllBins.classList.add("toggle-all-bins-button");
+        this.map.controls[this.google.maps.ControlPosition.TOP_LEFT].push(toggleAllBins);
+        toggleAllBins.addEventListener("click", async () => {
+          this.map.data.setStyle({visible: true});
+        });
       } catch(error) {
         console.log('Error happened here!');
         console.error(error);
@@ -255,6 +319,35 @@ export default {
       const autocomplete = new this.google.maps.places.Autocomplete(input, options);
       autocomplete.setFields(['address_components', 'geometry','name']);
 
+      const originMarker = new this.google.maps.Marker({map: this.map});
+      originMarker.setVisible(false);
+      let originLocation = this.map.getCenter();
+
+      autocomplete.addListener('place_changed', async () => {
+        originMarker.setVisible(false);
+        originLocation = this.map.getCenter();
+        const place = autocomplete.getPlace();
+
+        if (!place.geometry) {
+          // User entered the address of a place that was not suggested and
+          // pressed the Enter key, or the Place Details request failed.
+          window.alert('No address available for input: \'' + place.name + '\'');
+          return;
+        }
+
+        // Recenter the map to the selected address
+        originLocation = place.geometry.location;
+        this.map.setCenter(originLocation);
+        this.map.setZoom(14);
+        console.log(place);
+
+        originMarker.setPosition(originLocation);
+        originMarker.setVisible(true);
+
+        const rankedBins = await this.calculateDistances(this.map.data, originLocation);
+        this.showBinsList(this.map.data, rankedBins);
+      });
+
       // implement geolocation
       // TODO: implement another button "Search this area" for users to manually pan then search
         // in a particular area instead of using the user's location directly
@@ -268,49 +361,52 @@ export default {
       nearMe.textContent = "Show bins near me";
       nearMe.classList.add("custom-map-control-button");
       this.map.controls[this.google.maps.ControlPosition.TOP_CENTER].push(nearMe);
-      nearMe.addEventListener("click", async () => {
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              };
-              // const pos = // initialize pos directly to the POsition object?
-              // infoWindow.setPosition(pos);
-              // infoWindow.setContent("Location found.");
-              // infoWindow.open(map);
-              this.map.setCenter(pos);
-              this.map.setZoom(14);
-              console.log("pos.lat = " + pos.lat + ", pos.lng = " + pos.lng);
-              this.calculateDistances(pos).then((distanceObjects) => {
-                for (const distObj in distanceObjects) {
-                  const bin = distObj.coordinates;
-                  new this.google.maps.Marker({
-                    position: bin,
-                    map: this.map
-                  }).addListener('click', (event) => {
-                    console.log('event is ----- ' + event);
-                    const address = event.feature.getProperty('address');
-                    const postcode = event.feature.getProperty('postcode');
-                    const position = event.feature.getGeometry().get();
-                    const content = `<h4>${address}</h4><p>${postcode}</p>`;
+      // nearMe.addEventListener("click", async () => {
+      //   // Try HTML5 geolocation.
+      //   if (navigator.geolocation) {
+      //     navigator.geolocation.getCurrentPosition(
+      //       (position) => {
+      //         const pos = {
+      //           lat: position.coords.latitude,
+      //           lng: position.coords.longitude,
+      //         };
+      //         // const pos = // initialize pos directly to the POsition object?
+      //         // infoWindow.setPosition(pos);
+      //         // infoWindow.setContent("Location found.");
+      //         // infoWindow.open(map);
+      //         this.map.setCenter(pos);
+      //         this.map.setZoom(14);
+      //         console.log("pos.lat = " + pos.lat + ", pos.lng = " + pos.lng);
+      //         this.calculateDistances(pos).then((distanceObjects) => {
+      //           for (const distObj in distanceObjects) {
+      //             const bin = distObj.coordinates;
+      //             new this.google.maps.Marker({
+      //               position: bin,
+      //               map: this.map
+      //             }).addListener('click', (event) => {
+      //               console.log('event is ----- ' + event);
+      //               const address = event.feature.getProperty('address');
+      //               const postcode = event.feature.getProperty('postcode');
+      //               const position = event.feature.getGeometry().get();
+      //               const content = `<h4>${address}</h4><p>${postcode}</p>`;
 
-                    infoWindow.setContent(content);
-                    infoWindow.setPosition(position);
-                    infoWindow.setOptions({pixelOffset: new this.google.maps.Size(0, -30)});
-                    infoWindow.open(this.map);
-                  });
-                }
-              });
-            });
-        } else {
-          // Browser doesn't support Geolocation
-          this.handleLocationError(false, infoWindow, this.map.getCenter(), this.map);
-        }
-      });
-      //         // call One Map API
+      //               infoWindow.setContent(content);
+      //               infoWindow.setPosition(position);
+      //               infoWindow.setOptions({pixelOffset: new this.google.maps.Size(0, -30)});
+      //               infoWindow.open(this.map);
+      //             });
+      //           }
+      //         });
+      //       });
+      //   } else {
+      //     // Browser doesn't support Geolocation
+      //     this.handleLocationError(false, infoWindow, this.map.getCenter(), this.map);
+      //   }
+      // });
+
+
+      
+      // //         // call One Map API
       //         Promise.resolve(this.)
       //           .then(() => {
       //             for (const point of this.points) {
@@ -360,6 +456,9 @@ export default {
     background-color: #ECECFB;
     border: thin solid #333;
     border-left: none;
+  }
+  .custom-map-control-button {
+    color: green
   }
   /* Styling for Autocomplete search bar */
   #pac-card {
