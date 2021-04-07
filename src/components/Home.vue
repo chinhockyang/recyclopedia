@@ -76,8 +76,8 @@
             <div class="col-1"></div>
             <div class="col-3">
               <br><br><br>
-              <img class="img-thumbnail" src="https://cdn.dribbble.com/users/623808/screenshots/11362467/media/081cf4d465baa0bb905494a20b853f28.png">
-              <a id="bottomRoutes" class="nav-link" href="/login">Create an Account</a>
+              <img class="img-thumbnail" src="https://cdn.dribbble.com/users/623808/screenshots/11362467/media/081cf4d465baa0bb905494a20b853f28.png"> 
+              <a id="bottomRoutes" class="nav-link" href="/register">Create an Account</a>
               <p style="padding-bottom: 50px">Join the Recyclopedia Community, make positive impacts on the environment as you recycle with us!</p>
             </div>
           </div>
