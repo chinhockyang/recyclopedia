@@ -7,6 +7,10 @@
             <h1 class="card-title display-4">{{category}}</h1>
             <p class="card-subtitle text-muted">Total Searched: {{totalSearched}}</p>
             <p class="card-subtitle text-muted">Total Recycled: {{totalRecycled}}</p>
+            <div>
+              <a :href="'/encyclopedia/can-recycle/true/' + category" class="btn btn-outline-success mx-2 mt-2" role="button">{{category}} that can be recycled</a>
+              <a :href="'/encyclopedia/can-recycle/false/' + category" class="btn btn-outline-danger mt-2" role="button">{{category}} that cannot be recycled</a>
+            </div>
         </div>
         <div class="col-2"></div>
       </div>
@@ -289,45 +293,5 @@ export default {
 </script>
 
 <style scoped>
-/*
-.chart-left {        
-    text-align: center;    
-    margin-left: 10%;
-    margin-bottom: 2%;
-    float: left;
-}
-
-.chart-right {        
-    text-align: center;    
-    margin-right: 10%;
-    margin-bottom: 2%;
-    float: right;    
-}
-
-.info {    
-    margin: 30px auto;
-    padding: 0 5px;    
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 1000px;
-    border-color: black;
-    border-style: solid;
-}
-
-ul{
-    display: flex;
-    flex-wrap: wrap;
-    list-style-type: none;
-    padding: 0;
-}
-li{
-    flex-grow: 1;
-    flex-basis: 300px;
-    text-align: center;
-    padding: 10px;
-    border: 1px solid #222;
-    margin: 8px;
-}
-*/
 
 </style>

@@ -48,7 +48,7 @@
                                     id="popover-info"
                                     style="margin-top: 5px;">
                                 </search-tool>
-                                <b-popover ref="popover" target="popover-info" title="Recycling Instruction" triggers="hover">                                
+                                <b-popover ref="popover" target="popover-info" placement="bottom" title="Recycling Instruction" triggers="hover">                                
                                     <ul>
                                         <li>Press the Select button in order for the instruction picked to be selected</li>
                                         <li>The input will be cleared when the Item's Category or Recyclability is changed</li>                                        
@@ -72,7 +72,7 @@
                                     id="popover-disposal"
                                     style="margin-top: 5px;">
                                 </search-tool>   
-                                <b-popover ref="popover" target="popover-disposal" title="Method of Disposal" triggers="hover">                                
+                                <b-popover ref="popover" target="popover-disposal" placement="top" title="Method of Disposal" triggers="hover">                                
                                     <ul>
                                         <li>Press the Select button in order for the method picked to be selected</li>
                                         <li>The input will be cleared when the Item's Category or Recyclability is changed</li>                                        

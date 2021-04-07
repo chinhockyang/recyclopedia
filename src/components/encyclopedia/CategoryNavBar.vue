@@ -23,6 +23,11 @@ a {
     border-radius: 10px;
 }
 
+a:hover {    
+    color: olivedrab;
+    text-decoration: none;
+}
+
 a.active {
     background: olivedrab;
     color: white;

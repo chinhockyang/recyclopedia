@@ -12,13 +12,13 @@
     <div class="row">
       <table class="table table-hover table-bordered col-12 col-md-8 mx-auto mt-3 mb-0">
         <tbody>
-          <tr class="bg-light" v-if="item.recyclable">
+          <tr class="bg-light" v-if="item.recyclable && item.instruction">
             <td colspan="2">
               <h5>Basic Instructions</h5>
             </td>
           </tr>
           
-          <tr v-if="item.recyclable" style="overflow-x: hidden;">
+          <tr v-if="item.recyclable && item.instruction" style="overflow-x: hidden;">
             <td style="width: 30%">
               <img :src="instruction.imageUrl" class="img-thumbnail mx-auto" style="max-width: 150px;" alt="No image yet!" onerror="this.onerror=this.src='https://www.brandturbo.com/images/images/en/imageNoImageSmall.gif';">
             </td>
@@ -41,14 +41,14 @@
               <p>{{disposal.detail}}</p>
             </td>
           </tr>
-          <tr class="bg-light">
+          <tr class="bg-light" v-if="similarItems.length > 0">
             <td colspan="2">
               <h5>Similar Items</h5>
             </td>
           </tr>              
         </tbody>
       </table>
-      <table class="table table-hover col-12 col-md-8 mx-auto mt-0" style="display: block; overflow-x: auto; white-space: nowrap;">
+      <table class="table table-hover col-12 col-md-8 mx-auto mt-0" style="display: block; overflow-x: auto; white-space: nowrap;" v-if="similarItems.length > 0">
         <tbody>          
           <tr>
             <td colspan="2">          
