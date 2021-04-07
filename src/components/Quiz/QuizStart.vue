@@ -12,40 +12,21 @@
 </header>
 
 
-<div class="row align-items-center justify-content-center text-center" style="border-color: #E3E9BB; padding: 20px 0px 0px 20px">
-    <div class="col-lg-9" style="color: #0A4C0A;">
-    <h3>Action requires education. For this week’s challenge, we put your recycling knowledge to the test.<br>Test yourself and earn 10 points for every correct answer!</h3>
+<div class="row align-items-center justify-content-center text-center" style="border-color: #E3E9BB; padding: 40px 0px 0px 20px">
+    <div class="col-lg-10" style="color: #0A4C0A;">
+    <h2>Action requires education. For this week’s challenge, we put your recycling knowledge to the test.<br>Test yourself and earn 10 points for every correct answer!</h2>
     <br><p>Psst...... All information for the right answers can be found on Encyclopedia.<br>Psst psst…… Just because an item is recyclable doesn’t always mean it can be placed in the blue commingled recycling bins. For this quiz, choose the first option as long as the item is recyclable, whether or not it can be placed in the blue commingled recycling bins.</p>
     </div>
 </div>
 
 <div id="quizSection">
-  <div class="col text-center">
-
+  <div class='row align-items-center justify-content-center' style="height: 250px;">
+  <div class="col-4 text-center" style="background-color: #E3E9BB; padding: 50px 0px 50px 0px">
+  <p>You may only attempt this quiz once. Are you ready?</p>
   <button @click="$router.push('/quiz/questions')" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">I'm Ready. Let's Go!</button>
   </div>
-  <div id="quizQuestions" v-if="quizStart">
-    <div v-for="(question, index) in quiz.questions" :key="index">
-      <div class="row align-items-center justify-content-center text-center mt-3">
-        <div class="col-4" style="background-color: #E3E9BB">
-          {{ index + 1 }}. {{ question.text }}
-          <ul>
-            <li v-for="response in question.responses" :key="response">
-              <label>
-                <input type="radio" :value="response.correct" :name="index" v-model="userResponses[index]"> {{ response.text }}
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  <p>Total score: {{ score() }} / 8</p>
+  </div> 
 </div>
-    
-</div>
-
-
-
 
 </div>
 </template>

@@ -4,6 +4,7 @@
   <div id="quizQuestions">
     <div v-for="(question, index) in quiz.questions" :key="index">
       <div v-if="index == questionIndex">
+
       <div class="row align-items-center justify-content-center text-center mt-3">
         <div id = "questionContainer" class="col-4" style="background-color: #E3E9BB">
           {{ index + 1 }}. {{ question.text }}
@@ -25,9 +26,13 @@
       
     </div>
     <div v-show="questionIndex == quiz.questions.length">
+    <div class="row align-items-center justify-content-center text-center">
+        <div class="col-4">
     <h2>End of quiz</h2>
     <h2>Total score: {{ score() }} / 8</h2>
     <h2>You have earned {{ score()*10 }} points</h2>
+        </div>
+    </div>
     </div>
 </div>
   </div>
@@ -114,4 +119,13 @@ export default {
 ul {
     list-style-type: none;
 }
+
+div {
+    overflow: hidden;
+}
+
+h2 {
+    color: #0A4C0A;
+}
+
 </style>
