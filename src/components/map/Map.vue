@@ -29,14 +29,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
 import gmapsInit from './Map.js';
-// import OneMap_token_response from './GetOneMapToken.js';
-// if (Math.floor(new Date().getTime()/1000.0) > this.OneMap_token_expiry) {
-//   // update OneMap token if current one has expired
-//   this.OneMap_token_expiry = Number(OneMap_token_response.expiry_timestamp);
-//   this.OneMap_API_KEY = OneMap_token_response.access_token;
-// }
 
 export default {
   data () {
@@ -150,11 +143,11 @@ export default {
       const showMarker = $event.target.checked;
       const binType = $event.target.id
       this.map.data.forEach(function(feature) {
-        console.log('binType is....');
-        console.log(binType);
+        // console.log('binType is....');
+        // console.log(binType);
         if (feature.getProperty('binType') === binType){
-          console.log('feature showMarker is...');
-          console.log(feature.getProperty('showMarker'));
+          // console.log('feature showMarker is...');
+          // console.log(feature.getProperty('showMarker'));
           feature.setProperty('showMarker', showMarker);
         }
       })
@@ -244,15 +237,23 @@ export default {
   async mounted() {
     try {
       this.google = await gmapsInit();
-      const geocoder = new this.google.maps.Geocoder();
       // const map = new google.maps.Map(this.$el);
       this.map = new this.google.maps.Map(document.getElementById("map"));
+      this.map.setCenter({lat: 1.352083, lng: 103.819836})
 
+      const geocoder = new this.google.maps.Geocoder();
       geocoder.geocode({ address: 'Singapore' }, (results, status) => {
         if (status !== 'OK' || !results[0]) {
           throw new Error(status);
         }
-        this.map.setCenter(results[0].geometry.location);
+        console.log("map center is at...");
+        console.log(results[0].geometry.location.lat());
+        console.log(results[0].geometry.location.lng());
+        // this.map.setCenter(results[0].geometry.location);
+        this.map.setCenter({lat: results[0].geometry.location.lat()+0.5, lng: results[0].geometry.location.lng()})
+        console.log("map center is now at at...");
+        console.log(this.map.getCenter().lat());
+        console.log(this.map.getCenter().lng());
         this.map.fitBounds(results[0].geometry.viewport);
         this.map.setZoom(11);
       });
@@ -264,67 +265,47 @@ export default {
         // map.data.loadGeoJson('http://drive.google.com/uc?id=1_LivKGKN37UCxgIMlBqJRPzj4lBY8rip');
 
         // file hosted on Web Server for Chrome, bypasses CORS issues
-        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/recyclebinsGeo.json'); 
-        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/ewasteGeo.json');
-        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/cashfortrashGeo.json');
-        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/rvmGeo.json');
-        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/secondhandcollecnGeo.json');
-        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/lightingGeo.json'); 
+        const webServer = 'http://127.0.0.1:8887/src/components/map/'
+        this.map.data.loadGeoJson(webServer + 'data/recyclebinsGeo.json'); 
+        this.map.data.loadGeoJson(webServer + 'data/ewasteGeo.json');
+        this.map.data.loadGeoJson(webServer + 'data/cashfortrashGeo.json');
+        this.map.data.loadGeoJson(webServer + 'data/rvmGeo.json');
+        this.map.data.loadGeoJson(webServer + 'data/secondhandcollecnGeo.json');
+        this.map.data.loadGeoJson(webServer + 'data/lightingGeo.json');
         // this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/testbins.json');
         
         // file taken from local directory, only works on Firefox
         // this.map.data.loadGeoJson('./testbins.json'); 
         // map.data.loadGeoJson(String.raw`C:\Users\darre\Documents\zzz Old files\NUS Y2S2\BT3103\project\bt3103-project\src\components\map\testbins.json`);
         
-        // Style data
-        // const svgMarker = {
-        //   path:
-        //     "M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
-        //   fillColor: "blue",
-        //   fillOpacity: 0.6,
-        //   strokeWeight: 0,
-        //   rotation: 0,
-        //   scale: 2,
-        //   anchor: new this.google.maps.Point(15, 30),
-        // };
+        // var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
         this.map.data.setStyle(function(feature) {
-          // icon: 'http://127.0.0.1:8887/src/components/map/icons/recycle-bin.png',
-          // icon: svgMarker
-
           // choose icon based on binType
-          // var iconURL = ''
+          var iconPath = '';
           switch(feature.getProperty('binType')) {
             case 'recyclebins':
+              iconPath = webServer + 'icons/recycle.png';
               break;
             case 'ewaste':
+              iconPath = webServer + 'icons/magnet.png';
               break;
             case 'cashfortrash':
+              break;
+            case 'secondhandcollecn':
+              iconPath = webServer + 'icons/toy.png';
               break;
             case 'rvm':
               break;
             case 'lighting':
+              iconPath = webServer + 'icons/lamp.png';
               break;
           }
-          console.log('feature showMarker is...');
-          console.log(feature.getProperty('showMarker'));
+          // console.log('feature showMarker is...');
+          // console.log(feature.getProperty('showMarker'));
           return /** @type {this.google.maps.Data.StyleOptions } */ {
             visible: feature.getProperty('showMarker'),
-            // icon: iconURL
+            icon: iconPath
           };
-        });
-
-        // document.getElementById("recyclebins")
-        //         .addEventListener('change', function() {
-        //           this.setFilter(this.checked, this.id);
-        //         });
-
-        // Hide markers
-        const toggleAllBins = document.createElement("button");
-        toggleAllBins.textContent = "Show All Bins";
-        toggleAllBins.classList.add("toggle-all-bins-button");
-        this.map.controls[this.google.maps.ControlPosition.TOP_LEFT].push(toggleAllBins);
-        toggleAllBins.addEventListener("click", async () => {
-          this.map.data.setStyle({visible: true});
         });
 
       } catch(error) {
@@ -332,10 +313,8 @@ export default {
         console.error(error);
       }
 
-      // this.fetchAndRenderBins({lat: 1.3521, lng: 103.8198});
 
       const infoWindow = new this.google.maps.InfoWindow();
-      // console.log(map.data);
       // Show information for each bin when its marker is clicked
       this.map.data.addListener('click', (event) => {
         console.log('event is ----- ' + event);
@@ -409,7 +388,6 @@ export default {
         this.showBinsList(this.map.data, rankedBins);
       });
 
-      // implement geolocation
       // TODO: implement another button "Search this area" for users to manually pan then search
         // in a particular area instead of using the user's location directly
       // TODO: menu bar popup on the right when user clicks on a particular pin
@@ -417,74 +395,29 @@ export default {
         // they can navigate there using the full features of the app
       // TODO: implement support for phone web view - plist (permissions list)
       // TODO: doesn't work for network server
+      // TODO: restrict displayed markers to only within bounds of viewport
       // let infoWindow = new google.maps.InfoWindow();
       const nearMe = document.createElement("button");
-      nearMe.textContent = "Show bins near me";
+      nearMe.textContent = "Pan to my location";
       nearMe.classList.add("custom-map-control-button");
       this.map.controls[this.google.maps.ControlPosition.TOP_CENTER].push(nearMe);
-      // nearMe.addEventListener("click", async () => {
+      nearMe.addEventListener("click", async () => {
       //   // Try HTML5 geolocation.
-      //   if (navigator.geolocation) {
-      //     navigator.geolocation.getCurrentPosition(
-      //       (position) => {
-      //         const pos = {
-      //           lat: position.coords.latitude,
-      //           lng: position.coords.longitude,
-      //         };
-      //         // const pos = // initialize pos directly to the POsition object?
-      //         // infoWindow.setPosition(pos);
-      //         // infoWindow.setContent("Location found.");
-      //         // infoWindow.open(map);
-      //         this.map.setCenter(pos);
-      //         this.map.setZoom(14);
-      //         console.log("pos.lat = " + pos.lat + ", pos.lng = " + pos.lng);
-      //         this.calculateDistances(pos).then((distanceObjects) => {
-      //           for (const distObj in distanceObjects) {
-      //             const bin = distObj.coordinates;
-      //             new this.google.maps.Marker({
-      //               position: bin,
-      //               map: this.map
-      //             }).addListener('click', (event) => {
-      //               console.log('event is ----- ' + event);
-      //               const address = event.feature.getProperty('address');
-      //               const postcode = event.feature.getProperty('postcode');
-      //               const position = event.feature.getGeometry().get();
-      //               const content = `<h4>${address}</h4><p>${postcode}</p>`;
-
-      //               infoWindow.setContent(content);
-      //               infoWindow.setPosition(position);
-      //               infoWindow.setOptions({pixelOffset: new this.google.maps.Size(0, -30)});
-      //               infoWindow.open(this.map);
-      //             });
-      //           }
-      //         });
-      //       });
-      //   } else {
-      //     // Browser doesn't support Geolocation
-      //     this.handleLocationError(false, infoWindow, this.map.getCenter(), this.map);
-      //   }
-      // });
-
-
-      
-      // //         // call One Map API
-      //         Promise.resolve(this.)
-      //           .then(() => {
-      //             for (const point of this.points) {
-      //               // TODO: style each marker to look like a recycle bin
-      //               new this.google.maps.Marker({
-      //                 position: point,
-      //                 map: map
-      //               });
-      //               // console.log("point.lat = " + point.lat + ", point.lng = " + point.lng);
-      //             }
-      //             // console.log("this.points.length = " + this.points.length);
-      //           });
-      //       },
-      //       () => {
-      //         this.handleLocationError(true, infoWindow, map.getCenter());
-      //       }
-      //     );
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              this.map.setCenter(pos);
+              this.map.setZoom(15);  
+            });
+        } else {
+          // Browser doesn't support Geolocation
+          this.handleLocationError(false, infoWindow, this.map.getCenter(), this.map);
+        }
+      });
     } catch (error) {
       console.error(error);
     }
