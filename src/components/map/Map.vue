@@ -2,6 +2,29 @@
   <div>
     <h3>Find My Bin</h3>
     <div id="map"></div>
+    <div>
+      <ul>
+        <li v-for="binType in binTypes" :key="binType.id">
+          <input 
+            type="checkbox" 
+            :id="binType.id"
+            :value="binType.id"
+            @change="setFilter($event)">
+          <label :for="binType.id">{{binType.title}}</label><br>
+        </li>
+      </ul>
+
+      <!-- <input type="checkbox" id="recyclebins" name="recyclebins" value="recyclebins">
+      <label for="recyclebins">Recycle Bins</label><br>
+      <input type="checkbox" id="ewaste" name="ewaste" value="ewaste">
+      <label for="ewaste">E-Waste</label><br>
+      <input type="checkbox" id="cashfortrash" name="cashfortrash" value="cashfortrash">
+      <label for="cashfortrash">Cash-For-Trash</label><br>
+      <input type="checkbox" id="secondhandcollecn" name="secondhandcollecn" value="secondhandcollecn">
+      <label for="secondhandcollecn">2nd Hand Goods Collection Points</label><br>
+      <input type="checkbox" id="rvm" name="rvm" value="rvm">
+      <label for="rvm">Reverse Vending Machines</label><br> -->
+    </div>
   </div>
 </template>
 
@@ -15,9 +38,6 @@ import gmapsInit from './Map.js';
 //   this.OneMap_API_KEY = OneMap_token_response.access_token;
 // }
 
-
-import axios from 'axios';
-
 export default {
   data () {
     return {
@@ -27,7 +47,33 @@ export default {
       OneMap_API_KEY: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjczMjcsInVzZXJfaWQiOjczMjcsImVtYWlsIjoiZGFycmVsbC5sYWlAZ21haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNjE3NzAyNzU4LCJleHAiOjE2MTgxMzQ3NTgsIm5iZiI6MTYxNzcwMjc1OCwianRpIjoiNGU2ZjkzMmJhODQxNTRkM2UwMzJkZTFlZGEwNTcyNzUifQ.X-pQ8Z3Wkb6u-7BB7Ud7t2gEu4dzukZ9lkyEfAGpZ34',
       OneMap_token_expiry: 9999999999,
       circles: [],
-      bins: []
+      bins: [],
+      binTypes: [
+                  {
+                    'title': 'Recycle Bins',
+                    'id': 'recyclebins'
+                  }, 
+                  {
+                    'title': 'E-Waste',
+                    'id': 'ewaste'
+                  },
+                  {
+                    'title': 'Cash-For-Trash',
+                    'id': 'cashfortrash'
+                  }, 
+                  {
+                    'title': '2nd Hand Collection Points',
+                    'id': 'secondhandcollecn'
+                  }, 
+                  {
+                    'title': 'Reverse Vending Machines',
+                    'id': 'rvm'
+                  }, {
+                    'title': 'Lighting Waste',
+                    'id': 'lighting'
+                  }
+                ],
+      checkedBinTypes: []
     }
   },
   methods: {
@@ -41,37 +87,6 @@ export default {
           : "Error: Your browser doesn't support geolocation."
       );
       infoWindow.open(map);
-    },
-    getOneMapToken: function() {
-      axios.get()
-    },
-    getKMradius: function(lat, lng) {
-      // return coordinates of bounding box of 2km x 2km
-        // just need 2 corners
-      return {topright: [lng + 0.01, lat+0.01], bottomleft: [lng-0.01, lat-0.01]};
-      // return {topright: [lat+0.1, lng + 0.1], bottomleft: [lat-0.1, lng-0.1]};
-    },
-    getExtentsQuery: function(bb) {
-      let extents = bb.bottomleft[0] + ",%20" + bb.bottomleft[1] + "," + bb.topright[0] + ",%20" + bb.topright[1];
-      // const OneMap_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjczMjcsInVzZXJfaWQiOjczMjcsImVtYWlsIjoiZGFycmVsbC5sYWlAZ21haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNjE2NTUzNzcyLCJleHAiOjE2MTY5ODU3NzIsIm5iZiI6MTYxNjU1Mzc3MiwianRpIjoiY2IzOGRmMTk2ZjE5Zjg0YTYxZjdlYjYxOThjNGEzODQifQ.Yl5twCCgDANzVIezHqLwJoCQz_tzpu9evMV2qj8Gap8'
-      let query = `https://developers.onemap.sg/privateapi/themesvc/retrieveTheme?queryName=recyclingbins&token=${this.OneMap_API_KEY}&extents=` + extents;
-      console.log("query: " + query);
-      return query;
-    },
-    getBinsFromOneMap: async function(userPos) {
-      let bb = this.getKMradius(userPos.lat, userPos.lng);
-      let query = this.getExtentsQuery(bb);
-      return axios.get(query).then(response => {
-        response.data.SrchResults.slice(1).forEach(bin => {
-          if (bin.LatLng) {
-            let latlng_arr = bin.LatLng.split(",");
-            this.points.push({lat: parseFloat(latlng_arr[0]), lng: parseFloat(latlng_arr[1])});
-            // console.log("pushing bin into this.points now!");
-            // console.log("latlng_arr[0] = " + latlng_arr[0] + ", latlng_arr[1] = " + latlng_arr[1]);
-            // console.log("this.points has length " + this.points.length + " now");
-          }
-        })
-      })
     },
     calculateDistances: async function(data, origin) {
       const addresses = [];
@@ -116,7 +131,6 @@ export default {
             }
           });
         });
-        
       const distancesList = await getDistanceMatrix(service, {
         origins: [origin],
         destinations: destinations,
@@ -129,6 +143,21 @@ export default {
       });
 
       return distancesList.slice(10);
+    },
+    setFilter: function($event) { // (data, showMarker, binType) {
+      console.log('checkbox clicked! event.checked is...');
+      console.log($event.target.checked);
+      const showMarker = $event.target.checked;
+      const binType = $event.target.id
+      this.map.data.forEach(function(feature) {
+        console.log('binType is....');
+        console.log(binType);
+        if (feature.getProperty('binType') === binType){
+          console.log('feature showMarker is...');
+          console.log(feature.getProperty('showMarker'));
+          feature.setProperty('showMarker', showMarker);
+        }
+      })
     },
     showBinsList(data, bins) {
       if (bins.length == 0) {
@@ -236,6 +265,11 @@ export default {
 
         // file hosted on Web Server for Chrome, bypasses CORS issues
         this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/recyclebinsGeo.json'); 
+        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/ewasteGeo.json');
+        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/cashfortrashGeo.json');
+        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/rvmGeo.json');
+        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/secondhandcollecnGeo.json');
+        this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/lightingGeo.json'); 
         // this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/testbins.json');
         
         // file taken from local directory, only works on Firefox
@@ -253,10 +287,36 @@ export default {
         //   scale: 2,
         //   anchor: new this.google.maps.Point(15, 30),
         // };
-        this.map.data.setStyle({
+        this.map.data.setStyle(function(feature) {
           // icon: 'http://127.0.0.1:8887/src/components/map/icons/recycle-bin.png',
           // icon: svgMarker
+
+          // choose icon based on binType
+          // var iconURL = ''
+          switch(feature.getProperty('binType')) {
+            case 'recyclebins':
+              break;
+            case 'ewaste':
+              break;
+            case 'cashfortrash':
+              break;
+            case 'rvm':
+              break;
+            case 'lighting':
+              break;
+          }
+          console.log('feature showMarker is...');
+          console.log(feature.getProperty('showMarker'));
+          return /** @type {this.google.maps.Data.StyleOptions } */ {
+            visible: feature.getProperty('showMarker'),
+            // icon: iconURL
+          };
         });
+
+        // document.getElementById("recyclebins")
+        //         .addEventListener('change', function() {
+        //           this.setFilter(this.checked, this.id);
+        //         });
 
         // Hide markers
         const toggleAllBins = document.createElement("button");
@@ -266,6 +326,7 @@ export default {
         toggleAllBins.addEventListener("click", async () => {
           this.map.data.setStyle({visible: true});
         });
+
       } catch(error) {
         console.log('Error happened here!');
         console.error(error);

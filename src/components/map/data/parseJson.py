@@ -1,6 +1,6 @@
 import json
 
-def jsonToGeoJson(infile, outfile, trunc=None):
+def jsonToGeoJson(infile, outfile, binType, trunc=None):
   with open(infile) as f:
     data = json.load(f)
   points = data['SrchResults']
@@ -26,8 +26,13 @@ def jsonToGeoJson(infile, outfile, trunc=None):
       address += ', ' + point['ADDRESSUNITNUMBER']
     
     # add all needed properties to new Feature
-    # add a boolean variable to toggle the visibility of markers rendered on the map
-    newpoint['properties'] = {"address": address, "postcode": postcode, "showMarker": True}
+    # add a boolean variable showMarker to toggle the visibility of markers rendered on the map
+    newpoint['properties'] = {
+                                "binType": binType,
+                                "address": address,
+                                "postcode": postcode,
+                                "showMarker": False
+                              }
 
     newpoints.append(newpoint)
   
@@ -42,9 +47,9 @@ def jsonToGeoJson(infile, outfile, trunc=None):
   }
   with open(outfile, 'w') as f:
     json.dump(geoJson, f)
-jsonToGeoJson('./recyclebins.json', './testbinsGeo.json', 3)
-jsonToGeoJson('./recyclebins.json', './recyclebinsGeo.json')
-jsonToGeoJson('./ewaste.json', './ewasteGeo.json')
-jsonToGeoJson('./secondhandcollecn.json', './secondhandcollecnGeo.json')
-jsonToGeoJson('./rvm.json', './rvmGeo.json')
-jsonToGeoJson('./lighting.json', 'lightingGeo.json')
+jsonToGeoJson('./recyclebins.json', './testbinsGeo.json', 'recyclebins', 3)
+jsonToGeoJson('./recyclebins.json', './recyclebinsGeo.json', 'recyclebins')
+jsonToGeoJson('./ewaste.json', './ewasteGeo.json', 'ewaste')
+jsonToGeoJson('./secondhandcollecn.json', './secondhandcollecnGeo.json', 'secondhandcollecn')
+jsonToGeoJson('./rvm.json', './rvmGeo.json', 'rvm')
+jsonToGeoJson('./lighting.json', 'lightingGeo.json', 'lighting')
