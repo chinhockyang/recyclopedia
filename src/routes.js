@@ -1,5 +1,5 @@
 import Home from './components/Home.vue'
-import myMap from './components/Map.vue'
+import myMap from './components/map/Map.vue'
 import Quiz from './components/Quiz/QuizStart.vue'
 import QuizQuestions from './components/Quiz/QuizQuestions.vue'
 
