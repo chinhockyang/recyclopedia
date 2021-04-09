@@ -7,21 +7,21 @@
     <div> 
         <form class="containter px-3" id="form"> 
             <div class="form-group" >
-                <label for="fname">First Name</label>
+                <label for="fname">First Name:<span style="color:red;" title="required"> *</span></label>
                 <br><input type="text" placeholder="First Name" name="fname" v-model="form.fname" required>
             </div>
-            <div class="form-group" style="margin-left: 95px">
-                <label for="lname" id="label">Last Name</label>
+            <div class="form-group" style="margin-left: 100px">
+                <label for="lname" id="label">Last Name:<span style="color:red;" title="required"> *</span></label>
                 <br><input type="text" placeholder="Last Name" name="lname" v-model="form.lname" required>
             </div>
         </form>
         <form class="containter px-3" id="form">
             <div class="form-group" >
-                <label for="email">Email Address</label>
+                <label for="email">Email Address:<span style="color:red;" title="required"> *</span></label>
                 <br><input type="email" placeholder="Email" name="email" v-model="form.email" required>
             </div>
-            <div class="form-group" style="margin-left: 95px">
-                <label for="phone">Phone Number</label>
+            <div class="form-group" style="margin-left: 100px">
+                <label for="phone">Phone Number:<span style="color:red;" title="required"> *</span></label>
                 <br><input type="number" placeholder="Phone" name="phone" v-model="form.phone" 
                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
              pattern="\d*" maxlength="8" required>
@@ -29,15 +29,15 @@
         </form>
         <form class ="containter px-3" id="form">
             <div class="form-group">
-                <label for="don">I'm donating in the name of:</label>
+                <label for="don">I'm donating in the name of:<span style="color:red;" title="required"> *</span></label>
                 <br>
                 <select id="don" style="width: 98%" name="don" v-model="form.don" required>
                     <option value="Myself">Myself</option>
                     <option value="Organization">Organization</option>
                 </select>
             </div>
-            <div class="form-group" style="margin-left: 78px">
-                <label for="who">Organization/Honoree Name</label>
+            <div class="form-group" style="margin-left: 75px">
+                <label for="who">Organization/Honoree Name:<span style="color:red;" title="required"> *</span></label>
                 <br><input type="text" placeholder="Organization/Honoree" name="who" v-model="form.who" required>
             </div>
         </form>
