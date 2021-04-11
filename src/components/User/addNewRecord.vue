@@ -85,6 +85,7 @@ export default {
     return {
       form: {
         date: "",
+        day: 0,
         username: "",
         serialNo: "",
         itemCat: "",
@@ -93,7 +94,10 @@ export default {
       },
       pointsRecord: {
         username: "", 
-        pts: 0
+        pts: 0, 
+        action: "",
+        date: "", 
+        day: 0
       },
       error: null
     };
@@ -113,9 +117,13 @@ export default {
               var options = {month: 'long'}
               var d = new Intl.DateTimeFormat('en-US', options)
               var month = d.format(this.form.date)
+              this.form.day = parseInt(this.form.date.getDate())
+              this.pointsRecord.day = this.form.day
               this.form.date= this.form.date.getDate() + ' ' + month + ' ' + this.form.date.getFullYear()
+              this.pointsRecord.date = this.form.date
               this.form.username = this.user.data.displayName
               this.pointsRecord.username = this.user.data.displayName
+              this.pointsRecord.action = "Recycled " + this.form.quantity + " " + this.form.itemCat
               this.form.points = this.form.quantity*5
               this.pointsRecord.pts = this.form.quantity*5
               database.collection('users').add(this.pointsRecord);
@@ -164,5 +172,10 @@ export default {
   float: right;
 }
 
+#center { 
+    display: flex;
+    justify-content: center;
+    align-items:center
+}
 </style>
 

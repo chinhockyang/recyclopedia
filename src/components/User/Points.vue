@@ -1,15 +1,15 @@
 <template> 
 <div class="containter px-3"> 
     <br>
-      <h5>Your Points: {{ countPoints }}</h5>
-      <div class="progress">
-         <div class="progress-bar progress-bar-success" role="progressbar" id="pointsBar" value="" max="200" style="width: ''">{{ remaining }}%</div>
-      </div>
+      <h5 style="display:inline">Your Points: {{ countPoints }}</h5>
+      <br>
+      <b-progress :max="max">
+        <b-progress-bar :value="countPoints" :label="`${remaining.toFixed(1)}%`" ></b-progress-bar>
+      </b-progress>
       <div class="level">
-        <p style="font-size: 15px">Welcome Greener</p>
-        <span>Bronze Greener</span>
+        <p style="font-size: 15px">{{ this.now }}</p>
+        <span style="margin-left: 485px">{{ this.next }}</span>
       </div>
-      <button v-on:click="this.updatePointsBar"></button>
       <br><br>
       <div> 
         <p style="font-size: 20px"><strong>What can your points do?</strong></p>
@@ -39,7 +39,9 @@ export default {
     return {
       countPoints: 0,
       remaining: 0, 
-      level: ""
+      now: "", 
+      next: "",
+      max: 0,
     }
   },
   computed: {
@@ -56,27 +58,36 @@ export default {
           if (doc.data().username == this.user.data.displayName) {
             this.countPoints += doc.data().pts 
             if (this.countPoints < 200) {
-                this.level = "Welcome Greener"
+                this.now = "Welcome Greener"
+                this.next = "Bronze Greener"
+                this.remaining = (this.countPoints/200) * 100
+                this.max = 200
             } else if (this.countPoints >= 200 && this.countPoints < 600) {
-                this.level = "Bronze Greener"
+                this.now = "Bronze Greener"
+                this.next = "Silver Greener"
+                this.remaining = 100-((600-this.countPoints)/600 * 100)
+                this.max = 600
             } else if (this.countPoints >= 600 && this.countPoints < 1000) {
-                this.level = "Silver Greener" 
+                this.now = "Silver Greener" 
+                this.next = "Gold Greener"
+                this.remaining = 100-((1000-this.countPoints)/1000 * 100)
+                this.max = 1000
             } else {
-                this.level = "Gold Greener"
+                this.now = "Gold Greener"
+                this.next = ""
+                this.remaining = 100
+                this.max = 100
             }
-            database.collection('tier').doc(this.user.data.displayName).set({"level": this.level}) 
-            this.remaining = (this.countPoints/200) * 100
+            database.collection('tier').doc(this.user.data.displayName).set({"level": this.now}) 
+          } else if (this.countPoints == 0) {
+            this.now = "Welcome Greener"
+            this.next = "Bronze Greener"
+            this.remaining = 0
+            this.max = 200
           }
         })
       })
     }, 
-
-    updatePointsBar() {
-      var pb = document.getElementById("pointsBar")
-      pb.value = this.countPoints
-      pb.style.width = this.remaining + "%"
-    
-    },
     
     checkPoints() {
         if (this.countPoints < 300) {
@@ -90,7 +101,6 @@ export default {
 
   created() {
     this.fetchPoints()
-    this.updatePointsBar()
   }, 
 
 };
@@ -100,7 +110,7 @@ export default {
 .progress {
   position:relative;
   height:70px;
-  width: 60%;
+  width: 700px;
 }
 
 .progress-bar {
