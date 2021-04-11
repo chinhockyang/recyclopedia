@@ -99,4 +99,8 @@ export default {
     justify-content: center;
     align-items:center
 }
+
+#error {
+    color: red
+}
 </style>
