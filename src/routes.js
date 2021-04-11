@@ -2,6 +2,7 @@ import Home from './components/Home.vue'
 import myMap from './components/map/Map.vue'
 import Quiz from './components/Quiz/QuizStart.vue'
 import QuizQuestions from './components/Quiz/QuizQuestions.vue'
+import QuizAnswers from './components/Quiz/QuizAnswers.vue'
 
 import EncyclopediaHome from './components/encyclopedia/EncyclopediaHome.vue'
 import QuickSearch from './components/encyclopedia/QuickSearch.vue'
@@ -42,6 +43,7 @@ export default [
   { path: '/donation', component: Donation}, 
   { path: '/past', component: Past},
   { path: '/quiz', component: Quiz },
-  { path: '/quiz/questions', component: QuizQuestions}
+  { path: '/quiz/questions', component: QuizQuestions},
+  { path: '/quiz/answers', component: QuizAnswers}
 
 ]
