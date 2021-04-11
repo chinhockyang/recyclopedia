@@ -1,6 +1,6 @@
 <template>
   <div class=" container tab-pane fade show active" id="can-recycle" role="tabpanel" aria-labelledby="can-recycle-tab">
-    <h1>What I {{ topic }} Recycle</h1>
+    <h1 class="mt-3">What I {{ topic }} Recycle</h1>
 
     <div class="input-group mt-3">
       <input type="text" class="form-control" v-model="search" placeholder="Search title.."/><br><br>      

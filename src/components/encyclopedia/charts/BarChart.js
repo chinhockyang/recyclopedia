@@ -44,8 +44,7 @@ export default {
     methods: {
         fetchItems: function() {            
             database.collection('items')                        
-            .orderBy('amountRecycled', 'desc')                 
-            .limit(10)
+            .orderBy('amountRecycled', 'desc')                             
             .get()                                                      
             .then((querySnapShot)=>{
                 let item={}            
@@ -53,7 +52,7 @@ export default {
                 item=doc.data()                
                 item.show = false
                 item.id=doc.id                           
-                if (item.category == this.category) {
+                if (item.category == this.category & this.datacollection.datasets[0].data.length <= 10) {
                     if (item.name.length > 20) {                        
                         this.datacollection.labels.push(item.name.substring(0,20) + '...')
                     } else {

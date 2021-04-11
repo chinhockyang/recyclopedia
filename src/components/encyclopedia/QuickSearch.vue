@@ -1,7 +1,9 @@
 <template>
   <div class="container tab-pane fade show active" id="quick-search" role="tabpanel" aria-labelledby="quick-search-tab">      
     <div class="jumbotron">
-      <h1 class="display-4">Welcome to the Encyclopedia!</h1>
+      <h3 class="display-6">
+        Recyclopedia's Recycling Encyclopedia <b-icon icon="binoculars-fill"></b-icon>
+      </h3>
       <p class="lead">Search to see if something is recyclable!</p>
       <div class="container w-75 mx-auto">           
         <search-tool        

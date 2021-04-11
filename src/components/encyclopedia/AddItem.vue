@@ -1,6 +1,6 @@
 <template>
 <div class="container tab-pane fade show active" id="add" role="tabpanel" aria-labelledby="add-tab">
-    <h1>Add Item to Recyclopedia!</h1>
+    <h1 class="mt-3">Add Item to Recyclopedia!</h1>
     <div class="row p-3 mb-5">
         <div class="col-1 col-md-2 col-l-3"></div>
         <div class="col-10 col-md-8 col-l-6 bg-light rounded p-3">            

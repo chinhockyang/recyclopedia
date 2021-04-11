@@ -16,7 +16,7 @@
             {{item.name}}
           </span>
         </h5>        
-        <h6 class="card-subtitle mb-2">{{item.category}}</h6>        
+        <h6 class="card-subtitle mb-2 badge badge-secondary">{{item.category}}</h6><br>      
         <p class="card-text badge badge-success" v-if="item.recyclable">Recyclable</p>
         <p class="card-text badge badge-danger" v-else>Not Recyclable</p>        
       </div>            

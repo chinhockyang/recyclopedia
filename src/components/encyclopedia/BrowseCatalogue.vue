@@ -1,6 +1,6 @@
 <template>
 <div class="container mt-3 w-75 mx-auto">     
-    <h1>Browse Items By Category</h1>
+    <h1 class="mt-3">Browse Items By Category</h1>
     <p class="mx-3 mt-5 mb-5">{{paragraph}}</p>    
     <div class="container w-80 mx-auto mt-3 row">      
         <div class="col-md card m-2">                  
@@ -104,12 +104,6 @@ export default {
 .card:hover {
   border: green solid;
   opacity: 1;
-}
-
-img:hover {
-  transform: scale(1.05);  
-  transition: .5s ease;
-  backface-visibility: hidden;  
 }
 
 a:hover {

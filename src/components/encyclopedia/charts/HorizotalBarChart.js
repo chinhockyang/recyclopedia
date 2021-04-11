@@ -36,17 +36,16 @@ export default {
 
     methods: {
         fetchItems: function() {            
-            database.collection('items')                        
-            .orderBy('amountSearched', 'desc')                 
-            .limit(10)
+            database.collection('items')                                 
+            .orderBy('amountSearched', 'desc')            
             .get()                                                      
             .then((querySnapShot)=>{
                 let item={}            
                 querySnapShot.forEach(doc=>{
                 item=doc.data()                
                 item.show = false
-                item.id=doc.id                           
-                if (item.category == this.category & item.recyclable == this.recyclable) {
+                item.id=doc.id                                           
+                if (item.category == this.category & item.recyclable == this.recyclable & this.datacollection.datasets[0].data.length <= 10) {
                     if (item.name.length > 20) {                        
                         this.datacollection.labels.push(item.name.substring(0,20) + '...')
                     } else {

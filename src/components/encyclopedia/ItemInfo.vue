@@ -10,7 +10,7 @@
             alt="No image yet!" 
             onerror="this.onerror=this.src='https://www.brandturbo.com/images/images/en/imageNoImageSmall.gif';">
             <h3 class="card-title display-5">{{item.name}}</h3>
-            <h5 class="card-subtitle text-muted">{{item.category}}</h5>            
+            <h5 class="card-subtitle text-muted mt-2">Category: <span class="badge badge-secondary">{{item.category}}</span></h5>            
             <div class="alert alert-success mt-3" v-if="item.recyclable">This item is Recyclable.</div>
             <div class="alert alert-danger mt-3" v-else>This item is not Recyclable</div>             
         </div>        
@@ -80,7 +80,7 @@
                         <p v-else style="font-size: 85%;">
                             {{i.name}}                                                        
                         </p>                                                  
-                          <span class="badge badge-info">{{i.category}}</span><br>
+                          <span class="badge badge-secondary">{{i.category}}</span><br>
                           <span class="badge badge-success" v-if="i.recyclable">Recyclable</span>
                           <span class="badge badge-danger" v-else>Not Recyclable</span>                        
                       </span>                                                      

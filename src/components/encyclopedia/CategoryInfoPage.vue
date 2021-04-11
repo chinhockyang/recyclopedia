@@ -29,57 +29,50 @@
                           id="carouselBasicExample"
                           class="carousel slide carousel-fade"
                           data-ride="carousel"
+                          data-bs-interval="false"
                         >
-  
-                        <!-- Indicators -->
-                        <ol class="carousel-indicators">
-                            <li
-                              type="button"      
-                              data-target="#carouselBasicExample"
-                              data-slide-to="0"
-                              class="active"
-                              aria-current="true"
-                              aria-label="Slide 1"
-                            ></li>
-                            <li
-                              type="button"      
-                              data-target="#carouselBasicExample"
-                              data-slide-to="1"
-                              aria-label="Slide 2"
-                            ></li>                
-                          </ol>
 
                         <!-- Inner -->
-                        <div class="carousel-inner">
-                            <!-- Single item -->
-                            <div class="carousel-item active">
+                        <div class="carousel-inner">                            
+                            <div class="carousel-item active" style="overflow-x: auto; white-space: nowrap;">
                                 <img
-                                  src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg"
-                                  class="d-block w-100"
+                                  :src="posters[0].imageUrl"
+                                  class="d-block mx-auto"
                                   alt="..."
+                                  style="max-height: 600px; max-width: 1000px;"                                  
+                                  v-b-modal="posters[0].imageUrl"                                  
                                 />
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5>First slide label</h5>
-                                    <p>
-                                        Nulla vitae elit libero, a pharetra augue mollis interdum.
-                                    </p>
-                                </div>
+                                <p class="card-subtitle text-muted mt-2 mb-3">
+                                      {{posters[0].description}}
+                                </p>         
+                                <b-modal :id="posters[0].imageUrl" hide-footer no-close-on-backdrop size="xl">
+                                  <img
+                                    :src="posters[0].imageUrl"
+                                    class="d-block w-100"
+                                    alt="..."                                    
+                                  />
+                                </b-modal>                       
                             </div>
 
-                            <!-- Single item -->
-                            <div class="carousel-item" style="overflow-x: auto; white-space: nowrap;">
+                            <div class="carousel-item" style="overflow-x: auto; white-space: nowrap;" v-for="poster in posters.slice(1)" :key="poster">
                                 <img
-                                  src="https://mdbootstrap.com/img/Photos/Slides/img%20(22).jpg"
-                                  class="d-block w-100"
+                                  :src="poster.imageUrl"
+                                  class="d-block mx-auto"
                                   alt="..."
+                                  v-b-modal="poster.imageUrl"
+                                  style="max-height: 600px; max-width: 900px;"                                  
                                 />
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5>Second slide label</h5>
-                                    <p>
-                                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    </p>
-                                </div>
-                            </div>    
+                                <p class="card-subtitle text-muted mt-2 mb-3">
+                                      {{poster.description}}
+                                </p>         
+                                <b-modal :id="poster.imageUrl" hide-footer no-close-on-backdrop size="xl">
+                                  <img
+                                    :src="poster.imageUrl"
+                                    class="d-block w-100"
+                                    alt="..."                                    
+                                  />
+                                </b-modal>    
+                            </div>
                         
                           <!-- Inner -->
 
@@ -91,7 +84,7 @@
                             data-slide="prev"
                             style="border: none; background-color: transparent; cursor:pointer;"
                           >
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>    
+                            <span class="carousel-control-top-prev-icon" aria-hidden="true"></span>    
                           </button>
 
                           <button
@@ -99,9 +92,9 @@
                             type="button"
                             data-target="#carouselBasicExample"
                             data-slide="next"
-                            style="border: none; background-color: transparent; cursor:pointer;" 
+                            style="border: none; background-color: transparent;" 
                           >
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>    
+                            <span class="carousel-control-top-next-icon" aria-hidden="true"></span>    
                           </button>
                         </div>
                       </div>                        
@@ -122,6 +115,7 @@
                     id="carouselMultiItemExample"
                     class="carousel slide carousel-dark text-center"
                     data-ride="carousel"
+                    data-bs-interval="false"
                   >
                   
                   <!-- Controls -->                  
@@ -176,7 +170,7 @@
                     </div>
                     <!-- Inner -->                     
                 </div>                
-                <h5 class="mt-5">Top 10 Recycled {{category}} in Recyclopedia</h5>
+                <h5 class="mt-5">Top Recycled {{category}} in Recyclopedia</h5>
                 <div class="row">
                         <div class="col">
                             <div class="chart mt-1">
@@ -201,7 +195,8 @@
                   <div
                     id="carouselMultiItemExample2"
                     class="carousel slide carousel-dark text-center"
-                    data-ride="carousel"
+                    data-ride="carousel"                    
+                    data-bs-interval="false"
                   >
                   
                   <!-- Controls -->                  
@@ -221,7 +216,7 @@
                         class="carousel-control-next position-relative m-3 p-1"
                         style="background-color:green;"
                         type="button"
-                        data-target="#carouselMultiItemExample2"
+                        data-target="#carouselMultiItemExample2"                        
                         data-slide="next"                
                         v-show="mostSearched.length > 3"
                       >
@@ -315,7 +310,8 @@ export default {
         cannotRecycle: [],
         allItem: [],
         mostRecycled: [],
-        mostSearched: []
+        mostSearched: [],
+        posters: []
     }
   }, 
 
@@ -340,25 +336,39 @@ export default {
                 this.mostSearched = this.allItem.sort((a,b) => (a.amountSearched < b.amountSearched) ? 1 : -1);
                 this.mostRecycled = this.canRecycle.sort((a,b) => (a.amountRecycled < b.amountRecycled) ? 1 : -1);
             })});         
+     },
+
+     fetchPoster: function() {
+        database.collection('poster').where('category','==', this.category).get().then((querySnapShot)=>{
+                let item={}            
+                querySnapShot.forEach(doc=>{
+                item=doc.data()
+                item.show=false
+                item.id=doc.id 
+                this.posters.push(item);
+            })});          
      }
     },
 
     created: function() {                           
         this.category = this.$route.params.id.charAt(0).toUpperCase() + this.$route.params.id.slice(1);
-        this.fetchItems();        
+        this.fetchItems();      
+        this.fetchPoster();  
     },
 
     watch: {
         $route: function(val) {
-            this.category = val.params.id.charAt(0).toUpperCase() + val.params.id.slice(1);
-            this.canRecycle = [],
-            this.cannotRecycle = [],
-            this.allItem = [],
-            this.mostSearched = [],
-            this.mostRecycled = [],
-            this.totalSearched = 0,
-            this.totalRecycled = 0,
+            this.category = val.params.id.charAt(0).toUpperCase() + val.params.id.slice(1);            
+            this.canRecycle = []
+            this.cannotRecycle = []
+            this.allItem = []
+            this.mostSearched = []
+            this.mostRecycled = []
+            this.totalSearched = 0
+            this.totalRecycled = 0
+            this.posters = []
             this.fetchItems();
+            this.fetchPoster();
         }
     },
 
@@ -373,5 +383,36 @@ export default {
 </script>
 
 <style scoped>
+.carousel-control-top-prev-icon,
+.carousel-control-top-next-icon {
+  height: 50px;
+  width: 50px;
+  background-color: palegreen;  
+  background-size: 100%, 100%;    
+  background-image: none;
+  align-content: center;
+}
 
+.carousel-control-top-next-icon:after
+{
+  content: '>';
+  font-size: 35px;
+  color: white;
+}
+
+.carousel-control-top-prev-icon:after {
+  content: '<';
+  font-size: 35px;
+  color: white;
+}
+
+.carousel-control-top-prev-icon:hover {
+  background-color: darkgreen;
+  color: white;
+}
+
+.carousel-control-top-next-icon:hover {
+  background-color: darkgreen;  
+  color: white;
+}
 </style>
