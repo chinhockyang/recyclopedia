@@ -4,23 +4,40 @@
   <div id="quizQuestions">
     <div v-for="(question, index) in quiz.questions" :key="index">
       <div v-if="index == questionIndex">
-
-      <div class="row align-items-center justify-content-center text-center mt-3">
-        <div id = "questionContainer" class="col-4" style="background-color: #E3E9BB">
-          {{ index + 1 }}. {{ question.text }}
+      <div class="row justify-content-center mt-3">
+          <h2>Question {{ index + 1 }} of 8</h2>
+      </div>
+      <div class="row align-items-center justify-content-center text-center mt-3 h-100">
+        <div id = "questionContainer" class="col-8" style="background-color: #E3E9BB">
+          <h1>{{ question.text }}</h1>
           <ul>
             <li v-for="response in question.responses" :key="response">
-              <label>
+                <label>
                 <input type="radio" :value="response.correct" :name="index" v-model="userResponses[index]"> {{ response.text }}
-              </label>
+                </label>
             </li>
           </ul>
         </div>
       </div>
+      <div v-if="!(index == 7)">
       <div class="row align-items-center justify-content-center text-center mt-3">
+        <div class="col-4 text-left">
+        <button v-on:click="previous" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Previous</button>
+        </div>
           <div class="col-4 text-right">
         <button v-on:click="next" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Next</button>
         </div>
+      </div>
+      </div>
+      <div v-else>
+        <div class="row align-items-center justify-content-center text-center mt-3">
+        <div class="col-4 text-left">
+        <button v-on:click="previous" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Previous</button>
+        </div>
+          <div class="col-4 text-right">
+        <button v-on:click="next" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Submit</button>
+        </div>
+      </div>
       </div>
     </div>
       
@@ -31,7 +48,7 @@
     <h2>End of quiz</h2>
     <h2>Total score: {{ score() }} / 8</h2>
     <h2>You have earned {{ score()*10 }} points</h2>
-    <button @click="$router.push('/quiz/answers')" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">See Answers.</button>
+    <button @click="$router.push('/quiz/answers')" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">See Answers!</button>
         </div>
     </div>
     </div>
@@ -109,6 +126,9 @@ export default {
     next: function() {
         this.questionIndex++;
     },
+    previous: function() {
+      this.questionIndex--;
+    },
     submit: function() {
         
     }
@@ -129,4 +149,16 @@ h2 {
     color: #0A4C0A;
 }
 
+#questionContainer {
+  font-size: 30px;
+  padding-top: 20px;
+}
+
+input[type="radio"] {
+    -ms-transform: scale(1.5); 
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+    position: relative;
+    bottom: 3px;
+}
 </style>
