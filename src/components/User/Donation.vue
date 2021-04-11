@@ -82,6 +82,7 @@ export default {
     return {
       form: {
         date: "",
+        day: 0,
         username: "",
         fname: "",
         lname: "",
@@ -93,6 +94,15 @@ export default {
         check: "",
         points: 0
       },
+
+      deduct: {
+          pts: 0, 
+          username: "", 
+          action: "", 
+          date: "", 
+          day: 0
+      },
+      
       error: null
     };
   },
@@ -108,9 +118,16 @@ export default {
               var options = {month: 'long'}
               var d = new Intl.DateTimeFormat('en-US', options)
               var month = d.format(this.form.date)
+              this.form.day = parseInt(this.form.date.getDate())
               this.form.date= this.form.date.getDate() + ' ' + month + ' ' + this.form.date.getFullYear()
               this.form.username = this.user.data.displayName
               this.form.points = -300
+              this.deduct.pts = -300
+              this.deduct.username = this.user.data.displayName 
+              this.deduct.action = "Donated $2"
+              this.deduct.date = this.form.date
+              this.deduct.day = this.form.day
+              database.collection('users').add(this.deduct)
               database.collection('donation').add(this.form).then(() => {
                   if (this.error==null) {
                      this.$router.push({path: './dashboard'})
@@ -118,6 +135,7 @@ export default {
                   }
              
             })
+            
 
           }
 

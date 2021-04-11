@@ -92,3 +92,11 @@ export default {
   }
 };
 </script>
+
+<style> 
+#center { 
+    display: flex;
+    justify-content: center;
+    align-items:center
+}
+</style>
