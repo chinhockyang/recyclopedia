@@ -1,6 +1,6 @@
 <template>
   <div class=" container tab-pane fade show active" id="can-recycle" role="tabpanel" aria-labelledby="can-recycle-tab">
-    <h1>What I {{ topic }} Recycle</h1>
+    <h1 class="mt-3">What I {{ topic }} Recycle</h1>
 
     <div class="input-group mt-3">
       <input type="text" class="form-control" v-model="search" placeholder="Search title.."/><br><br>      
@@ -125,7 +125,7 @@ export default {
         //currentPage: page of pagination - 1
         //pageSize: number of items shown per page
         currentPage: 0,
-        pageSize: 3,        
+        pageSize: 6,        
 
         //items to be shown (filter)
         checkedList: ['Plastic', 'Paper', 'Glass', 'Metal', 'Electronics', 'Others'],

@@ -116,7 +116,7 @@ li{
     border: 1px solid #222;
     margin-right: 100px;
     margin-left: auto;            
-    background-color: lightgray;
+    background-color: #E3E9BB;
 }
 
 li:hover {
