@@ -3,7 +3,6 @@
 
   <div id="quizQuestions">
     <div v-for="(question, index) in quiz.questions" :key="index">
-      <div v-if="index == questionIndex">
 
       <div class="row align-items-center justify-content-center text-center mt-3">
         <div id = "questionContainer" class="col-4" style="background-color: #E3E9BB">
@@ -16,25 +15,10 @@
             </li>
           </ul>
         </div>
-      </div>
-      <div class="row align-items-center justify-content-center text-center mt-3">
-          <div class="col-4 text-right">
-        <button v-on:click="next" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Next</button>
-        </div>
-      </div>
     </div>
       
     </div>
-    <div v-show="questionIndex == quiz.questions.length">
-    <div class="row align-items-center justify-content-center text-center">
-        <div class="col-4">
-    <h2>End of quiz</h2>
-    <h2>Total score: {{ score() }} / 8</h2>
-    <h2>You have earned {{ score()*10 }} points</h2>
-    <button @click="$router.push('/quiz/answers')" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">See Answers.</button>
-        </div>
-    </div>
-    </div>
+  
 </div>
   </div>
 </template>
