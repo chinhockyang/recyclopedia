@@ -18,8 +18,6 @@
 </template>
 
 <script>
-import quizQuestions from './QuizQuestions.vue'
-
 var quiz = {
   questions: [
     {

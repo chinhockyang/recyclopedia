@@ -1,73 +1,65 @@
 <template>
-
-
   <div id="quizQuestions">
     <div v-for="(question, index) in quiz.questions" :key="index">
       <div v-if="index == questionIndex">
-      <div class="row justify-content-center mt-3" style="padding-top: 100px;">
+        <div class="row justify-content-center mt-3" style="padding-top: 100px;">
           <h2>Question {{ index + 1 }} of 8</h2>
-      </div>
-      <div class="row align-items-center justify-content-center text-center mt-3 h-100">
-        <div id = "questionContainer" class="col-8" style="background-color: #E3E9BB">
-          <h1>{{ question.text }}</h1>
-          <img class="img-thumbnail" :src="question.img">
-          <ul>
-            <li v-for="response in question.responses" :key="response">
+        </div>
+        <div class="row align-items-center justify-content-center text-center mt-3 h-100">
+          <div id = "questionContainer" class="col-8" style="background-color: #E3E9BB">
+            <h1>{{ question.text }}</h1>
+            <img class="img-thumbnail" :src="question.img">
+            <ul>
+              <li v-for="response in question.responses" :key="response">
                 <label>
                 <input type="radio" :value="response.correct" :name="index" v-model="userResponses[index]"> {{ response.text }}
                 </label>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div v-if="(index == 7)">
+          <div class="row align-items-center justify-content-center text-center mt-3">
+            <div class="col-4 text-left">
+              <button v-on:click="previous" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Previous</button>
+            </div>
+            <div class="col-4 text-right">
+              <button v-on:click="next" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Submit</button>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="(index == 0)">
+          <div class="row align-items-center justify-content-center text-center mt-3">
+            <div class="col-8 text-right">
+              <button v-on:click="next" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Next</button>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="row align-items-center justify-content-center text-center mt-3">
+            <div class="col-4 text-left">
+              <button v-on:click="previous" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Previous</button>
+            </div>
+            <div class="col-4 text-right">
+              <button v-on:click="next" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Next</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div v-if="(index == 7)">
-        <div class="row align-items-center justify-content-center text-center mt-3">
-        <div class="col-4 text-left">
-        <button v-on:click="previous" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Previous</button>
-        </div>
-          <div class="col-4 text-right">
-        <button v-on:click="next" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Submit</button>
-        </div>
-      </div>
-      </div>
-      <div v-else-if="(index == 0)">
-        <div class="row align-items-center justify-content-center text-center mt-3">
-
-          <div class="col-8 text-right">
-        <button v-on:click="next" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Next</button>
-        </div>
-      </div>
-      </div>
-      <div v-else>
-      <div class="row align-items-center justify-content-center text-center mt-3">
-        <div class="col-4 text-left">
-        <button v-on:click="previous" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Previous</button>
-        </div>
-          <div class="col-4 text-right">
-        <button v-on:click="next" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">Next</button>
-        </div>
-      </div>
-      </div>
-      
-    </div>
-      
-    </div>
-
-    
+    </div> 
     <div v-show="questionIndex == quiz.questions.length">
       <div class="container" style="padding-top: 250px;">
-    <div class="row align-items-center justify-content-center text-center">
-        <div class="col-6 border border-dark" style="padding: 50px 0px 50px 0px">
-    <h2>End of quiz</h2>
-    <h2>Total score: {{ score() }} / 8</h2>
-    <h2>You have earned {{ score()*10 }} points</h2>
-    <button @click="$router.push('/quiz/answers')" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">See Answers!</button>
+        <div class="row align-items-center justify-content-center text-center">
+          <div class="col-6 border border-dark" style="padding: 50px 0px 50px 0px">
+            <h2>End of quiz</h2>
+            <h2>Total score: {{ score() }} / 8</h2>
+            <h2>You have earned {{ score()*10 }} points</h2>
+            <button @click="$router.push('/quiz/answers')" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">See Answers!</button>
+          </div>
         </div>
-    </div>
       </div>
     </div>
-</div>
-
+  </div>
 </template>
 
 <script>
