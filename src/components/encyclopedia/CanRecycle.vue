@@ -125,7 +125,7 @@ export default {
         //currentPage: page of pagination - 1
         //pageSize: number of items shown per page
         currentPage: 0,
-        pageSize: 3,        
+        pageSize: 6,        
 
         //items to be shown (filter)
         checkedList: ['Plastic', 'Paper', 'Glass', 'Metal', 'Electronics', 'Others'],
