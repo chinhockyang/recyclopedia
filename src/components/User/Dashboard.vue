@@ -28,6 +28,14 @@
                     role="tab" 
                     >View Past Records</router-link>
                </li>
+               <li>
+                    <router-link to="/dashboard" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >Profile Information</router-link>
+               </li>
            </ul>                        
        </nav> 
     <div id="center">
@@ -171,6 +179,7 @@ export default {
       } 
       if (this.pass == true) {
          alert("Profile Information updated successfully!")
+         location.reload()
       }
     }
 
