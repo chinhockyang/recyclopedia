@@ -103,8 +103,8 @@
                           >
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>    
                           </button>
-                    </div>
-              </div>                        
+                        </div>
+                      </div>                        
                   </div>
             </div>
           </div>
@@ -112,11 +112,12 @@
         <div class="card">
           <div class="card-header" id="headingTwo">
             <button class="btn btn-outline-light" style="text-decoration:none; color:green;" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                <h5>Most Recycled {{category}}</h5>
+                <h5>Recycling Records of {{category}} in Recyclopedia</h5>
             </button>            
           </div>
-          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">            
             <div class="card-body mb-3">
+              <h5 class="mt-3 ml-5">Commonly Recycled {{category}}</h5>
               <div
                     id="carouselMultiItemExample"
                     class="carousel slide carousel-dark text-center"
@@ -173,31 +174,100 @@
                             </div>
                       </div>
                     </div>
-                    <!-- Inner -->
-                  </div>
+                    <!-- Inner -->                     
+                </div>                
+                <h5 class="mt-5">Top 10 Recycled {{category}} in Recyclopedia</h5>
+                <div class="row">
+                        <div class="col">
+                            <div class="chart mt-1">
+                              <h5 class="lead">Recycled in Recyclopedia</h5>    
+                                <bar-chart :category="category" class="chart-canvas"></bar-chart>
+                            </div>
+                        </div>                        
+                </div>
             </div>
           </div>
         </div>
         <div class="card mb-3">
           <div class="card-header" id="headingOne">            
               <button class="btn btn-outline-light" style="text-decoration:none; color:green;" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                <h5>Recyclopedia Statistics of {{category}}</h5>
+                <h5>Search Records of {{category}} in Recyclopedia</h5>
               </button>            
           </div>
           <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordion">
-            <div class="card-body">
+            <div class="card-body">              
                 <div class="card p-3">
+                  <h5 class="mt-3 ml-5">Commonly Searched {{category}}</h5>
+                  <div
+                    id="carouselMultiItemExample2"
+                    class="carousel slide carousel-dark text-center"
+                    data-ride="carousel"
+                  >
+                  
+                  <!-- Controls -->                  
+                  <ol class="carousel-indicator d-flex justify-content-center mb-4">
+                      <li
+                        class="carousel-control-prev position-relative m-3 p-1"
+                        style="background-color:green;"
+                        type="button"
+                        data-target="#carouselMultiItemExample2"
+                        data-slide="prev"
+                        v-show="mostSearched.length > 3"
+                      >
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>      
+                      </li>
+                      
+                      <li      
+                        class="carousel-control-next position-relative m-3 p-1"
+                        style="background-color:green;"
+                        type="button"
+                        data-target="#carouselMultiItemExample2"
+                        data-slide="next"                
+                        v-show="mostSearched.length > 3"
+                      >
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>      
+                      </li>
+                    </ol>
+                    
+                    <!-- Inner -->
+                    <div class="carousel-inner">
+                        <!-- Single item -->
+                        <div class="carousel-item active">
+                            <div class="container" style="overflow-x: auto; white-space: nowrap;">
+                              <span v-for="i in mostSearched.slice(0,3)" :key="i.name">                                  
+                                  <div class="card mx-2" style="pointer-events:none; display:inline-block; white-space: normal;">
+                                      <item-card :item="i" style="width: 250px;"></item-card>
+                                  </div>                                 
+                              </span>            
+                          </div>
+                        </div>
+                    
+                    
+                        <!-- Single item -->
+                        <div class="carousel-item">
+                            <div class="container" style="overflow-x: auto; white-space: nowrap;">
+                              <span v-for="i in mostSearched.slice(3,6)" :key="i.name">                                  
+                                  <div class="card mx-2" style="pointer-events:none; display:inline-block; white-space: normal;">
+                                      <item-card :item="i" style="width: 250px;"></item-card>
+                                  </div>                              
+                              </span>                                             
+                            </div>
+                      </div>
+                    </div>
+                    <!-- Inner -->                     
+                  </div>
+                  <h5 class="mt-5">Search Statistics of {{category}} in Recyclopedia</h5>
                   <div class="row">
                     <div class="col mt-3">
                         <div class="chart justify-content-center">
                             <h5 class="lead">Commonly searched Recyclable {{category}}</h5>
-                            <bar-chart :category="category" :recyclable="true" class="chart-canvas"></bar-chart>
+                            <horizontal-bar-chart :category="category" :recyclable="true" class="chart-canvas"></horizontal-bar-chart>
                         </div>
                     </div>
                     <div class="col mt-3">
                         <div class="chart">
                             <h5 class="lead">Commonly searched Non-Recyclable {{category}}</h5>
-                            <bar-chart :category="category" :recyclable="false" class="chart-canvas"></bar-chart>
+                            <horizontal-bar-chart :category="category" :recyclable="false" class="chart-canvas"></horizontal-bar-chart>
                         </div>
                     </div>
                   </div>
@@ -217,7 +287,7 @@
                                 <pie-chart :category="category" chartType="searchCount" class="chart-canvas"></pie-chart>
                             </div>
                         </div>                                                                                          
-                    </div>      
+                    </div>                                
                 </div>
             </div>
           </div>
@@ -231,6 +301,7 @@
 <script>
 import database from '../../firebase.js'
 import BarChart from './charts/BarChart.vue'
+import HorizontalBarChart from './charts/HorizontalBarChart.vue'
 import PieChart from './charts/PieChart.vue'
 import ItemCard from './ItemCard.vue'
 
@@ -242,27 +313,32 @@ export default {
         totalRecycled: 0,
         canRecycle: [],
         cannotRecycle: [],
-        mostRecycled: []        
+        allItem: [],
+        mostRecycled: [],
+        mostSearched: []
     }
   }, 
 
   methods:{   
-    fetchItems: function() {
+    fetchItems: function() {        
         database.collection('items').where('category','==', this.category).get().then((querySnapShot)=>{
                 let item={}            
                 querySnapShot.forEach(doc=>{
                 item=doc.data()
                 item.show=false
-                item.id=doc.id                                
+                item.id=doc.id 
                 if (item.approved & item.recyclable) { 
                     this.canRecycle.push(item);
+                    this.allItem.push(item);
                     this.totalSearched = this.totalSearched + item.amountSearched
                     this.totalRecycled = this.totalRecycled + item.amountRecycled;                    
                 } else if (item.approved & !item.recyclable) {
                     this.cannotRecycle.push(item);
+                    this.allItem.push(item);
                     this.totalSearched = this.totalSearched + item.amountSearched
-                }                
-                this.mostRecycled = this.canRecycle.sort((a,b) => (a.amountRecycled > b.amountRecycled) ? 1 : -1);
+                }
+                this.mostSearched = this.allItem.sort((a,b) => (a.amountSearched < b.amountSearched) ? 1 : -1);
+                this.mostRecycled = this.canRecycle.sort((a,b) => (a.amountRecycled < b.amountRecycled) ? 1 : -1);
             })});         
      }
     },
@@ -277,6 +353,9 @@ export default {
             this.category = val.params.id.charAt(0).toUpperCase() + val.params.id.slice(1);
             this.canRecycle = [],
             this.cannotRecycle = [],
+            this.allItem = [],
+            this.mostSearched = [],
+            this.mostRecycled = [],
             this.totalSearched = 0,
             this.totalRecycled = 0,
             this.fetchItems();
@@ -285,6 +364,7 @@ export default {
 
     components: {        
         'bar-chart': BarChart,
+        'horizontal-bar-chart': HorizontalBarChart,
         'pie-chart': PieChart,
         'item-card': ItemCard
     }

@@ -1,22 +1,20 @@
-import { Bar } from 'vue-chartjs'
+import { HorizontalBar } from 'vue-chartjs'
 import database from '../../../firebase.js'
 
 export default {
-    extends: Bar,
+    extends: HorizontalBar,
     data: function() {
         return {
             datapacket: [],
             labels: [],
             datacollection: {
                 labels: [],
-                datasets: [
-                    {
-                        label: "Number",
-                        backgroundColor: [],
-                        data: [],
-                        maxBarThickness: 30
-                    }
-                ]                
+                datasets: [{
+                    label: "Number",
+                    backgroundColor: [],
+                    data: [],
+                    maxBarThickness: 30
+                  }]                
             },
             options: {
                 legend: { display: false },
@@ -28,14 +26,9 @@ export default {
                 scales: {
                     xAxes: [{
                         ticks: {
-                            beginAtZero: true,
-                            maxRotation: 90,
-                            minRotation: 90
+                            beginAtZero: true
                         }
                     }]
-                },
-                tooltips: {
-                    mode: 'x'
                 }                
             }
         }
@@ -44,7 +37,7 @@ export default {
     methods: {
         fetchItems: function() {            
             database.collection('items')                        
-            .orderBy('amountRecycled', 'desc')                 
+            .orderBy('amountSearched', 'desc')                 
             .limit(10)
             .get()                                                      
             .then((querySnapShot)=>{
@@ -53,14 +46,20 @@ export default {
                 item=doc.data()                
                 item.show = false
                 item.id=doc.id                           
-                if (item.category == this.category) {
+                if (item.category == this.category & item.recyclable == this.recyclable) {
                     if (item.name.length > 20) {                        
                         this.datacollection.labels.push(item.name.substring(0,20) + '...')
                     } else {
                         this.datacollection.labels.push(item.name)
                     }
-                    this.datacollection.datasets[0].data.push(item.amountRecycled)                    
-                    this.datacollection.datasets[0].backgroundColor.push("green")
+
+                    this.datacollection.datasets[0].data.push(item.amountSearched)
+                    
+                    if (this.recyclable) {
+                        this.datacollection.datasets[0].backgroundColor.push("green")
+                    } else {
+                        this.datacollection.datasets[0].backgroundColor.push("grey")
+                    }                 
                 }                
             })
             this.renderChart(this.datacollection, this.options);
@@ -77,7 +76,7 @@ export default {
             this.fetchItems();
         }
     },
-    props: ['category'],
+    props: ['category', 'recyclable'],
 
     created() {
         this.fetchItems();        
