@@ -18,6 +18,7 @@ import addNewRecord from './components/User/addNewRecord.vue'
 import Points from './components/User/Points.vue'
 import Donation from './components/User/Donation.vue'
 import Past from './components/User/Past.vue'
+import forgotPassword from './components/User/forgotPassword.vue'
 
 export default [
   { path: '/', component: Home },
@@ -36,6 +37,7 @@ export default [
 
   { path: '/login', component: Login }, 
   { path: '/register', component: Register }, 
+  { path: '/forgotpw', component: forgotPassword },
   { path: '/dashboard', component: Dashboard },
   { path: '/addNewRecord', component: addNewRecord },
   { path: '/points', component: Points},

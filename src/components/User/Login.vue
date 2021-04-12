@@ -29,7 +29,9 @@
         <div id="center">
         <p>No account yet? <router-link to="/register">Register here!</router-link></p>
         </div>
-
+        <div id="center">
+          <router-link to="/forgotpw">Forgot Password</router-link>
+        </div>
       </form>
       </div>
       </div>
