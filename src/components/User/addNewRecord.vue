@@ -167,7 +167,7 @@ export default {
               database.collection('users').add(this.pointsRecord);
               database.collection('records').add(this.form).then(() => {
                   if (this.error==null) {
-                     this.$router.push({path: './dashboard'})
+                     this.$router.push({path: './past'})
                     alert("New record added successfully!")
                   }
              
