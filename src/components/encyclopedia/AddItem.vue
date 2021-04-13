@@ -61,7 +61,7 @@
                     <label>Additional Item Descriptions:</label><br>      
                     <textarea 
                         class="form-control" 
-                        placeholder="Provided more information on the item! (if applicable)"
+                        placeholder="Provided more information on the item if any..."
                         v-model="item.addDescription" 
                         form="add-item-form">                        
                     </textarea>

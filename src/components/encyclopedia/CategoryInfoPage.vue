@@ -108,7 +108,7 @@
                 <h5>Recycling Records of {{category}} in Recyclopedia</h5>
             </button>            
           </div>
-          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">            
+          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">                        
             <div class="card-body mb-3">
               <h5 class="mt-3 ml-5">Commonly Recycled {{category}}</h5>
               <div
@@ -189,8 +189,14 @@
               </button>            
           </div>
           <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordion">
-            <div class="card-body">              
-                <div class="card p-3">
+            <div class="card-body">
+                <p style="width: 80%; margin: auto;">
+                  Here are the most commonly browsed items of {{category}} in Recyclopedia, which means that 
+                  many users have the intention to dispose them in the Recycling Bins!
+                  However some of these items are non-recyclable, it is important for us to take note of what items can 
+                  and cannot be recycled!
+                </p>
+                <div class="card p-3 mt-3">
                   <h5 class="mt-3 ml-5">Commonly Searched {{category}}</h5>
                   <div
                     id="carouselMultiItemExample2"

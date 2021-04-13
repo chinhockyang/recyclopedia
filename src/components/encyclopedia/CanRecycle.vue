@@ -1,6 +1,6 @@
 <template>
   <div class=" container tab-pane fade show active mb-5" id="can-recycle" role="tabpanel" aria-labelledby="can-recycle-tab">
-    <h1 class="mt-3">What I {{ topic }} Recycle</h1>
+    <h1 class="mt-3">What {{ topic }} I Recycle</h1>
 
     <div class="input-group mt-3">
       <input type="text" class="form-control" v-model="search" placeholder="Search title.."/><br><br>      
@@ -187,7 +187,7 @@ export default {
   watch: {
     //render "can" or "cannot" based on $route param 
     canRecycle: function(val) {      
-      return this.topic = eval(val) ? 'can' : 'cannot';
+      return this.topic = eval(val) ? "Can" : "Can't";
     }, 
 
     // if $route param changed to false (cannot recycle)
