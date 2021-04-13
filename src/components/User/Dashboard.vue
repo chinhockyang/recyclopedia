@@ -233,16 +233,12 @@ export default {
     }, 
 
     updateUsername() {
-      this.error = null
-      this.pass = false 
-      if (this.update.name != "") {
-        database.collection('tier').doc(this.user.data.displayName).set({level: this.now, name: this.update.name})
-        this.pass = true 
-      }
-      if (this.pass == true) {
-        alert("Profile Information updated successfully!  Please sign in again.")
-         this.signOut()
-      }
+      database.collection('tier').doc(this.user.data.displayName).set({level: this.now, name: this.update.name})
+      alert("Profile Information updated successfully!  Please sign in again.")
+      firebaseApp.auth().signOut().then(() => {
+          this.$router.push({path: '/login'})
+      })
+
     },
 
     updateEmail() {
