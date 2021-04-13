@@ -1,5 +1,5 @@
 <template>
-  <div class=" container tab-pane fade show active" id="can-recycle" role="tabpanel" aria-labelledby="can-recycle-tab">
+  <div class=" container tab-pane fade show active mb-5" id="can-recycle" role="tabpanel" aria-labelledby="can-recycle-tab">
     <h1 class="mt-3">What I {{ topic }} Recycle</h1>
 
     <div class="input-group mt-3">
@@ -84,7 +84,8 @@
         <li v-for="item in visibleItems"
             class="col-s-8 col-md-6 col-l-4 m-3 justify-content-center"  
             style="max-width: 285px;"
-            v-bind:key="item.name">            
+            v-bind:key="item.name"            
+            :title="'Click for more ' + item.name + ' information'">            
             <item-card :item="item"></item-card>
         </li>
     </ul>
@@ -252,6 +253,12 @@ li{
     text-align: center;
     margin-left: 3%;
     margin-right: 3%;    
+}
+
+li:hover {
+  border-color:lightgreen;
+  border-style: ridge;
+  border-width: unset;
 }
 
 </style>

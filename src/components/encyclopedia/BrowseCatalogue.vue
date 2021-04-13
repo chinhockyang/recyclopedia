@@ -102,8 +102,9 @@ export default {
 <style scoped>
 
 .card:hover {
-  border: green solid;
-  opacity: 1;
+  border-color:lightgreen;
+  border-style: ridge;
+  border-width: unset;
 }
 
 a:hover {

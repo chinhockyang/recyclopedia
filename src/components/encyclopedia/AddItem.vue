@@ -32,6 +32,7 @@
                 <div class="form-group" v-show="item.recyclable">
                     <label>Recycling Instruction:</label>
                     <select class="form-control" v-model="item.instruction">
+                        <option value="" disabled selected>-- Pick a Recycling Instruction (if applicable) --</option>
                         <option  v-for="instruction in instructionsList" :key="instruction">
                             {{instruction}}
                         </option>
@@ -41,6 +42,7 @@
                 <div class="form-group" v-show="item.category">
                     <label>Method of Disposal:</label>
                     <select class="form-control" v-model="item.disposal">
+                        <option value="" disabled selected>-- Pick a Disposal Method (if applicable) --</option>
                         <option  v-for="disposal in disposalList" :key="disposal">
                             {{disposal}}
                         </option>
@@ -57,13 +59,16 @@
 
                 <div class="form-group mt-4">
                     <label>Additional Item Descriptions:</label><br>      
-                    <textarea class="form-control" v-model="item.addDescription" form="add-item-form">
-                        Enter text here...
+                    <textarea 
+                        class="form-control" 
+                        placeholder="Provided more information on the item! (if applicable)"
+                        v-model="item.addDescription" 
+                        form="add-item-form">                        
                     </textarea>
                 </div>
                 
                 <div class="form-group mt-3">
-                    <label class="mb-1">Similar Items:</label><br>                                        
+                    <label class="mb-1">Similar or Related Items:</label><br>                                        
                     <div class="btn-group mx-1 mb-1" role="group" v-for="i in item.similarItem" :key="i">
                         <h5><badge class="badge badge-success p-1">{{i}}</badge></h5>
                         <button type="button" class="close mb-2" aria-label="Close" @click.prevent="removeSimilarItem(i);">
@@ -74,7 +79,7 @@
                     :itemsList="similarItemList"
                     :buttonName="'Add Item'"
                     @searched="addSimilarItem"
-                    style="display: flex; flex-grow:2;">
+                    >
                     </search-tool>                    
                 </div>
 

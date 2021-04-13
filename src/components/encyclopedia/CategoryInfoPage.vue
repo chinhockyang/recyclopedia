@@ -29,7 +29,7 @@
                           id="carouselBasicExample"
                           class="carousel slide carousel-fade"
                           data-ride="carousel"
-                          data-bs-interval="false"
+                          data-interval="false"
                         >
 
                         <!-- Inner -->
@@ -39,7 +39,7 @@
                                   :src="posters[0].imageUrl"
                                   class="d-block mx-auto"
                                   alt="..."
-                                  style="max-height: 600px; max-width: 1000px;"                                  
+                                  style="max-height: 600px; max-width: 1000px; overflow-x: visible;"                                  
                                   v-b-modal="posters[0].imageUrl"                                  
                                 />
                                 <p class="card-subtitle text-muted mt-2 mb-3">
@@ -49,7 +49,7 @@
                                   <img
                                     :src="posters[0].imageUrl"
                                     class="d-block w-100"
-                                    alt="..."                                    
+                                    alt="..."                                                                        
                                   />
                                 </b-modal>                       
                             </div>
@@ -60,7 +60,7 @@
                                   class="d-block mx-auto"
                                   alt="..."
                                   v-b-modal="poster.imageUrl"
-                                  style="max-height: 600px; max-width: 900px;"                                  
+                                  style="max-height: 600px; max-width: 900px; overflow-x: visible;"                                  
                                 />
                                 <p class="card-subtitle text-muted mt-2 mb-3">
                                       {{poster.description}}
@@ -69,7 +69,7 @@
                                   <img
                                     :src="poster.imageUrl"
                                     class="d-block w-100"
-                                    alt="..."                                    
+                                    alt="..."                                                                   
                                   />
                                 </b-modal>    
                             </div>
@@ -115,7 +115,7 @@
                     id="carouselMultiItemExample"
                     class="carousel slide carousel-dark text-center"
                     data-ride="carousel"
-                    data-bs-interval="false"
+                    data-interval="false"
                   >
                   
                   <!-- Controls -->                  
@@ -196,7 +196,7 @@
                     id="carouselMultiItemExample2"
                     class="carousel slide carousel-dark text-center"
                     data-ride="carousel"                    
-                    data-bs-interval="false"
+                    data-interval="false"
                   >
                   
                   <!-- Controls -->                  
