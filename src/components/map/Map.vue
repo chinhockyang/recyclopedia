@@ -2,8 +2,8 @@
   <div>
     <h3>Find My Bin</h3>
     <div id="map" class="w-100 p-3 container-fluid"></div>
-    <div class="w-100 p-3 container-fluid">
-      <ul class="btn-group list-inline" role="group">
+    <div class="w-100 p-3 container">
+      <ul class="btn-group list-inline form-check" role="group">
         <!-- <li v-show="!tooZoomedOut">
           <input 
             type="checkbox"
@@ -27,7 +27,7 @@
         <li v-for="binType in binTypes" :key="binType.id" class="list-inline-item">
                       <!-- :for="binType.id"  -->
           <label 
-            class="btn btn-outline-primary"
+            class="btn btn-outline-primary form-check-label"
           >
             <input 
             type="checkbox" 
@@ -35,7 +35,7 @@
             :value="binType.id"
             v-model="checkedBinTypes"
             @change="setFilter($event)"
-            class="btn-check"
+            class="btn-check form-check-input"
             autocomplete="off" 
             >
             {{binType.title}}
@@ -53,10 +53,8 @@ import gmapsInit from './Map.js';
 export default {
   data () {
     return {
+      GMaps_API_KEY: 'AIzaSyB4Qf39SqcEAphfabQgzdx7eaeGA-t8he0',
       map: null,
-      src: "http://drive.google.com/uc?id=1WrA6xSjaGgZel3Ii8JZR_cKzRrCmv4ag", // kml file source
-      circles: [],
-      bins: [],
       binTypes: [
                   {
                     'title': 'Recycle Bins',
@@ -82,7 +80,8 @@ export default {
                     'id': 'lighting'
                   }
                 ],
-      checkedBinTypes: []
+      checkedBinTypes: [],
+      markersLatLng: []
     }
   },
   // TODO: localhost:8080/map/ewaste => shows the ewaste checked
@@ -114,8 +113,21 @@ export default {
       console.log('checkedBinTypes is...');
       console.log(this.checkedBinTypes);
       const showMarker = $event.target.checked;
-      const binType = $event.target.id
-      this.map.data.forEach(function(feature) {
+      const binType = $event.target.id;
+      this.filterMarkers(this.map.data, binType, showMarker);
+      // this.map.data.forEach(function(feature) {
+      //   // console.log('binType is....');
+      //   // console.log(binType);
+      //   if (feature.getProperty('binType') === binType){
+      //     // console.log('feature showMarker is...');
+      //     // console.log(feature.getProperty('showMarker'));
+      //     feature.setProperty('showMarker', showMarker);
+      //   }
+      // })
+    },
+    filterMarkers: function(data, binType, showMarker) {
+      // console.log("filterMarkers called!");
+      data.forEach(function(feature) {
         // console.log('binType is....');
         // console.log(binType);
         if (feature.getProperty('binType') === binType){
@@ -125,172 +137,71 @@ export default {
         }
       })
     },
-    // calculateDistances: async function(data, origin) {
-    //   const addresses = [];
-    //   const destinations = [];
-
-    //   // only get bins that are reasonably nearby
-    //   data.forEach((bin) => {
-    //     const binLoc = bin.getGeometry().get();
-    //     const diff_lng = Math.abs(origin.lat - binLoc.lat());
-    //     const diff_lat = Math.abs(origin.lng - binLoc.lng());        
-    //     if (diff_lat < 0.1 && diff_lng < 0.1) {
-    //       addresses.push(bin.getProperty('address'));
-    //       destinations.push(binLoc);
-    //     }
-    //   });
-
-    //   // Retrieve the distances of each store from the origin
-    //   // The returned list will be in the same order as the destinations list
-    //   const service = new this.google.maps.DistanceMatrixService();
-    //   const getDistanceMatrix = 
-    //     (service, parameters) => new Promise((resolve, reject) => {
-    //       service.getDistanceMatrix(parameters, (response, status) => {
-    //         if (status != this.google.maps.DistanceMatrixStatus.OK) {
-    //           reject(response);
-    //         } else {
-    //           const distances = [];
-    //           const results = response.rows[0].elements;
-    //           for (let j = 0; j < results.length; j++) {
-    //             const element = results[j];
-    //             const distanceText = element.distance.text;
-    //             const distanceVal = element.distance.value;
-    //             const distanceObject = {
-    //               address: addresses[j],
-    //               distanceText: distanceText,
-    //               distanceVal: distanceVal,
-    //               coordinates: destinations[j],
-    //             };
-    //             distances.push(distanceObject);
-    //           }
-
-    //           resolve(distances);
-    //         }
-    //       });
-    //     });
-    //   const distancesList = await getDistanceMatrix(service, {
-    //     origins: [origin],
-    //     destinations: destinations,
-    //     travelMode: 'WALKING',
-    //     unitSystem: this.google.maps.UnitSystem.METRIC,
-    //   });
-
-    //   distancesList.sort((first, second) => {
-    //     return first.distanceVal - second.distanceVal;
-    //   });
-
-    //   return distancesList.slice(10);
-    // },
-    
-    // showBinsList(data, bins) {
-    //   if (bins.length == 0) {
-    //     console.log('no bins');
-    //     return;
-    //   }
-      
-    //   let panel = document.createElement('div');
-    //   // If the panel already exists, use it. Else, create it and add to the page.
-    //   if (document.getElementById('panel')) {
-    //     panel = document.getElementById('panel');
-    //     // If panel is already open, close it
-    //     if (panel.classList.contains('open')) {
-    //       panel.classList.remove('open');
-    //     }
-    //   } else {
-    //     panel.setAttribute('id', 'panel');
-    //     const body = document.body;
-    //     body.insertBefore(panel, body.childNodes[0]);
-    //   }
-
-    //   // Clear the previous details
-    //   while (panel.lastChild) {
-    //     panel.remove(panel.lastChild);
-    //   }
-
-    //   bins.forEach((bin) => {
-    //     // Add store details with text formatting
-    //     const name = document.createElement('p');
-    //     name.classList.add('place');
-    //     const currentBin = data.getFeatureById(bin.address);
-    //     name.textContent = currentBin.getProperty('address');
-    //     panel.appendChild(name);
-    //     const distanceText = document.createElement('p');
-    //     distanceText.classList.add('distanceText');
-    //     distanceText.textContent = bin.distanceText;
-    //     panel.appendChild(distanceText);
-    //   });
-
-    //   // Open the panel
-    //   panel.classList.add('open');
-    //   return;
-    // },
-    fetchAndRenderBins: async function(center) {
-      // Fetch the Bins from the data source
-      this.bins = (await this.fetchBins(center)).features;
-
-      // Create circular markers based on the stores
-      this.circles = this.bins.map((bin) => this.binToCircle(bin, this.map));
-    },
-    fetchBins: async function(center){
-      const url = `testbins.json`;
-      const response = await fetch(url);
-      console.log(center);
-      try { 
-        console.log(response.json()); 
-      } catch(error) {
-        console.log('Error happened here!');
-        console.error(error);
+    markUserLocation: function(navigator, map, infoWindow, zoom) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = [position.coords.latitude, position.coords.longitude];
+            this.markLocation(map, infoWindow, pos, "Location found.", zoom);
+          });
+      } else {
+        // Browser doesn't support Geolocation
+        this.handleLocationError(false, infoWindow, map.getCenter(), map);
       }
-      return response;
     },
-    binToCircle: async function(bin, map, infowindow) {
-      const [lng, lat] = bin.geometry.coordinates;
-      const circle = new this.google.maps.Circle({
-        radius: 50,
-        strokeColor: "#579d42",
-        strokeOpacity: 0.8,
-        strokeWeight: 5,
-        center: { lat, lng },
-        map,
-      });
-      circle.addListener("click", () => {
-        infowindow.setContent(`${bin.properties.business_name}<br />
-          ${bin.properties.address_address}<br />
-          Singapore ${bin.properties.zip_code}`);
-        infowindow.setPosition({ lat, lng });
-        infowindow.setOptions({ pixelOffset: new this.google.maps.Size(0, -30) });
-        infowindow.open(map);
-      });
-      return circle;
+    markLocation: function(map, infoWindow, pos, content, zoom) {
+      const pos_obj = {
+        lat: pos[0],
+        lng: pos[1]
+      }
+      map.setCenter(pos_obj);
+      map.setZoom(zoom);
+      if (this.isLocationFree(pos)) {
+        const marker = new this.google.maps.Marker({
+          position: pos_obj,
+          map: map
+        });
+        this.markersLatLng.push([pos.lat, pos.lng]);
+        console.log([pos.lat, pos.lng]);
+        console.log("this.markersLatLng.length");
+        console.log(this.markersLatLng.length);     
+        marker.addListener("click", () => {
+          infoWindow.setPosition(pos);
+          infoWindow.setContent(content);
+          infoWindow.setOptions({pixelOffset: new this.google.maps.Size(0, -30)});
+          infoWindow.open(map);
+        });
+      } else {
+        return;
+      }
+    },
+    isLocationFree: function(search) {
+      console.log([search[0], search[1]]);
+      for (var i = 0, l = this.markersLatLng.length; i < l; i++) {
+        if (this.markersLatLng[i][0] === search[0] && this.markersLatLng[i][1] === search[1]) {
+          console.log(this.markersLatLng[i])
+          console.log("matching marker location found.");
+          return false;
+        }
+      }
+      return true;
     }
   },
   async mounted() {
     try {
       this.google = await gmapsInit();
       this.map = new this.google.maps.Map(document.getElementById("map"));
-      // Map centres on Singapore
+      // Map centres on Singapore by default
       this.map.setCenter({lat: 1.352083, lng: 103.819836})
       this.map.setZoom(11);
-      
-      // Pan to user's location upon page load
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            };
-            this.map.setCenter(pos);
-            this.map.setZoom(15);
-          });
-      } else {
-        // Browser doesn't support Geolocation
-        this.handleLocationError(false, infoWindow, this.map.getCenter(), this.map);
-      }
-      
+      const infoWindow = new this.google.maps.InfoWindow();
+
+      // Pan to user's location upon page load if navigator enabled
+      this.markUserLocation(navigator, this.map, infoWindow, 15);
+
       // Load the GeoJson bins data onto the map 
       try {
-        console.log('loading GeoJson here!');
+        // console.log('loading GeoJson here!');
         // file hosted using Google Drive, doesn't bypass CORS issue with Chrome
         // map.data.loadGeoJson('http://drive.google.com/uc?id=1_LivKGKN37UCxgIMlBqJRPzj4lBY8rip');
 
@@ -313,9 +224,6 @@ export default {
         // this.map.data.loadGeoJson('data/lightingGeo.json');    
         // var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
         
-        // const scale = this.google.maps.Size(4,4);
-        // console.log("Size is...");
-        // console.log(scale.toString());
         // style icons based on binType
         this.map.data.setStyle(function(feature) {
           // choose icon based on binType
@@ -344,15 +252,12 @@ export default {
               // iconPath = 'icons/lamp.png';
               break;
           }
-          // console.log('feature showMarker is...');
-          // console.log(feature.getProperty('showMarker'));
           return /** @type {this.google.maps.Data.StyleOptions } */ {
             // showMarker acts as a toggle for us to show or 
             // hide the marker of the corresponding data feature
             visible: feature.getProperty('showMarker'),
             icon: {
               url: iconPath,
-              // scaledSize: scale
             }
           };
         });
@@ -361,9 +266,17 @@ export default {
         console.log('Error happened here!');
         console.error(error);
       }
+    
+      // filter Markers by VueJS route here
+      if (this.checkedBinTypes.length != 0) {
+        for (const binType of this.checkedBinTypes) {
+          this.filterMarkers(this.map.data, binType, true);
+        }
+        // const binType = this.checkedBinTypes[0];
+        // this.checkedBinTypes = [binType];
+        // this.filterMarkers(this.map.data, binType, true);
+      }
 
-
-      const infoWindow = new this.google.maps.InfoWindow();
       // Infowindow pops up with details for each bin when its marker is clicked
       this.map.data.addListener('click', (event) => {
         console.log('event is ----- ' + event);
@@ -374,19 +287,18 @@ export default {
         const lat = position.lat();
         const lng = position.lng();
         const content = `
-                      <h4>${address}</h4>
-                      <p>${postcode}</p><br>
-                      <a href="https://www.google.com/maps/search/?api=1&query=${lat}%2C${lng}" id="open-in-gmaps" target="_blank">link</a>
-                      <button onclick="window.location.href='https://www.google.com/maps/search/?api=1&query=${lat}%2C${lng}';">
-                        button onclick
-                      </button>
-                      <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${lat}%2C${lng}', '_blank')">
-                        window open
-                      </button>
+                  <div style="margin-left:20px; margin-bottom:20px;">
+                    <h5>${address}</h5>
+                    <p>${postcode}</p><br>
+                    <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${lat}%2C${lng}', '_blank')">
+                      Open in Google Maps
+                    </button>
+                  </div>
                       `;
-
+        // TODO: style Info window nicely
         infoWindow.setContent(content);
         infoWindow.setPosition(position);
+        // Info window pops up above marker
         infoWindow.setOptions({pixelOffset: new this.google.maps.Size(0, -30)});
         infoWindow.open(this.map);
       });
@@ -422,12 +334,12 @@ export default {
       const autocomplete = new this.google.maps.places.Autocomplete(input, options);
       autocomplete.setFields(['address_components', 'geometry','name']);
 
-      const originMarker = new this.google.maps.Marker({map: this.map});
-      originMarker.setVisible(false);
+      // const originMarker = new this.google.maps.Marker({map: this.map});
+      // originMarker.setVisible(false);
       let originLocation = this.map.getCenter();
 
       autocomplete.addListener('place_changed', async () => {
-        originMarker.setVisible(false);
+        // originMarker.setVisible(false);
         originLocation = this.map.getCenter();
         const place = autocomplete.getPlace();
 
@@ -440,22 +352,10 @@ export default {
 
         // Recenter the map to the selected address
         originLocation = place.geometry.location;
-        this.map.setCenter(originLocation);
-        this.map.setZoom(14);
-        console.log(place);
-
-        originMarker.setPosition(originLocation);
-        originMarker.setVisible(true);
-
-        // const rankedBins = await this.calculateDistances(this.map.data, originLocation);
-        // this.showBinsList(this.map.data, rankedBins);
+        const originLatLng = [originLocation.lat(), originLocation.lng()];
+        this.markLocation(this.map, infoWindow, originLatLng, place.name);
       });
 
-      // TODO: menu bar popup on the right when user clicks on a particular pin
-        // Done: Info window pops up directly above marker, instead of menu bar
-        // sub-TODO: style Info window nicely
-      // TODO: "Directions": enable users to open a particular pin in Google Maps so 
-        // they can navigate there using the full features of the app
       // TODO: implement support for phone web view - plist (permissions list)
       // TODO: doesn't work for network server
       // TODO: change icons back to markers, but with different colours for different binTypes
@@ -488,25 +388,32 @@ export default {
       nearMe.classList.add("custom-map-control-button");
       this.map.controls[this.google.maps.ControlPosition.TOP_CENTER].push(nearMe);
       nearMe.addEventListener("click", async () => {
-      //   // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              };
-              this.map.setCenter(pos);
-              this.map.setZoom(15);  
-            });
-        } else {
-          // Browser doesn't support Geolocation
-          this.handleLocationError(false, infoWindow, this.map.getCenter(), this.map);
-        }
+        this.markUserLocation(navigator, this.map, infoWindow);
       });
     } catch (error) {
       console.error(error);
     }
+  },
+  created: function() {
+    console.log("creating");
+    console.log("this.$route.params.id is...");
+    console.log(this.$route.params.id);
+    const binType = this.$route.params.id;
+    this.checkedBinTypes = [binType];
+    // this.filterMarkers(this.map.data, binType, true);
+    // this.mounted();
+  },
+  watch: {
+    $route: function(val) {
+      const binType = val.params.id;
+      this.checkedBinTypes = [binType];
+      this.filterMarkers(this.map.data, binType, true);
+    },
+    // checkedBinTypes: function(val) {
+      // for (const binType of val) {
+      //   this.filterMarkers(this.map.data, binType, true);
+      // }
+    // }
   }
 }
 </script>
@@ -519,6 +426,7 @@ export default {
     padding-left: 15px;
     padding-right: 15px;
     margin: auto;
+    white-space: normal;
     /* display: flex;
     justify-content: center; */
   }
@@ -531,7 +439,7 @@ export default {
     /* justify-content: center; */
   }
   :checked {
-    background-color:#4d90fe;
+    background-color:#4d90fe !important;
   }
   #map {
     height: 85%;
