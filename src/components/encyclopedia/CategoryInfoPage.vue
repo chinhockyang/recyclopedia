@@ -29,7 +29,7 @@
                           id="carouselBasicExample"
                           class="carousel slide carousel-fade"
                           data-ride="carousel"
-                          data-bs-interval="false"
+                          data-interval="false"
                         >
 
                         <!-- Inner -->
@@ -39,7 +39,7 @@
                                   :src="posters[0].imageUrl"
                                   class="d-block mx-auto"
                                   alt="..."
-                                  style="max-height: 600px; max-width: 1000px;"                                  
+                                  style="max-height: 600px; max-width: 1000px; overflow-x: visible;"                                  
                                   v-b-modal="posters[0].imageUrl"                                  
                                 />
                                 <p class="card-subtitle text-muted mt-2 mb-3">
@@ -49,7 +49,7 @@
                                   <img
                                     :src="posters[0].imageUrl"
                                     class="d-block w-100"
-                                    alt="..."                                    
+                                    alt="..."                                                                        
                                   />
                                 </b-modal>                       
                             </div>
@@ -60,7 +60,7 @@
                                   class="d-block mx-auto"
                                   alt="..."
                                   v-b-modal="poster.imageUrl"
-                                  style="max-height: 600px; max-width: 900px;"                                  
+                                  style="max-height: 600px; max-width: 900px; overflow-x: visible;"                                  
                                 />
                                 <p class="card-subtitle text-muted mt-2 mb-3">
                                       {{poster.description}}
@@ -69,7 +69,7 @@
                                   <img
                                     :src="poster.imageUrl"
                                     class="d-block w-100"
-                                    alt="..."                                    
+                                    alt="..."                                                                   
                                   />
                                 </b-modal>    
                             </div>
@@ -108,14 +108,14 @@
                 <h5>Recycling Records of {{category}} in Recyclopedia</h5>
             </button>            
           </div>
-          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">            
+          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">                        
             <div class="card-body mb-3">
               <h5 class="mt-3 ml-5">Commonly Recycled {{category}}</h5>
               <div
                     id="carouselMultiItemExample"
                     class="carousel slide carousel-dark text-center"
                     data-ride="carousel"
-                    data-bs-interval="false"
+                    data-interval="false"
                   >
                   
                   <!-- Controls -->                  
@@ -189,14 +189,20 @@
               </button>            
           </div>
           <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordion">
-            <div class="card-body">              
-                <div class="card p-3">
+            <div class="card-body">
+                <p style="width: 80%; margin: auto;">
+                  Here are the most commonly browsed items of {{category}} in Recyclopedia, which means that 
+                  many users have the intention to dispose them in the Recycling Bins!
+                  However some of these items are non-recyclable, it is important for us to take note of what items can 
+                  and cannot be recycled!
+                </p>
+                <div class="card p-3 mt-3">
                   <h5 class="mt-3 ml-5">Commonly Searched {{category}}</h5>
                   <div
                     id="carouselMultiItemExample2"
                     class="carousel slide carousel-dark text-center"
                     data-ride="carousel"                    
-                    data-bs-interval="false"
+                    data-interval="false"
                   >
                   
                   <!-- Controls -->                  

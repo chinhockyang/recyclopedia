@@ -92,7 +92,7 @@
 export default {
   data() {
     return {      
-      paragraph:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+      paragraph:"Items in Recyclopedia are classified into these broad categories! Select a category to learn about what are the items under that category that are most commonly recycled, browsed, and learn about important recycling information!"
     }
   }
 }
@@ -102,8 +102,9 @@ export default {
 <style scoped>
 
 .card:hover {
-  border: green solid;
-  opacity: 1;
+  border-color:lightgreen;
+  border-style: ridge;
+  border-width: unset;
 }
 
 a:hover {

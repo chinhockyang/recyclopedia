@@ -22,12 +22,14 @@
           </item-info>
       </div>      
     </div>
-
-    <div class="alert alert-warning alert-dismissible" v-show="alert">
-      <button type="button" class="close" data-dismiss="alert" @click="closeAlert">&times;</button>      
-      <p>Not seeing what you are looking for?</p>
-      <a href='/encyclopedia/add' exact>Request for it to be added to Recyclopedia!</a><br><br>
+    <div v-show="alert">
+      <b-spinner label="Loading..." class="mb-5"></b-spinner>
+      <div class="alert alert-warning alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" @click="closeAlert">&times;</button>         
+          <p>Not seeing what you are looking for?</p>
+          <a href='/encyclopedia/add' exact>Request for it to be added to Recyclopedia!</a><br><br>
     </div>
+    </div>        
   </div>
 </template>
 
