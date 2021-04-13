@@ -1,5 +1,43 @@
 <template>
   <div> 
+    <nav class="nav nav-light justify-content-center">
+           <ul class="nav nav-tabs mt-4 mb-3 mx-auto" id="pills-tab" role="tablist">
+               <li>
+                    <router-link to="/addNewRecord" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >Add New Record</router-link>
+               </li>
+
+                <li>
+                    <router-link to="/points" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >My Points</router-link>
+               </li>
+
+               <li>
+                    <router-link to="/past" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >View Past Records</router-link>
+               </li>
+               <li>
+                    <router-link to="/dashboard" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >Profile Information</router-link>
+               </li>
+           </ul>                        
+       </nav> 
     <div class="containter px-3"> 
       <br>
       <div>
@@ -129,7 +167,7 @@ export default {
               database.collection('users').add(this.pointsRecord);
               database.collection('records').add(this.form).then(() => {
                   if (this.error==null) {
-                     this.$router.push({path: './dashboard'})
+                     this.$router.push({path: './past'})
                     alert("New record added successfully!")
                   }
              

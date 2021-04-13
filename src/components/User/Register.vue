@@ -48,6 +48,7 @@
 
 <script>
 import { firebaseApp } from '../../firebase.js'
+import database from '../../firebase.js'
 
 export default {
   data() {
@@ -84,7 +85,9 @@ export default {
             alert("Your account has been successfully created!")
             firebaseApp.auth().signOut()
             firebaseApp.auth().signInWithEmailAndPassword(this.form.email, this.form.password)
-            this.$router.push({path: './dashboard'})
+            database.collection('tier').doc(this.form.username).set({level: "Welcome Greener", name: this.form.username})
+            firebaseApp.auth().currentUser.sendEmailVerification()
+            this.$router.push({path: './points'})
           }
         });
       }       
@@ -98,5 +101,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items:center
+}
+
+#error {
+    color: red
 }
 </style>

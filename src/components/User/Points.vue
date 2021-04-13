@@ -1,14 +1,56 @@
 <template> 
 <div class="containter px-3"> 
-    <br>
+  <nav class="nav nav-light justify-content-center">
+           <ul class="nav nav-tabs mt-4 mb-3 mx-auto" id="pills-tab" role="tablist">
+               <li>
+                    <router-link to="/addNewRecord" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >Add New Record</router-link>
+               </li>
+
+                <li>
+                    <router-link to="/points" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >My Points</router-link>
+               </li>
+
+               <li>
+                    <router-link to="/past" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >View Past Records</router-link>
+               </li>
+               <li>
+                    <router-link to="/dashboard" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >Profile Information</router-link>
+               </li>
+           </ul>                        
+       </nav> 
+      <div id = "center">
       <h5 style="display:inline">Your Points: {{ countPoints }}</h5>
-      <br>
+      </div>
+      <div id = "center">
       <b-progress :max="max">
         <b-progress-bar :value="countPoints" :label="`${remaining.toFixed(1)}%`" ></b-progress-bar>
       </b-progress>
+      </div>
+      <div id = "center">
       <div class="level">
         <p style="font-size: 15px">{{ this.now }}</p>
         <span style="margin-left: 485px">{{ this.next }}</span>
+      </div>
       </div>
       <br><br>
       <div> 
@@ -27,6 +69,32 @@
             <li style="font-size: 14px">Not entitled to tax relief.</li> 
         </ul>
       </div> 
+    <div>  
+    <br>
+    <p style="font-size: 20px"><strong>Tier Levels</strong></p>
+    <table> 
+      <tr> 
+        <th style="width:100px">Tier</th>
+        <th style="width:100px">Points</th> 
+      </tr>
+      <tr> 
+        <td>Welcome Greener <img src="https://www.flaticon.com/svg/vstatic/svg/628/628297.svg?token=exp=1618212197~hmac=1797f5b178d99fb91dc1f3a7b6981d42" style="width: 8%"></td> 
+        <td>0-199</td> 
+      </tr> 
+      <tr>
+        <td>Bronze Greener <img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583434.svg?token=exp=1618212295~hmac=ffd49f29b5d10deeae2e0bd3c1cc85bf" style="width: 8%"></td>
+        <td>200-599</td> 
+      </tr> 
+      <tr>
+        <td>Silver Greener <img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583319.svg?token=exp=1618212397~hmac=46d735cc48cd11df12c6a3ac3bea638d" style="width: 8%"></td> 
+        <td>600-999</td> 
+      </tr> 
+      <tr>
+        <td>Gold Greener <img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583344.svg?token=exp=1618212442~hmac=a46695df96d9319ebf095b98433bf18d" style="width: 8%"></td> 
+        <td>> 1000</td> 
+      </tr> 
+    </table>
+    </div>
     </div>
 </template> 
 
@@ -78,7 +146,6 @@ export default {
                 this.remaining = 100
                 this.max = 100
             }
-            database.collection('tier').doc(this.user.data.displayName).set({"level": this.now}) 
           } else if (this.countPoints == 0) {
             this.now = "Welcome Greener"
             this.next = "Bronze Greener"
@@ -125,6 +192,25 @@ export default {
   margin-left: 41.5%;
   position: relative;
   display: inline;
+}
+
+table {
+  font-family: "Inconsolata", sans-serif;
+  border-collapse: collapse;
+  width: 40%;
+}
+
+td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+} 
+
+th {
+  background-color: rgb(184, 216, 128);
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
 }
 
 </style>
