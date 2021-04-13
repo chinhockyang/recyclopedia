@@ -1,23 +1,41 @@
 <template>
   <div class="container">
-    <h3>Login</h3>
+    <br>
+    <h2 id="center">Login</h2>
+    <div class="row p-3 mb-5">
+    <div class="col-1 col-md-2 col-l-3"></div>
+    <div class="col-10 col-md-8 col-l-6 bg-light rounded p-3">
+      <div id="center">
       <form> 
         <div>
           <label for="email">Email</label>
-            <br><input type="email" id="email" name="email" required v-model="form.email"/>       
+            <br><input type="email" class="form-control" id="email" name="email" required v-model="form.email"/>       
         </div>
         <br>
         <div>
           <label for="password">Password</label>
-            <br><input type="password" id="password" name="password" required v-model="form.password"/>       
+            <br><input type="password" class="form-control" id="password" name="password" required v-model="form.password"/>       
         </div>
         <div>   
-          <p v-if="error">{{error}}</p>
+          <div id="center">
+          <p id="error" v-if="error">{{error}}</p>
+          </div>
           <br>
-          <button @click.prevent="submit">Login</button>
+          <div id="center">
+          <button @click.prevent="submit" class="btn btn-success">Login</button>
+          </div>
         </div>
+        <br>
+        <div id="center">
         <p>No account yet? <router-link to="/register">Register here!</router-link></p>
+        </div>
+        <div id="center">
+          <router-link to="/forgotpw">Forgot Password</router-link>
+        </div>
       </form>
+      </div>
+      </div>
+  </div>
   </div>
 </template>
 
@@ -48,3 +66,15 @@ export default {
   }
 };
 </script>
+
+<style> 
+#center { 
+    display: flex;
+    justify-content: center;
+    align-items:center
+}
+
+#error {
+    color: red
+}
+</style>

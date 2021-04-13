@@ -1,16 +1,16 @@
 <template>
 <div class="container tab-pane fade show active" id="add" role="tabpanel" aria-labelledby="add-tab">
-    <h1>Add Item to Recyclopedia!</h1>
+    <h1 class="mt-3">Add Item to Recyclopedia!</h1>
     <div class="row p-3 mb-5">
         <div class="col-1 col-md-2 col-l-3"></div>
         <div class="col-10 col-md-8 col-l-6 bg-light rounded p-3">            
             <form class="containter px-3"> 
                 <div class="form-group">
-                    <label>Item Name:<span style="color:red;" title="required"> *</span></label>
+                    <label>Item Name:<span style="color:red;" v-b-tooltip.hover.bottom title="Required"> *</span></label>
                     <input type="text" class="form-control" v-model="item.name" required/>
                 </div>
 
-                <p class="lead mb-0"><small>Is the Item Recyclable?<span style="color:red;" title="required"> *</span></small></p>
+                <p class="lead mb-0"><small>Is the Item Recyclable?<span style="color:red;" v-b-tooltip.hover.bottom title="Required"> *</span></small></p>
                 <div class="form-check form-check-inline">        
                     <input class="form-check-input" type="radio" id="recyclable" v-model="item.recyclable" :value=true>            
                     <label class="form-check-label" for="recyclable">Yes</label>            
@@ -18,64 +18,36 @@
                 <div class="form-check form-check-inline">            
                     <input class="form-check-input" type="radio" id="non-recyclable" v-model="item.recyclable" :value=false>
                     <label class="form-check-label" for="non-recyclable">No</label>            
-                </div><br><br>
+                </div>
 
-                <div class="form-group">            
-                    <label>Category:<span style="color:red;" title="required"> *</span></label>
-                    <select class="form-control" v-model="item.category">          
+                <div class="form-group mt-3">            
+                    <label>Category:<span style="color:red;" v-b-tooltip.hover.bottom title="Required"> *</span></label>
+                    <select class="form-control" v-model="item.category" required>          
                         <option  v-for="option in categoryOption" :key="option">
                             {{option}}
                         </option>
                     </select>            
                 </div>
-                
-                <p class="lead mt-2 pb-0 mb-1" v-show="item.category"><small>Common Recycling Information:</small></p>
-                <table class="table table-bordered table-hover bg-white mb-3" v-show="item.category">
-                    <tbody>                        
-                        <tr v-show="item.recyclable">
-                            <td style="width: 30%" class="table-active border border-secondary">Instruction</td>
-                            <td style="width: 70%" class="table-light border border-secondary"><strong>{{item.instruction}}</strong></td>
-                        </tr>
-                        <tr v-show="item.recyclable">
-                            <td colspan="2" class="table-default border border-secondary">
-                                <span>Pick a common Recycling instruction:</span><br>
-                                <small>List shown is based on the Category and Recyclability of the item.</small><br>                
-                                <search-tool 
-                                    :itemsList="instructionsList"
-                                    :buttonName="'Select'"
-                                    @searched="addInstruction"
-                                    style="margin-top: 5px;">
-                                </search-tool>
-                                <small>
-                                    <em>Note: Press the Select button in order for the instruction picked to be selected</em><br>
-                                    <em>The input will be cleared when the Item's Category or Recyclability is changed</em><br>
-                                    <em>Press the ^ button to refresh the list of recommendations</em>
-                                </small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 30%" class="table-active border border-secondary">Method of Disposal</td>
-                            <td style="width: 70%" class="table-light border-secondary"><strong>{{item.disposal}}</strong></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="table-default border border-secondary"> 
-                                <span>Pick a common method of disposal:</span><br>
-                                <small>List shown is based on the Category and Recyclability of the item.</small>
-                                <search-tool 
-                                    :itemsList="disposalList"
-                                    :buttonName="'Select'"
-                                    @searched="addDisposal"
-                                    style="margin-top: 5px;">
-                                </search-tool>   
-                                <small>
-                                    <em>Note: Press the Select button in order for the method picked to be selected</em><br>
-                                    <em>The input will be cleared when the Item's Category or Recyclability is changed</em><br>
-                                    <em>Press the ^ button to refresh the list of recommendations</em>
-                                </small>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <div class="form-group" v-show="item.recyclable">
+                    <label>Recycling Instruction:</label>
+                    <select class="form-control" v-model="item.instruction">
+                        <option value="" disabled selected>-- Pick a Recycling Instruction (if applicable) --</option>
+                        <option  v-for="instruction in instructionsList" :key="instruction">
+                            {{instruction}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group" v-show="item.category">
+                    <label>Method of Disposal:</label>
+                    <select class="form-control" v-model="item.disposal">
+                        <option value="" disabled selected>-- Pick a Disposal Method (if applicable) --</option>
+                        <option  v-for="disposal in disposalList" :key="disposal">
+                            {{disposal}}
+                        </option>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label for="image-url">Image URL:</label>                        
@@ -87,15 +59,17 @@
 
                 <div class="form-group mt-4">
                     <label>Additional Item Descriptions:</label><br>      
-                    <textarea class="form-control" v-model="item.addDescription" form="add-item-form">
-                        Enter text here...
+                    <textarea 
+                        class="form-control" 
+                        placeholder="Provided more information on the item if any..."
+                        v-model="item.addDescription" 
+                        form="add-item-form">                        
                     </textarea>
                 </div>
                 
                 <div class="form-group mt-3">
-                    <label class="mb-0">Similar Items:</label><br>                    
-                    <small class="mt-0 pt-0"><em>Note: You can add up to 4 similar items.</em></small><br>
-                    <div class="btn-group mx-1 my-1" role="group" v-for="i in item.similarItem" :key="i">
+                    <label class="mb-1">Similar or Related Items:</label><br>                                        
+                    <div class="btn-group mx-1 mb-1" role="group" v-for="i in item.similarItem" :key="i">
                         <h5><badge class="badge badge-success p-1">{{i}}</badge></h5>
                         <button type="button" class="close mb-2" aria-label="Close" @click.prevent="removeSimilarItem(i);">
                             <span aria-hidden="true">&times;</span>
@@ -105,7 +79,7 @@
                     :itemsList="similarItemList"
                     :buttonName="'Add Item'"
                     @searched="addSimilarItem"
-                    style="display: flex; flex-grow:2;">
+                    >
                     </search-tool>                    
                 </div>
 
@@ -179,6 +153,9 @@ export default {
               this.item.category="";
               this.similarItemList= [];
               this.item.similarItem= [];
+              this.item.instruction = "";
+              this.item.disposal = "";
+              this.item.imageUrl = "";
           }          
       },
 
@@ -197,7 +174,7 @@ export default {
       },
 
       addSimilarItem: function(val) {          
-          if (!this.similarItemList.includes(val) | this.item.similarItem.length > 3) {
+          if (!this.similarItemList.includes(val)) {
               return;
           }          
           var index = this.similarItemList.indexOf(val);
@@ -215,22 +192,9 @@ export default {
           this.similarItemList.push(val);
       },
 
-      addInstruction: function(val) {
-          if (!this.instructionsList.includes(val)) {
-              return;
-          }   
-          this.item.instruction = val;       
-      },
-
       clearInstructionList: function() {              
           this.instructionsList = [];
           this.item.instruction = '';
-      },
-
-      addDisposal: function(val) {
-          if (this.disposalList.includes(val)) {
-              this.item.disposal = val;
-          }          
       },
 
       clearDisposalList: function() {                                   

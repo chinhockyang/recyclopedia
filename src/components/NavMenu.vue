@@ -12,7 +12,7 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav m-3">
+          <ul class="navbar-nav m-3 mr-auto">
             <li class="nav-item">
               <router-link class="nav-link" to="/" exact>Home</router-link>
             </li>
@@ -23,6 +23,11 @@
               <router-link class="nav-link" id="nav-bar-encyclopedia" to="/encyclopedia/">Encyclopedia</router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" to="/Quiz">Quiz</router-link>
+            </li>
+          </ul>
+          <ul class="navbar-nav m-3 ml-auto">
+            <li class="nav-item">
               <template v-if="user.loggedIn">            
                 <a class="nav-link" href="/dashboard">Account</a>
               </template> 
@@ -30,10 +35,7 @@
                 <a class="nav-link" href="/login">Account</a> 
               </template>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/Quiz">Quiz</router-link>
-            </li>
-          </ul>      
+          </ul>  
       </div>
     </nav>
   </div>
