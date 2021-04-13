@@ -23,7 +23,7 @@ import forgotPassword from './components/User/forgotPassword.vue'
 
 export default [
   { path: '/', component: Home },
-  { path: '/map', component: myMap },
+  { path: '/map/:id?', component: myMap, props: true },
   
   { path: '/encyclopedia', component: EncyclopediaHome, children: [
     { path: '', component: QuickSearch},

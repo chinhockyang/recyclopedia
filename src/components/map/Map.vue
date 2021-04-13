@@ -1,29 +1,48 @@
 <template>
   <div>
     <h3>Find My Bin</h3>
-    <div id="map"></div>
-    <div>
-      <ul>
-        <li v-for="binType in binTypes" :key="binType.id">
+    <div id="map" class="w-100 p-3 container-fluid"></div>
+    <div class="w-100 p-3 container">
+      <ul class="btn-group list-inline form-check" role="group">
+        <!-- <li v-show="!tooZoomedOut">
           <input 
+            type="checkbox"
+            id="recyclebins"
+            value="recyclebins"
+            @change="setFilter($event)"
+            >
+          <label :for="recyclebins">Recycle Bins</label><br>
+        </li> -->
+
+        <!-- <li>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
+              <label class="form-check-label" for="flexCheckDisabled">
+              Recycle Bins (Disabled)
+              </label>
+          </div>
+        </li> -->
+
+                  <!-- // TODO: have a hover box (use Bootstrap) to show some details on that type of bin -->
+        <li v-for="binType in binTypes" :key="binType.id" class="list-inline-item">
+                      <!-- :for="binType.id"  -->
+          <label 
+            class="btn btn-outline-primary form-check-label"
+          >
+            <input 
             type="checkbox" 
             :id="binType.id"
             :value="binType.id"
-            @change="setFilter($event)">
-          <label :for="binType.id">{{binType.title}}</label><br>
+            v-model="checkedBinTypes"
+            @change="setFilter($event)"
+            class="btn-check form-check-input"
+            autocomplete="off" 
+            >
+            {{binType.title}}
+          </label><br>
         </li>
       </ul>
-
-      <!-- <input type="checkbox" id="recyclebins" name="recyclebins" value="recyclebins">
-      <label for="recyclebins">Recycle Bins</label><br>
-      <input type="checkbox" id="ewaste" name="ewaste" value="ewaste">
-      <label for="ewaste">E-Waste</label><br>
-      <input type="checkbox" id="cashfortrash" name="cashfortrash" value="cashfortrash">
-      <label for="cashfortrash">Cash-For-Trash</label><br>
-      <input type="checkbox" id="secondhandcollecn" name="secondhandcollecn" value="secondhandcollecn">
-      <label for="secondhandcollecn">2nd Hand Goods Collection Points</label><br>
-      <input type="checkbox" id="rvm" name="rvm" value="rvm">
-      <label for="rvm">Reverse Vending Machines</label><br> -->
+      <div></div>
     </div>
   </div>
 </template>
@@ -34,13 +53,8 @@ import gmapsInit from './Map.js';
 export default {
   data () {
     return {
+      GMaps_API_KEY: 'AIzaSyB4Qf39SqcEAphfabQgzdx7eaeGA-t8he0',
       map: null,
-      src: "http://drive.google.com/uc?id=1WrA6xSjaGgZel3Ii8JZR_cKzRrCmv4ag", // kml file source
-      points: [],
-      OneMap_API_KEY: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjczMjcsInVzZXJfaWQiOjczMjcsImVtYWlsIjoiZGFycmVsbC5sYWlAZ21haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNjE3NzAyNzU4LCJleHAiOjE2MTgxMzQ3NTgsIm5iZiI6MTYxNzcwMjc1OCwianRpIjoiNGU2ZjkzMmJhODQxNTRkM2UwMzJkZTFlZGEwNTcyNzUifQ.X-pQ8Z3Wkb6u-7BB7Ud7t2gEu4dzukZ9lkyEfAGpZ34',
-      OneMap_token_expiry: 9999999999,
-      circles: [],
-      bins: [],
       binTypes: [
                   {
                     'title': 'Recycle Bins',
@@ -66,7 +80,19 @@ export default {
                     'id': 'lighting'
                   }
                 ],
-      checkedBinTypes: []
+      checkedBinTypes: [],
+      markersLatLng: []
+    }
+  },
+  // TODO: localhost:8080/map/ewaste => shows the ewaste checked
+      // use props?
+  computed: {
+    tooZoomedOut: function() {
+      var bool = true;
+      if (this.map != null) {
+        bool = this.map.getZoom() < 15;
+      }
+      return bool;
     }
   },
   methods: {
@@ -81,68 +107,27 @@ export default {
       );
       infoWindow.open(map);
     },
-    calculateDistances: async function(data, origin) {
-      const addresses = [];
-      const destinations = [];
-
-      // only get bins that are reasonably nearby
-      data.forEach((bin) => {
-        const binLoc = bin.getGeometry().get();
-        const diff_lng = Math.abs(origin.lat - binLoc.lat());
-        const diff_lat = Math.abs(origin.lng - binLoc.lng());        
-        if (diff_lat < 0.1 && diff_lng < 0.1) {
-          addresses.push(bin.getProperty('address'));
-          destinations.push(binLoc);
-        }
-      });
-
-      // Retrieve the distances of each store from the origin
-      // The returned list will be in the same order as the destinations list
-      const service = new this.google.maps.DistanceMatrixService();
-      const getDistanceMatrix = 
-        (service, parameters) => new Promise((resolve, reject) => {
-          service.getDistanceMatrix(parameters, (response, status) => {
-            if (status != this.google.maps.DistanceMatrixStatus.OK) {
-              reject(response);
-            } else {
-              const distances = [];
-              const results = response.rows[0].elements;
-              for (let j = 0; j < results.length; j++) {
-                const element = results[j];
-                const distanceText = element.distance.text;
-                const distanceVal = element.distance.value;
-                const distanceObject = {
-                  address: addresses[j],
-                  distanceText: distanceText,
-                  distanceVal: distanceVal,
-                  coordinates: destinations[j],
-                };
-                distances.push(distanceObject);
-              }
-
-              resolve(distances);
-            }
-          });
-        });
-      const distancesList = await getDistanceMatrix(service, {
-        origins: [origin],
-        destinations: destinations,
-        travelMode: 'WALKING',
-        unitSystem: this.google.maps.UnitSystem.METRIC,
-      });
-
-      distancesList.sort((first, second) => {
-        return first.distanceVal - second.distanceVal;
-      });
-
-      return distancesList.slice(10);
-    },
     setFilter: function($event) { // (data, showMarker, binType) {
       console.log('checkbox clicked! event.checked is...');
       console.log($event.target.checked);
+      console.log('checkedBinTypes is...');
+      console.log(this.checkedBinTypes);
       const showMarker = $event.target.checked;
-      const binType = $event.target.id
-      this.map.data.forEach(function(feature) {
+      const binType = $event.target.id;
+      this.filterMarkers(this.map.data, binType, showMarker);
+      // this.map.data.forEach(function(feature) {
+      //   // console.log('binType is....');
+      //   // console.log(binType);
+      //   if (feature.getProperty('binType') === binType){
+      //     // console.log('feature showMarker is...');
+      //     // console.log(feature.getProperty('showMarker'));
+      //     feature.setProperty('showMarker', showMarker);
+      //   }
+      // })
+    },
+    filterMarkers: function(data, binType, showMarker) {
+      // console.log("filterMarkers called!");
+      data.forEach(function(feature) {
         // console.log('binType is....');
         // console.log(binType);
         if (feature.getProperty('binType') === binType){
@@ -152,115 +137,71 @@ export default {
         }
       })
     },
-    showBinsList(data, bins) {
-      if (bins.length == 0) {
-        console.log('no bins');
+    markUserLocation: function(navigator, map, infoWindow, zoom) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = [position.coords.latitude, position.coords.longitude];
+            this.markLocation(map, infoWindow, pos, "Location found.", zoom);
+          });
+      } else {
+        // Browser doesn't support Geolocation
+        this.handleLocationError(false, infoWindow, map.getCenter(), map);
+      }
+    },
+    markLocation: function(map, infoWindow, pos, content, zoom) {
+      const pos_obj = {
+        lat: pos[0],
+        lng: pos[1]
+      }
+      map.setCenter(pos_obj);
+      map.setZoom(zoom);
+      if (this.isLocationFree(pos)) {
+        const marker = new this.google.maps.Marker({
+          position: pos_obj,
+          map: map
+        });
+        this.markersLatLng.push([pos.lat, pos.lng]);
+        console.log([pos.lat, pos.lng]);
+        console.log("this.markersLatLng.length");
+        console.log(this.markersLatLng.length);     
+        marker.addListener("click", () => {
+          infoWindow.setPosition(pos);
+          infoWindow.setContent(content);
+          infoWindow.setOptions({pixelOffset: new this.google.maps.Size(0, -30)});
+          infoWindow.open(map);
+        });
+      } else {
         return;
       }
-
-      let panel = document.createElement('div');
-      // If the panel already exists, use it. Else, create it and add to the page.
-      if (document.getElementById('panel')) {
-        panel = document.getElementById('panel');
-        // If panel is already open, close it
-        if (panel.classList.contains('open')) {
-          panel.classList.remove('open');
+    },
+    isLocationFree: function(search) {
+      console.log([search[0], search[1]]);
+      for (var i = 0, l = this.markersLatLng.length; i < l; i++) {
+        if (this.markersLatLng[i][0] === search[0] && this.markersLatLng[i][1] === search[1]) {
+          console.log(this.markersLatLng[i])
+          console.log("matching marker location found.");
+          return false;
         }
-      } else {
-        panel.setAttribute('id', 'panel');
-        const body = document.body;
-        body.insertBefore(panel, body.childNodes[0]);
       }
-
-      // Clear the previous details
-      while (panel.lastChild) {
-        panel.remove(panel.lastChild);
-      }
-
-      bins.forEach((bin) => {
-        // Add store details with text formatting
-        const name = document.createElement('p');
-        name.classList.add('place');
-        const currentBin = data.getFeatureById(bin.address);
-        name.textContent = currentBin.getProperty('address');
-        panel.appendChild(name);
-        const distanceText = document.createElement('p');
-        distanceText.classList.add('distanceText');
-        distanceText.textContent = bin.distanceText;
-        panel.appendChild(distanceText);
-      });
-
-      // Open the panel
-      panel.classList.add('open');
-      return;
-    },
-    fetchAndRenderBins: async function(center) {
-      // Fetch the Bins from the data source
-      this.bins = (await this.fetchBins(center)).features;
-
-      // Create circular markers based on the stores
-      this.circles = this.bins.map((bin) => this.binToCircle(bin, this.map));
-    },
-    fetchBins: async function(center){
-      const url = `testbins.json`;
-      const response = await fetch(url);
-      console.log(center);
-      try { 
-        console.log(response.json()); 
-      } catch(error) {
-        console.log('Error happened here!');
-        console.error(error);
-      }
-      return response;
-    },
-    binToCircle: async function(bin, map, infowindow) {
-      const [lng, lat] = bin.geometry.coordinates;
-      const circle = new this.google.maps.Circle({
-        radius: 50,
-        strokeColor: "#579d42",
-        strokeOpacity: 0.8,
-        strokeWeight: 5,
-        center: { lat, lng },
-        map,
-      });
-      circle.addListener("click", () => {
-        infowindow.setContent(`${bin.properties.business_name}<br />
-          ${bin.properties.address_address}<br />
-          Austin, TX ${bin.properties.zip_code}`);
-        infowindow.setPosition({ lat, lng });
-        infowindow.setOptions({ pixelOffset: new this.google.maps.Size(0, -30) });
-        infowindow.open(map);
-      });
-      return circle;
+      return true;
     }
   },
   async mounted() {
     try {
       this.google = await gmapsInit();
-      // const map = new google.maps.Map(this.$el);
       this.map = new this.google.maps.Map(document.getElementById("map"));
+      // Map centres on Singapore by default
       this.map.setCenter({lat: 1.352083, lng: 103.819836})
+      this.map.setZoom(11);
+      const infoWindow = new this.google.maps.InfoWindow();
 
-      const geocoder = new this.google.maps.Geocoder();
-      geocoder.geocode({ address: 'Singapore' }, (results, status) => {
-        if (status !== 'OK' || !results[0]) {
-          throw new Error(status);
-        }
-        console.log("map center is at...");
-        console.log(results[0].geometry.location.lat());
-        console.log(results[0].geometry.location.lng());
-        // this.map.setCenter(results[0].geometry.location);
-        this.map.setCenter({lat: results[0].geometry.location.lat()+0.5, lng: results[0].geometry.location.lng()})
-        console.log("map center is now at at...");
-        console.log(this.map.getCenter().lat());
-        console.log(this.map.getCenter().lng());
-        this.map.fitBounds(results[0].geometry.viewport);
-        this.map.setZoom(11);
-      });
+      // Pan to user's location upon page load if navigator enabled
+      this.markUserLocation(navigator, this.map, infoWindow, 15);
 
       // Load the GeoJson bins data onto the map 
       try {
-        console.log('loading GeoJson here!');
+        // console.log('loading GeoJson here!');
         // file hosted using Google Drive, doesn't bypass CORS issue with Chrome
         // map.data.loadGeoJson('http://drive.google.com/uc?id=1_LivKGKN37UCxgIMlBqJRPzj4lBY8rip');
 
@@ -275,36 +216,49 @@ export default {
         // this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/testbins.json');
         
         // file taken from local directory, only works on Firefox
-        // this.map.data.loadGeoJson('./testbins.json'); 
-        // map.data.loadGeoJson(String.raw`C:\Users\darre\Documents\zzz Old files\NUS Y2S2\BT3103\project\bt3103-project\src\components\map\testbins.json`);
-        
+        // this.map.data.loadGeoJson('data/recyclebinsGeo.json'); 
+        // this.map.data.loadGeoJson('data/ewasteGeo.json');
+        // this.map.data.loadGeoJson('data/cashfortrashGeo.json');
+        // this.map.data.loadGeoJson('data/rvmGeo.json');
+        // this.map.data.loadGeoJson('data/secondhandcollecnGeo.json');
+        // this.map.data.loadGeoJson('data/lightingGeo.json');    
         // var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+        
+        // style icons based on binType
         this.map.data.setStyle(function(feature) {
           // choose icon based on binType
           var iconPath = '';
           switch(feature.getProperty('binType')) {
             case 'recyclebins':
               iconPath = webServer + 'icons/recycle.png';
+              // iconPath = 'icons/recycle.png';
               break;
             case 'ewaste':
               iconPath = webServer + 'icons/magnet.png';
+              // iconPath = 'icons/magnet.png';
               break;
             case 'cashfortrash':
+              iconPath = 'http://maps.google.com/mapfiles/ms/icons/dollar.png';
               break;
             case 'secondhandcollecn':
               iconPath = webServer + 'icons/toy.png';
+              // iconPath = 'icons/toy.png';
               break;
             case 'rvm':
+              iconPath = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
               break;
             case 'lighting':
               iconPath = webServer + 'icons/lamp.png';
+              // iconPath = 'icons/lamp.png';
               break;
           }
-          // console.log('feature showMarker is...');
-          // console.log(feature.getProperty('showMarker'));
           return /** @type {this.google.maps.Data.StyleOptions } */ {
+            // showMarker acts as a toggle for us to show or 
+            // hide the marker of the corresponding data feature
             visible: feature.getProperty('showMarker'),
-            icon: iconPath
+            icon: {
+              url: iconPath,
+            }
           };
         });
 
@@ -312,19 +266,39 @@ export default {
         console.log('Error happened here!');
         console.error(error);
       }
+    
+      // filter Markers by VueJS route here
+      if (this.checkedBinTypes.length != 0) {
+        for (const binType of this.checkedBinTypes) {
+          this.filterMarkers(this.map.data, binType, true);
+        }
+        // const binType = this.checkedBinTypes[0];
+        // this.checkedBinTypes = [binType];
+        // this.filterMarkers(this.map.data, binType, true);
+      }
 
-
-      const infoWindow = new this.google.maps.InfoWindow();
-      // Show information for each bin when its marker is clicked
+      // Infowindow pops up with details for each bin when its marker is clicked
       this.map.data.addListener('click', (event) => {
         console.log('event is ----- ' + event);
         const address = event.feature.getProperty('address');
         const postcode = event.feature.getProperty('postcode');
         const position = event.feature.getGeometry().get();
-        const content = `<h4>${address}</h4><p>${postcode}</p>`;
-
+        // "open in Google Maps" button in infoWindow
+        const lat = position.lat();
+        const lng = position.lng();
+        const content = `
+                  <div style="margin-left:20px; margin-bottom:20px;">
+                    <h5>${address}</h5>
+                    <p>${postcode}</p><br>
+                    <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${lat}%2C${lng}', '_blank')">
+                      Open in Google Maps
+                    </button>
+                  </div>
+                      `;
+        // TODO: style Info window nicely
         infoWindow.setContent(content);
         infoWindow.setPosition(position);
+        // Info window pops up above marker
         infoWindow.setOptions({pixelOffset: new this.google.maps.Size(0, -30)});
         infoWindow.open(this.map);
       });
@@ -335,6 +309,7 @@ export default {
       const title = document.createElement('div');
       const container = document.createElement('div');
       const input = document.createElement('input');
+            // TODO: make search bar bigger
       const options = {
         types: ['address'],
         componentRestrictions: {country: 'sg'},
@@ -352,19 +327,19 @@ export default {
       card.appendChild(titleBar);
       card.appendChild(container);
       this.map.controls[this.google.maps.ControlPosition.TOP_RIGHT].push(card);
-
+      
       // Make the search bar into a Places Autocomplete search bar and select
       // which detail fields should be returned about the place that
       // the user selects from the suggestions
       const autocomplete = new this.google.maps.places.Autocomplete(input, options);
       autocomplete.setFields(['address_components', 'geometry','name']);
 
-      const originMarker = new this.google.maps.Marker({map: this.map});
-      originMarker.setVisible(false);
+      // const originMarker = new this.google.maps.Marker({map: this.map});
+      // originMarker.setVisible(false);
       let originLocation = this.map.getCenter();
 
       autocomplete.addListener('place_changed', async () => {
-        originMarker.setVisible(false);
+        // originMarker.setVisible(false);
         originLocation = this.map.getCenter();
         const place = autocomplete.getPlace();
 
@@ -377,61 +352,94 @@ export default {
 
         // Recenter the map to the selected address
         originLocation = place.geometry.location;
-        this.map.setCenter(originLocation);
-        this.map.setZoom(14);
-        console.log(place);
-
-        originMarker.setPosition(originLocation);
-        originMarker.setVisible(true);
-
-        const rankedBins = await this.calculateDistances(this.map.data, originLocation);
-        this.showBinsList(this.map.data, rankedBins);
+        const originLatLng = [originLocation.lat(), originLocation.lng()];
+        this.markLocation(this.map, infoWindow, originLatLng, place.name);
       });
 
-      // TODO: implement another button "Search this area" for users to manually pan then search
-        // in a particular area instead of using the user's location directly
-      // TODO: menu bar popup on the right when user clicks on a particular pin
-      // TODO: "Directions": enable users to open a particular pin in Google Maps so 
-        // they can navigate there using the full features of the app
       // TODO: implement support for phone web view - plist (permissions list)
       // TODO: doesn't work for network server
-      // TODO: restrict displayed markers to only within bounds of viewport
+      // TODO: change icons back to markers, but with different colours for different binTypes
+      // TODO: look into hosting data on firebase
+      // TODO: consider not allowing users to see all recycle bins in Singapore 
+      //        => remove checkbox, only allow searches within certain areas
+      // TODO: 
+        // Option 1: implement another button "Search this area" for users to manually pan then search
+                  // in a particular area instead of using the user's location directly.
+                  // then, restrict displayed markers to only within bounds of viewport.
+                    // sub-task: getBounds
+      const searchHere = document.createElement("button");
+      searchHere.textContent = "Search this area";
+      this.map.controls[this.google.maps.ControlPosition.BOTTOM_CENTER].push(searchHere);
+      searchHere.addEventListener("click", async () => {
+        const bounds = this.map.getBounds();
+        this.map.data.forEach((feature) => {
+          // if bin is within map viewport bounds
+          const showMarkerCurr = feature.getProperty('showMarker');
+          const isWithinViewport = bounds.contains(feature.getGeometry().get());
+          const showMarkerNext = showMarkerCurr && isWithinViewport;
+          feature.setProperty('showMarker', showMarkerNext);
+        });
+      })
+        // Option 2: seamlessly display markers as user pans
+
       // let infoWindow = new google.maps.InfoWindow();
       const nearMe = document.createElement("button");
       nearMe.textContent = "Pan to my location";
       nearMe.classList.add("custom-map-control-button");
       this.map.controls[this.google.maps.ControlPosition.TOP_CENTER].push(nearMe);
       nearMe.addEventListener("click", async () => {
-      //   // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              };
-              this.map.setCenter(pos);
-              this.map.setZoom(15);  
-            });
-        } else {
-          // Browser doesn't support Geolocation
-          this.handleLocationError(false, infoWindow, this.map.getCenter(), this.map);
-        }
+        this.markUserLocation(navigator, this.map, infoWindow);
       });
     } catch (error) {
       console.error(error);
     }
+  },
+  created: function() {
+    console.log("creating");
+    console.log("this.$route.params.id is...");
+    console.log(this.$route.params.id);
+    const binType = this.$route.params.id;
+    this.checkedBinTypes = [binType];
+    // this.filterMarkers(this.map.data, binType, true);
+    // this.mounted();
+  },
+  watch: {
+    $route: function(val) {
+      const binType = val.params.id;
+      this.checkedBinTypes = [binType];
+      this.filterMarkers(this.map.data, binType, true);
+    },
+    // checkedBinTypes: function(val) {
+      // for (const binType of val) {
+      //   this.filterMarkers(this.map.data, binType, true);
+      // }
+    // }
   }
 }
 </script>
 
 <style scoped>
   div {
-    height: 500px;
-    width: 1000px;
+    height: 600px;
+    /* width: 1000px; */
     /* height: 370px; */
-    padding: 0;
+    padding-left: 15px;
+    padding-right: 15px;
     margin: auto;
+    white-space: normal;
+    /* display: flex;
+    justify-content: center; */
+  }
+  ul {
+    list-style-type: none;
+    overflow: hidden;
+    float: center;
+    margin: 0 auto;   
+    /* display: flex; */
+    /* justify-content: center; */
+  }
+  :checked {
+    background-color:#4d90fe !important;
   }
   #map {
     height: 85%;
@@ -533,4 +541,28 @@ export default {
     padding-left: 18px;
     padding-right: 18px;
   }
+
+  #open-in-gmaps {
+  font: bold 11px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+  }
+  /* #open-in-gmaps {
+    background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 20px 34px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+  } */
 </style>
