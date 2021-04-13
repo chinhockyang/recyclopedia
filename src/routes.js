@@ -2,6 +2,7 @@ import Home from './components/Home.vue'
 import myMap from './components/map/Map.vue'
 import Quiz from './components/Quiz/QuizStart.vue'
 import QuizQuestions from './components/Quiz/QuizQuestions.vue'
+import QuizAnswers from './components/Quiz/QuizAnswers.vue'
 
 import EncyclopediaHome from './components/encyclopedia/EncyclopediaHome.vue'
 import QuickSearch from './components/encyclopedia/QuickSearch.vue'
@@ -18,6 +19,7 @@ import addNewRecord from './components/User/addNewRecord.vue'
 import Points from './components/User/Points.vue'
 import Donation from './components/User/Donation.vue'
 import Past from './components/User/Past.vue'
+import forgotPassword from './components/User/forgotPassword.vue'
 
 export default [
   { path: '/', component: Home },
@@ -36,12 +38,14 @@ export default [
 
   { path: '/login', component: Login }, 
   { path: '/register', component: Register }, 
+  { path: '/forgotpw', component: forgotPassword },
   { path: '/dashboard', component: Dashboard },
   { path: '/addNewRecord', component: addNewRecord },
   { path: '/points', component: Points},
   { path: '/donation', component: Donation}, 
   { path: '/past', component: Past},
   { path: '/quiz', component: Quiz },
-  { path: '/quiz/questions', component: QuizQuestions}
+  { path: '/quiz/questions', component: QuizQuestions},
+  { path: '/quiz/answers', component: QuizAnswers}
 
 ]

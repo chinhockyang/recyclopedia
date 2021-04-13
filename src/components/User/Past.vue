@@ -1,6 +1,43 @@
 <template> 
 <div class="containter px-3"> 
-    <br>
+    <nav class="nav nav-light justify-content-center">
+           <ul class="nav nav-tabs mt-4 mb-3 mx-auto" id="pills-tab" role="tablist">
+               <li>
+                    <router-link to="/addNewRecord" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >Add New Record</router-link>
+               </li>
+
+                <li>
+                    <router-link to="/points" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >My Points</router-link>
+               </li>
+
+               <li>
+                    <router-link to="/past" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >View Past Records</router-link>
+               </li>
+               <li>
+                    <router-link to="/dashboard" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >Profile Information</router-link>
+               </li>
+           </ul>                        
+       </nav> 
     <div>
       <h5>Past Recycling Records</h5>
       <table> 
@@ -20,10 +57,6 @@
     </div>
     <br>
     <div> 
-        <h5>Past Points Transactions</h5>
-    </div>
-    <br>
-    <div> 
         <h5>Past Donations</h5>
         <table> 
         <tr>
@@ -33,6 +66,22 @@
           <th>Donation Amount</th>
         </tr>
         <tr v-for="(item, index) in pastDonations" v-bind:key="index">
+          <td>{{ index + 1}}</td>
+          <td v-for="(value, key, index) in item" v-bind:key="index">{{ value }}</td>
+        </tr>
+      </table>
+    </div>
+    <br>
+    <div> 
+        <h5>Past Points Transactions</h5>
+        <table> 
+        <tr>
+          <th>No.</th>
+          <th>Date Transacted</th>
+          <th>Action</th> 
+          <th>Points</th>
+        </tr>
+        <tr v-for="(item, index) in pastTrans" v-bind:key="index">
           <td>{{ index + 1}}</td>
           <td v-for="(value, key, index) in item" v-bind:key="index">{{ value }}</td>
         </tr>
@@ -51,6 +100,7 @@ export default {
     return {
       pastRecords: [], 
       pastDonations: [], 
+      pastTrans : []
     
     }
   },
@@ -63,7 +113,7 @@ export default {
   methods: {
     
     fetchRecords() {
-      database.collection('records').orderBy("date").get().then((snapshot) => {
+      database.collection('records').orderBy("day", "asc").get().then((snapshot) => {
         let rec = {}
         snapshot.docs.forEach((doc) => {
           if (doc.data().username == this.user.data.displayName) {
@@ -75,7 +125,7 @@ export default {
     }, 
 
     fetchDonations() {
-        database.collection('donation').orderBy("date").get().then((snapshot) => {
+        database.collection('donation').orderBy("day", "asc").get().then((snapshot) => {
             let donation = {}
             snapshot.docs.forEach((doc) => {
                 if (doc.data().username == this.user.data.displayName) {
@@ -84,6 +134,18 @@ export default {
                 }
             })
         })
+    },
+
+    fetchPast() {
+      database.collection('users').orderBy("day", "asc").get().then((snapshot) => {
+        let old = {} 
+        snapshot.docs.forEach((doc) => {
+          if (doc.data().username == this.user.data.displayName) {
+            old = [doc.data().date, doc.data().action, doc.data().pts ]
+            this.pastTrans.push(old)
+          }
+        })
+      })
     }
   
   }, 
@@ -91,6 +153,7 @@ export default {
   created() {
     this.fetchRecords()
     this.fetchDonations()
+    this.fetchPast()
   }, 
 
 

@@ -1,15 +1,57 @@
 <template> 
 <div class="containter px-3"> 
-    <br>
-      <h5>Your Points: {{ countPoints }}</h5>
-      <div class="progress">
-         <div class="progress-bar progress-bar-success" role="progressbar" id="pointsBar" value="" max="200" style="width: ''">{{ remaining }}%</div>
+  <nav class="nav nav-light justify-content-center">
+           <ul class="nav nav-tabs mt-4 mb-3 mx-auto" id="pills-tab" role="tablist">
+               <li>
+                    <router-link to="/addNewRecord" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >Add New Record</router-link>
+               </li>
+
+                <li>
+                    <router-link to="/points" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >My Points</router-link>
+               </li>
+
+               <li>
+                    <router-link to="/past" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >View Past Records</router-link>
+               </li>
+               <li>
+                    <router-link to="/dashboard" 
+                    class="nav-link"
+                    id="quick-search-tab" 
+                    data-toggle="pill"                     
+                    role="tab" 
+                    >Profile Information</router-link>
+               </li>
+           </ul>                        
+       </nav> 
+      <div id = "center">
+      <h5 style="display:inline">Your Points: {{ countPoints }}</h5>
       </div>
+      <div id = "center">
+      <b-progress :max="max">
+        <b-progress-bar :value="countPoints" :label="`${remaining.toFixed(1)}%`" ></b-progress-bar>
+      </b-progress>
+      </div>
+      <div id = "center">
       <div class="level">
-        <p style="font-size: 15px">Welcome Greener</p>
-        <span>Bronze Greener</span>
+        <p style="font-size: 15px">{{ this.now }}</p>
+        <span style="margin-left: 485px">{{ this.next }}</span>
       </div>
-      <button v-on:click="this.updatePointsBar"></button>
+      </div>
       <br><br>
       <div> 
         <p style="font-size: 20px"><strong>What can your points do?</strong></p>
@@ -27,6 +69,32 @@
             <li style="font-size: 14px">Not entitled to tax relief.</li> 
         </ul>
       </div> 
+    <div>  
+    <br>
+    <p style="font-size: 20px"><strong>Tier Levels</strong></p>
+    <table> 
+      <tr> 
+        <th style="width:100px">Tier</th>
+        <th style="width:100px">Points</th> 
+      </tr>
+      <tr> 
+        <td>Welcome Greener <img src="https://www.flaticon.com/svg/vstatic/svg/628/628297.svg?token=exp=1618212197~hmac=1797f5b178d99fb91dc1f3a7b6981d42" style="width: 8%"></td> 
+        <td>0-199</td> 
+      </tr> 
+      <tr>
+        <td>Bronze Greener <img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583434.svg?token=exp=1618212295~hmac=ffd49f29b5d10deeae2e0bd3c1cc85bf" style="width: 8%"></td>
+        <td>200-599</td> 
+      </tr> 
+      <tr>
+        <td>Silver Greener <img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583319.svg?token=exp=1618212397~hmac=46d735cc48cd11df12c6a3ac3bea638d" style="width: 8%"></td> 
+        <td>600-999</td> 
+      </tr> 
+      <tr>
+        <td>Gold Greener <img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583344.svg?token=exp=1618212442~hmac=a46695df96d9319ebf095b98433bf18d" style="width: 8%"></td> 
+        <td>> 1000</td> 
+      </tr> 
+    </table>
+    </div>
     </div>
 </template> 
 
@@ -39,7 +107,9 @@ export default {
     return {
       countPoints: 0,
       remaining: 0, 
-      level: ""
+      now: "", 
+      next: "",
+      max: 0,
     }
   },
   computed: {
@@ -56,27 +126,35 @@ export default {
           if (doc.data().username == this.user.data.displayName) {
             this.countPoints += doc.data().pts 
             if (this.countPoints < 200) {
-                this.level = "Welcome Greener"
+                this.now = "Welcome Greener"
+                this.next = "Bronze Greener"
+                this.remaining = (this.countPoints/200) * 100
+                this.max = 200
             } else if (this.countPoints >= 200 && this.countPoints < 600) {
-                this.level = "Bronze Greener"
+                this.now = "Bronze Greener"
+                this.next = "Silver Greener"
+                this.remaining = 100-((600-this.countPoints)/600 * 100)
+                this.max = 600
             } else if (this.countPoints >= 600 && this.countPoints < 1000) {
-                this.level = "Silver Greener" 
+                this.now = "Silver Greener" 
+                this.next = "Gold Greener"
+                this.remaining = 100-((1000-this.countPoints)/1000 * 100)
+                this.max = 1000
             } else {
-                this.level = "Gold Greener"
+                this.now = "Gold Greener"
+                this.next = ""
+                this.remaining = 100
+                this.max = 100
             }
-            database.collection('tier').doc(this.user.data.displayName).set({"level": this.level}) 
-            this.remaining = (this.countPoints/200) * 100
+          } else if (this.countPoints == 0) {
+            this.now = "Welcome Greener"
+            this.next = "Bronze Greener"
+            this.remaining = 0
+            this.max = 200
           }
         })
       })
     }, 
-
-    updatePointsBar() {
-      var pb = document.getElementById("pointsBar")
-      pb.value = this.countPoints
-      pb.style.width = this.remaining + "%"
-    
-    },
     
     checkPoints() {
         if (this.countPoints < 300) {
@@ -90,7 +168,6 @@ export default {
 
   created() {
     this.fetchPoints()
-    this.updatePointsBar()
   }, 
 
 };
@@ -100,7 +177,7 @@ export default {
 .progress {
   position:relative;
   height:70px;
-  width: 60%;
+  width: 700px;
 }
 
 .progress-bar {
@@ -115,6 +192,25 @@ export default {
   margin-left: 41.5%;
   position: relative;
   display: inline;
+}
+
+table {
+  font-family: "Inconsolata", sans-serif;
+  border-collapse: collapse;
+  width: 40%;
+}
+
+td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+} 
+
+th {
+  background-color: rgb(184, 216, 128);
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
 }
 
 </style>

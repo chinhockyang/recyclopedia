@@ -1,64 +1,88 @@
 <template>
-<div class="container mt-3">     
-    <h1>Browse Items By Category</h1>
-    <div class="row mt-3">      
+<div class="container mt-3 w-75 mx-auto">     
+    <h1 class="mt-3">Browse Items By Category</h1>
+    <p class="mx-3 mt-5 mb-5">{{paragraph}}</p>    
+    <div class="container w-80 mx-auto mt-3 row">      
         <div class="col-md card m-2">                  
           <a href="/encyclopedia/browse/category-info/plastic">            
-            <div class="card-body">
-              <img src="https://mdbootstrap.com/img/new/standard/city/053.jpg" class="card-img w-100" />            
-              <h3 class="card-title pt-3">Plastic</h3>
+            <div class="card-body" style="width: 300px; height:280px">
+              <img 
+              src="https://sustainable.columbia.edu/sites/default/files/styles/cu_crop/public/content/plastic_metal_glass%20recycling.jpeg?itok=KLZYxuG7"
+              style="max-width: 225px; max-height: 2500px;"
+              class="card-img-top w-100"
+              />              
             </div> 
+            <h3 class="card-title">Plastic</h3>
           </a>
         </div>
 
         <div class="col-md card m-2">                  
           <a href="/encyclopedia/browse/category-info/paper">
-            <div class="card-body">
-              <img src="https://mdbootstrap.com/img/new/standard/city/053.jpg" class="card-img w-100" />            
-              <h3 class="card-title pt-3">Paper</h3>
+            <div class="card-body" style="width: 300px; height:280px">
+              <img 
+              src="https://leetatseng.com/wp-content/uploads/2019/09/Eco-Friendly-Paper-Products.jpg"
+              class="card-img-top w-100"
+              style="width: 250px; height: 250px;"
+              />              
             </div> 
+            <h3 class="card-title">Paper</h3>
           </a>
         </div>
 
         <div class="col-md card m-2">                  
           <a href="/encyclopedia/browse/category-info/glass">
-            <div class="card-body">
-              <img src="https://mdbootstrap.com/img/new/standard/city/053.jpg" class="card-img w-100" />            
-              <h3 class="card-title pt-3">Glass</h3>
+            <div class="card-body" style="width: 300px; height:280px">
+              <img 
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS23FENdcS42Yd095RL-x6oiWtX_JdFNO9r8Q&usqp=CAU"               
+              class="card-img-top w-100"
+              style="max-width: 200px; max-height: 250px;"
+              />                          
             </div> 
+            <h3 class="card-title">Glass</h3>
           </a>
         </div>
     </div>    
 
-    <div class="row mt-2 mb-3">      
+    <div class="container w-80 mx-auto mt-3 mb-5 row">
         <div class="col-md card m-2">                  
           <a href="/encyclopedia/browse/category-info/metal">
-            <div class="card-body">
-              <img src="https://mdbootstrap.com/img/new/standard/city/053.jpg" class="card-img w-100" />            
-              <h3 class="card-title pt-3">Metal</h3>
+            <div class="card-body" style="width: 300px; height:280px; text-align:center;">
+              <img 
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRepvDtNmEgmZDu2zkGz-qscfTVzqio1Qb_7w&usqp=CAU" 
+                class="card-img-top w-100"
+                style="max-width: 200px; max-height: 250px;"
+              />                          
             </div> 
+            <h3 class="card-title">Metal</h3>
           </a>
         </div>
 
-        <div class="col-md card m-2">                  
+        <div class="col-md card m-2">
           <a href="/encyclopedia/browse/category-info/electronics">
-            <div class="card-body">
-              <img src="https://mdbootstrap.com/img/new/standard/city/053.jpg" class="card-img w-100" />            
-              <h3 class="card-title pt-3">Electronics</h3>
+            <div class="card-body" style="width: 300px; height:280px">
+              <img 
+              src="https://www.vpirg.org/wp-content/uploads/2012/03/assorted-e-wastehomepage-400x266.jpg"
+              class="card-img-top w-100"
+              style="width: 250px; height: 200px;"
+              />              
             </div> 
+            <h3 class="card-title">Electronics</h3>
           </a>
         </div>
 
         <div class="col-md card m-2">                  
           <a href="/encyclopedia/browse/category-info/others">
-            <div class="card-body">
-              <img src="https://mdbootstrap.com/img/new/standard/city/053.jpg" class="card-img w-100" />            
-              <h3 class="card-title pt-3">Others</h3>
+            <div class="card-body" style="width: 300px; height:280px">
+              <img 
+              src="https://svswa.org/svswauploads/couchmattressfrig.jpg"
+              class="card-img-top w-100"
+              style="max-width: 250px; max-height: 300px;"
+              />              
             </div> 
+            <h3 class="card-title">Others</h3>
           </a>
         </div>
     </div>    
-
 </div>  
 </template>
 
@@ -68,6 +92,7 @@
 export default {
   data() {
     return {      
+      paragraph:"Items in Recyclopedia are classified into these broad categories! Select a category to learn about what are the items under that category that are most commonly recycled, browsed, and learn about important recycling information!"
     }
   }
 }
@@ -77,19 +102,17 @@ export default {
 <style scoped>
 
 .card:hover {
-  background-color: #E3E9BB;
+  border-color:lightgreen;
+  border-style: ridge;
+  border-width: unset;
+}
+
+a:hover {
+  text-decoration: none;  
 }
 
 .card-title {
   color: green;
 }
 
-img:hover {
-  transform: scale(1.05);
-  transition: transform .2s;
-}
-
-a:hover {
-  text-decoration: none;
-}
 </style>
