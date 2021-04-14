@@ -14,13 +14,14 @@ import Register from './components/User/Register.vue'
 import Dashboard from './components/User/Dashboard.vue'
 import addNewRecord from './components/User/addNewRecord.vue'
 import Points from './components/User/Points.vue'
+import donationForm from './components/User/donationForm.vue'
 import Donation from './components/User/Donation.vue'
 import Past from './components/User/Past.vue'
 import forgotPassword from './components/User/forgotPassword.vue'
 
 export default [
-  { path: '/', component: HomePage },
-  { path: '/map', component: myMap },
+  { path: '/', component: Home },
+  { path: '/map/:id?', component: myMap, props: true },
   
   { path: '/encyclopedia', component: EncyclopediaHome, children: [
     { path: '', component: QuickSearch},
@@ -35,6 +36,7 @@ export default [
   { path: '/dashboard', component: Dashboard },
   { path: '/addNewRecord', component: addNewRecord },
   { path: '/points', component: Points},
+  { path: '/donationForm', component: donationForm}, 
   { path: '/donation', component: Donation}, 
   { path: '/past', component: Past},
   { path: '/quiz', component: Quiz },

@@ -28,14 +28,24 @@
           </ul>
           <ul class="navbar-nav m-3 ml-auto">
             <li class="nav-item">
-              <template v-if="user.loggedIn">            
-                <a class="nav-link" href="/dashboard">Account</a>
+              <router-link class="nav-link" to="/donation">Donation</router-link>
+            </li>
+            </ul>
+            <div id="top-right">
+              
+              <template v-if="user.loggedIn">   
+                <div class = "dropdown">      
+                <a class="nav-link" data-toggle="dropdown" href="/dashboard"><img src="https://i.ibb.co/8cNDMLq/user.png" style="width: 3.5%">  Account</a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/dashboard">My Profile</a>
+                    <button class="dropdown-item" @click.prevent="signOut">Sign Out</button>
+                  </div>
+                </div>
               </template> 
               <template v-else>  
                 <a class="nav-link" href="/login">Account</a> 
               </template>
-            </li>
-          </ul>  
+            </div>    
       </div>
     </nav>
   </div>
@@ -44,6 +54,7 @@
 
 <script> 
 import { mapGetters } from "vuex";
+import { firebaseApp } from '../firebase.js'
 
 
 export default {
@@ -52,6 +63,16 @@ export default {
       user: "user"
     })
   },
+  
+  methods: {
+    signOut() {
+      firebaseApp.auth().signOut().then(() => {
+          this.$router.push({path: '/login'});
+          location.reload()
+        });
+    }, 
+
+  }
 }
 </script>
 
@@ -62,6 +83,11 @@ export default {
 
 .navbar-nav > .nav-item {
   background-color: #E3E9BB;    
+}
+
+#top-right {
+  background-color: #E3E9BB; 
+  display: top-right
 }
 
 </style>

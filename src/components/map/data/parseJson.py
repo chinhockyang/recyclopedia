@@ -47,10 +47,10 @@ def jsonToGeoJson(infile, outfile, binType, trunc=None):
   }
   with open(outfile, 'w') as f:
     json.dump(geoJson, f)
-jsonToGeoJson('./recyclebins.json', './testbinsGeo.json', 'recyclebins', 3)
-jsonToGeoJson('./recyclebins.json', './recyclebinsGeo.json', 'recyclebins')
-jsonToGeoJson('./ewaste.json', './ewasteGeo.json', 'ewaste')
-jsonToGeoJson('./secondhandcollecn.json', './secondhandcollecnGeo.json', 'secondhandcollecn')
-jsonToGeoJson('./rvm.json', './rvmGeo.json', 'rvm')
-jsonToGeoJson('./cashfortrash.json', './cashfortrashGeo.json', 'rvm')
-jsonToGeoJson('./lighting.json', 'lightingGeo.json', 'lighting')
+# jsonToGeoJson('./recyclebins.json', './testbinsGeo.json', 'recyclebins', 3)
+# jsonToGeoJson('./recyclebins.json', './recyclebinsGeo.json', 'recyclebins')
+# jsonToGeoJson('./ewaste.json', './ewasteGeo.json', 'ewaste')
+# jsonToGeoJson('./secondhandcollecn.json', './secondhandcollecnGeo.json', 'secondhandcollecn')
+# jsonToGeoJson('./rvm.json', './rvmGeo.json', 'rvm')
+jsonToGeoJson('./cashfortrash.json', './cashfortrashGeo.json', 'cashfortrash')
+# jsonToGeoJson('./lighting.json', 'lightingGeo.json', 'lighting')
