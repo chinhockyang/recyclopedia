@@ -78,22 +78,23 @@
         <th style="width:100px">Points</th> 
       </tr>
       <tr> 
-        <td>Welcome Greener <img src="https://www.flaticon.com/svg/vstatic/svg/628/628297.svg?token=exp=1618212197~hmac=1797f5b178d99fb91dc1f3a7b6981d42" style="width: 8%"></td> 
+        <td>Welcome Greener <img src="https://i.ibb.co/f8J98b9/sprout.png" style="width: 8%"></td> 
         <td>0-199</td> 
       </tr> 
       <tr>
-        <td>Bronze Greener <img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583434.svg?token=exp=1618212295~hmac=ffd49f29b5d10deeae2e0bd3c1cc85bf" style="width: 8%"></td>
+        <td>Bronze Greener <img src="https://i.ibb.co/FmqYLRk/medal.png" style="width: 8%"></td>
         <td>200-599</td> 
       </tr> 
       <tr>
-        <td>Silver Greener <img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583319.svg?token=exp=1618212397~hmac=46d735cc48cd11df12c6a3ac3bea638d" style="width: 8%"></td> 
+        <td>Silver Greener <img src="https://i.ibb.co/mRzBQ94/medal-1.png" style="width: 8%"></td> 
         <td>600-999</td> 
       </tr> 
       <tr>
-        <td>Gold Greener <img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583344.svg?token=exp=1618212442~hmac=a46695df96d9319ebf095b98433bf18d" style="width: 8%"></td> 
+        <td>Gold Greener <img src="https://i.ibb.co/R7L35jS/medal-2.png" style="width: 8%"></td> 
         <td>> 1000</td> 
       </tr> 
     </table>
+    <br>
     </div>
     </div>
 </template> 
