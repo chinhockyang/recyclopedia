@@ -1,189 +1,96 @@
-<template> 
-<div> 
-    <img id="tree" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL9bNIk4c3ib8JXCfzqcOzqYxnAFzZQIGmjOa-WCNWJpzNisCg4aUzVD5KYTRmL4AeveU&usqp=CAU">
-    <h4 id="hd"><strong>Garden City Fund Donation</strong></h4>
-    <p id="pd"><strong>Donate $2 for every 300 points</strong></p>
-    <div id="center">
+<template>
+<div class="containter px-3"> 
     <div> 
-        <form class="containter px-3" id="form"> 
-            <div class="form-group" >
-                <label for="fname">First Name:<span style="color:red;" title="required"> *</span></label>
-                <br><input type="text" placeholder="First Name" name="fname" v-model="form.fname" required>
-            </div>
-            <div class="form-group" style="margin-left: 100px">
-                <label for="lname" id="label">Last Name:<span style="color:red;" title="required"> *</span></label>
-                <br><input type="text" placeholder="Last Name" name="lname" v-model="form.lname" required>
-            </div>
-        </form>
-        <form class="containter px-3" id="form">
-            <div class="form-group" >
-                <label for="email">Email Address:<span style="color:red;" title="required"> *</span></label>
-                <br><input type="email" placeholder="Email" name="email" v-model="form.email" required>
-            </div>
-            <div class="form-group" style="margin-left: 100px">
-                <label for="phone">Phone Number:<span style="color:red;" title="required"> *</span></label>
-                <br><input type="number" placeholder="Phone" name="phone" v-model="form.phone" 
-                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-             pattern="\d*" maxlength="8" required>
-            </div>
-        </form>
-        <form class ="containter px-3" id="form">
-            <div class="form-group">
-                <label for="don">I'm donating in the name of:<span style="color:red;" title="required"> *</span></label>
-                <br>
-                <select id="don" style="width: 98%" name="don" v-model="form.don" required>
-                    <option value="Myself">Myself</option>
-                    <option value="Organization">Organization</option>
-                </select>
-            </div>
-            <div class="form-group" style="margin-left: 75px">
-                <label for="who">Organization/Honoree Name:<span style="color:red;" title="required"> *</span></label>
-                <br><input type="text" placeholder="Organization/Honoree" name="who" v-model="form.who" required>
-            </div>
-        </form>
-        <form class ="containter px-3" id="form">
-            <div class="form-group">
-                <label for="comment">Leave us a comment:</label>
-                <br><textarea rows=2 cols=63 placeholder="We'd love to hear from you!" name="comment" v-model="form.comment"></textarea>
-            </div>
-        </form>
-        <form class ="containter px-3" id="form">
-            <div class="form-group">
-                <input type="radio" id="check" value="yes" v-model="form.check">
-                <label for="check" style="margin-left: 10px">I agree to the terms and conditions.</label>
-            </div>
-        </form>
-        <form class="containter px-3"> 
-         <div class="form-group" id="center">
-          <button class="btn btn-success" @click.prevent="submitDonation">Donate</button>
-        </div>
-        <div id="center">
-        <p id="error" v-if="error">{{error}}</p>
-        </div>
-        </form>
-    </div>
-    </div>
-</div>
+        <p style="font-size: 20px"><strong>What can your points do?</strong></p>
+        <p style="font-size: 15px">Turn every <strong>300 points</strong> into a <strong>$2 donation</strong> to the <strong>Garden City Fund</strong>, managed by the National
+        Parks Board.</p>
+        <p style="font-size: 15px">Your donation will go towards supporting the research and outreach efforts to help protect, conserve and enhance our natural heritage.</p>
+        <p style="font-size: 15px">Learn more at <a href= "https://www.gardencityfund.gov.sg/">https://www.gardencityfund.gov.sg/</a></p>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL9bNIk4c3ib8JXCfzqcOzqYxnAFzZQIGmjOa-WCNWJpzNisCg4aUzVD5KYTRmL4AeveU&usqp=CAU" style="display: inline">
+        <button style="margin-left: 100px" v-on:click="checkPoints" class="btn btn-success" >Click to Donate</button>
+        <br>
+        <p style="font-size: 15px"><strong>Terms and Conditions</strong></p>
+        <ul> 
+            <li style="font-size: 14px">Multiple redemptions allowed.</li>
+            <li style="font-size: 14px">All proceeds will go to the Garden City Fund by the National Parks Board.</li>
+            <li style="font-size: 14px">Not entitled to tax relief.</li> 
+        </ul>
+      </div> 
+      </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import database from '../../firebase.js'
 
-
 export default {
+  data() {
+    return {
+      countPoints: 0,
+      remaining: 0, 
+      now: "", 
+      next: "",
+      max: 0,
+    }
+  },
   computed: {
     ...mapGetters({
       user: "user"
     })
   },
 
-  data() {
-    return {
-      form: {
-        date: "",
-        day: 0,
-        username: "",
-        fname: "",
-        lname: "",
-        email: "",
-        phone: "",
-        don: "",
-        who: "",
-        comment: "",
-        check: "",
-        points: 0
-      },
-
-      deduct: {
-          pts: 0, 
-          username: "", 
-          action: "", 
-          date: "", 
-          day: 0
-      },
-      
-      error: null
-    };
-  },
-
   methods: {
-      submitDonation() {
-          this.error=null
-          if (this.form.fname == "" || this.form.lname == "" || this.form.email=="" || this.form.phone=="" || 
-          this.form.don =="" || this.form.who =="" || this.form.check=="") {
-              this.error = "Please check that inputs are valid!"
-          } else {
-              this.form.date = new Date()
-              var options = {month: 'long'}
-              var d = new Intl.DateTimeFormat('en-US', options)
-              var month = d.format(this.form.date)
-              this.form.day = parseInt(this.form.date.getDate())
-              this.form.date= this.form.date.getDate() + ' ' + month + ' ' + this.form.date.getFullYear()
-              this.form.username = this.user.data.displayName
-              this.form.points = -300
-              this.deduct.pts = -300
-              this.deduct.username = this.user.data.displayName 
-              this.deduct.action = "Donated $2"
-              this.deduct.date = this.form.date
-              this.deduct.day = this.form.day
-              database.collection('users').add(this.deduct)
-              database.collection('donation').add(this.form).then(() => {
-                  if (this.error==null) {
-                     this.$router.push({path: './dashboard'})
-                    alert("Donation made successfully!")
-                  }
-             
-            })
-            
+      fetchPoints() {
+      database.collection('users').get().then((snapshot) => {
+        snapshot.docs.forEach((doc) => {
 
+          if (doc.data().username == this.user.data.displayName) {
+            this.countPoints += doc.data().pts 
+            if (this.countPoints < 200) {
+                this.now = "Welcome Greener"
+                this.next = "Bronze Greener"
+                this.remaining = (this.countPoints/200) * 100
+                this.max = 200
+            } else if (this.countPoints >= 200 && this.countPoints < 600) {
+                this.now = "Bronze Greener"
+                this.next = "Silver Greener"
+                this.remaining = 100-((600-this.countPoints)/600 * 100)
+                this.max = 600
+            } else if (this.countPoints >= 600 && this.countPoints < 1000) {
+                this.now = "Silver Greener" 
+                this.next = "Gold Greener"
+                this.remaining = 100-((1000-this.countPoints)/1000 * 100)
+                this.max = 1000
+            } else {
+                this.now = "Gold Greener"
+                this.next = ""
+                this.remaining = 100
+                this.max = 100
+            }
+          } else if (this.countPoints == 0) {
+            this.now = "Welcome Greener"
+            this.next = "Bronze Greener"
+            this.remaining = 0
+            this.max = 200
           }
+        })
+      })
+    }, 
+    
+    checkPoints() {
+        if (this.countPoints < 300) {
+            alert("Sorry, you do not have enough points to make a donation!")
+        } else {
+            this.$router.push({path: '/donationForm'});
+        }
+    }
+      
+  }, 
 
-      }
+  created() {
+    this.fetchPoints()
+  }, 
 
-  }
-  
-}
+};
+
 </script>
-
-<style scoped> 
-#tree {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 20%;
-}
-
-#hd {
-    text-align: center;
-    color: darkgreen
-}
-
-#pd {
-    text-align: center;
-    font-size: 17px;
-}
-
-#form {
-    display: flex;
-    flex-direction: row;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#id {   
-    display: inline-flex;
-}
-
-#error {
-    font-size: 18px;
-    color: red;
-}
-
-#center { 
-    display: flex;
-    justify-content: center;
-    align-items:center
-}
-
-</style>

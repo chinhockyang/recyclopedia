@@ -26,10 +26,16 @@
               <router-link class="nav-link" to="/Quiz">Quiz</router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" to="/donation">Donation</router-link>
+            </li>
+            </ul>
+            <div id="top-right">
+              
               <template v-if="user.loggedIn">   
                 <div class = "dropdown">      
-                <a class="nav-link" data-toggle="dropdown" href="/dashboard">Account</a>
+                <a class="nav-link" data-toggle="dropdown" href="/dashboard"><img src="https://i.ibb.co/8cNDMLq/user.png" style="width: 3.5%">  Account</a>
                   <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/dashboard">My Profile</a>
                     <button class="dropdown-item" @click.prevent="signOut">Sign Out</button>
                   </div>
                 </div>
@@ -37,8 +43,7 @@
               <template v-else>  
                 <a class="nav-link" href="/login">Account</a> 
               </template>
-            </li>
-          </ul>      
+            </div>    
       </div>
     </nav>
   </div>
@@ -76,6 +81,11 @@ export default {
 
 .navbar-nav > .nav-item {
   background-color: #E3E9BB;    
+}
+
+#top-right {
+  background-color: #E3E9BB; 
+  display: top-right
 }
 
 </style>
