@@ -206,6 +206,18 @@
       <span class="sr-only">Next</span>
     </a>
     </div>
+    <br>
+    <div id="center"> 
+      <p style="font-size: 15px"><strong>Terms and Conditions</strong></p>
+    </div>
+    <div id="center">
+        <ul> 
+            <li style="font-size: 14px">Multiple redemptions allowed.</li>
+            <li style="font-size: 14px">Limited overall redemptions available.</li>
+            <li style="font-size: 14px">Valid for use in the respective stores only.</li>
+            <li style="font-size: 14px">Not entitled to tax relief.</li> 
+        </ul>
+    </div>
   </div>
 </template> 
 
@@ -403,7 +415,7 @@ export default {
     }, 
 
     claimReward4() {
-      if (this.countPoints < 200) {
+      if (this.countPoints < 300) {
             alert("Sorry, you do not have enough points to claim this reward!")
       } else {
        database.collection('rewards').get().then((snapshot) => {
@@ -436,7 +448,7 @@ export default {
     }, 
 
     claimReward5() {
-      if (this.countPoints < 200) {
+      if (this.countPoints < 300) {
             alert("Sorry, you do not have enough points to claim this reward!")
       } else {
        database.collection('rewards').get().then((snapshot) => {
@@ -469,7 +481,7 @@ export default {
     }, 
 
     claimReward6() {
-      if (this.countPoints < 200) {
+      if (this.countPoints < 300) {
             alert("Sorry, you do not have enough points to claim this reward!")
       } else {
        database.collection('rewards').get().then((snapshot) => {
@@ -502,7 +514,7 @@ export default {
     }, 
 
     claimReward7() {
-      if (this.countPoints < 200) {
+      if (this.countPoints < 300) {
             alert("Sorry, you do not have enough points to claim this reward!")
       } else {
        database.collection('rewards').get().then((snapshot) => {
@@ -535,7 +547,7 @@ export default {
     }, 
 
     claimReward8() {
-      if (this.countPoints < 200) {
+      if (this.countPoints < 300) {
             alert("Sorry, you do not have enough points to claim this reward!")
       } else {
        database.collection('rewards').get().then((snapshot) => {
