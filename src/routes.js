@@ -20,7 +20,7 @@ import Past from './components/User/Past.vue'
 import forgotPassword from './components/User/forgotPassword.vue'
 
 export default [
-  { path: '/', component: Home },
+  { path: '/', component: HomePage },
   { path: '/map/:id?', component: myMap, props: true },
   
   { path: '/encyclopedia', component: EncyclopediaHome, children: [
