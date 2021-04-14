@@ -17,7 +17,7 @@
                     id="quick-search-tab" 
                     data-toggle="pill"                     
                     role="tab" 
-                    >My Points</router-link>
+                    >My Rewards</router-link>
                </li>
 
                <li>
@@ -41,45 +41,16 @@
     <div>
       <past-records></past-records>
       <br>
-      <h5>Past Recycling Records</h5>
-      <table> 
-        <tr>
-          <th>No.</th>
-          <th>Date Recycled</th>
-          <th>Bin Serial Number</th> 
-          <th>Item Category</th>
-          <th>Quantity</th>
-          <th>Points Earned</th>
-        </tr>
-        <tr v-for="(item, index) in pastRecords" v-bind:key="index">
-          <td>{{ index + 1}}</td>
-          <td v-for="(value, key, index) in item" v-bind:key="index">{{ value }}</td>
-        </tr>
-      </table>
+    </div>
+    <div id="center"> 
+        <h5>Records History</h5>
     </div>
     <br>
-    <div> 
-        <h5>Past Donations</h5>
+    <div id="center">
         <table> 
         <tr>
           <th>No.</th>
-          <th>Date Donated</th>
-          <th>Organization/Honoree Name</th> 
-          <th>Donation Amount</th>
-        </tr>
-        <tr v-for="(item, index) in pastDonations" v-bind:key="index">
-          <td>{{ index + 1}}</td>
-          <td v-for="(value, key, index) in item" v-bind:key="index">{{ value }}</td>
-        </tr>
-      </table>
-    </div>
-    <br>
-    <div> 
-        <h5>Past Points Transactions</h5>
-        <table> 
-        <tr>
-          <th>No.</th>
-          <th>Date Transacted</th>
+          <th>Date</th>
           <th>Action</th> 
           <th>Points</th>
         </tr>
@@ -172,7 +143,7 @@ export default {
 table {
   font-family: "Inconsolata", sans-serif;
   border-collapse: collapse;
-  width: 60%;
+  width: 100%;
 }
 
 td {

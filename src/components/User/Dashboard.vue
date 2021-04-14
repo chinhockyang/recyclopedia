@@ -17,7 +17,7 @@
                     id="quick-search-tab" 
                     data-toggle="pill"                     
                     role="tab" 
-                    >My Points</router-link>
+                    >My Rewards</router-link>
                </li>
 
                <li>
@@ -79,9 +79,6 @@
             </form>
           </div>
        </div>
-    </div>
-    <div id="center">
-      <button class="btn btn-success" @click.prevent="signOut">Sign out</button>
     </div>
     <div class="modal fade" id="usernamemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
