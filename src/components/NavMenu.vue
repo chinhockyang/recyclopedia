@@ -26,8 +26,13 @@
               <router-link class="nav-link" to="/Quiz">Quiz</router-link>
             </li>
             <li class="nav-item">
-              <template v-if="user.loggedIn">            
-                <a class="nav-link" href="/dashboard">Account</a>
+              <template v-if="user.loggedIn">   
+                <div class = "dropdown">      
+                <a class="nav-link" data-toggle="dropdown" href="/dashboard">Account</a>
+                  <div class="dropdown-menu">
+                    <button class="dropdown-item" @click.prevent="signOut">Sign Out</button>
+                  </div>
+                </div>
               </template> 
               <template v-else>  
                 <a class="nav-link" href="/login">Account</a> 
@@ -42,6 +47,7 @@
 
 <script> 
 import { mapGetters } from "vuex";
+import { firebaseApp } from '../firebase.js'
 
 
 export default {
@@ -50,6 +56,16 @@ export default {
       user: "user"
     })
   },
+  
+  methods: {
+    signOut() {
+      firebaseApp.auth().signOut().then(() => {
+          this.$router.push({path: '/login'});
+          location.reload()
+        });
+    }, 
+
+  }
 }
 </script>
 
