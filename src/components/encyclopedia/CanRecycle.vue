@@ -1,6 +1,6 @@
 <template>
-  <div class=" container tab-pane fade show active" id="can-recycle" role="tabpanel" aria-labelledby="can-recycle-tab">
-    <h1>What I {{ topic }} Recycle</h1>
+  <div class=" container tab-pane fade show active mb-5" id="can-recycle" role="tabpanel" aria-labelledby="can-recycle-tab">
+    <h1 class="mt-3">What {{ topic }} I Recycle</h1>
 
     <div class="input-group mt-3">
       <input type="text" class="form-control" v-model="search" placeholder="Search title.."/><br><br>      
@@ -84,7 +84,8 @@
         <li v-for="item in visibleItems"
             class="col-s-8 col-md-6 col-l-4 m-3 justify-content-center"  
             style="max-width: 285px;"
-            v-bind:key="item.name">            
+            v-bind:key="item.name"            
+            :title="'Click for more ' + item.name + ' information'">            
             <item-card :item="item"></item-card>
         </li>
     </ul>
@@ -125,7 +126,7 @@ export default {
         //currentPage: page of pagination - 1
         //pageSize: number of items shown per page
         currentPage: 0,
-        pageSize: 3,        
+        pageSize: 6,        
 
         //items to be shown (filter)
         checkedList: ['Plastic', 'Paper', 'Glass', 'Metal', 'Electronics', 'Others'],
@@ -186,7 +187,7 @@ export default {
   watch: {
     //render "can" or "cannot" based on $route param 
     canRecycle: function(val) {      
-      return this.topic = eval(val) ? 'can' : 'cannot';
+      return this.topic = eval(val) ? "Can" : "Can't";
     }, 
 
     // if $route param changed to false (cannot recycle)
@@ -252,6 +253,12 @@ li{
     text-align: center;
     margin-left: 3%;
     margin-right: 3%;    
+}
+
+li:hover {
+  border-color:lightgreen;
+  border-style: ridge;
+  border-width: unset;
 }
 
 </style>

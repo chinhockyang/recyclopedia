@@ -1,10 +1,22 @@
 <template>
 <div>  
   <div class="card" style="height:450px; max-width: 285px; cursor:pointer;" data-toggle="modal" :data-target="'#' + item.name"> 
-      <img :src="item.imageUrl" class="card-img-thumbnail rounded border-dark" alt="No image yet!" onerror="this.onerror=this.src='https://www.brandturbo.com/images/images/en/imageNoImageSmall.gif';">
+      <img 
+        :src="item.imageUrl" 
+        class="card-img-thumbnail rounded border-dark" 
+        alt="No image yet!" 
+        onerror="this.onerror=this.src='https://www.brandturbo.com/images/images/en/imageNoImageSmall.gif';"
+        style="width: 100%; height: 55%;">
       <div class="card-body">
-        <h5 class="card-title">{{item.name}}</h5>
-        <h6 class="card-subtitle mb-2">{{item.category}}</h6>        
+        <h5 class="card-title">
+          <span v-if="item.name.length > 30" style="font-size: 70%;">
+            {{item.name}}
+          </span>
+          <span v-else>
+            {{item.name}}
+          </span>
+        </h5>        
+        <h6 class="card-subtitle mb-2 badge badge-secondary">{{item.category}}</h6><br>      
         <p class="card-text badge badge-success" v-if="item.recyclable">Recyclable</p>
         <p class="card-text badge badge-danger" v-else>Not Recyclable</p>        
       </div>            

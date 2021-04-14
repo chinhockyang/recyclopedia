@@ -1,7 +1,12 @@
 <template>
   <div class="form-group">    
     <div class="input-group">
-          <input type="text" class="form-control" v-model="search" @focus="modal = true">                      
+          <input 
+            type="text" 
+            placeholder="Enter an item name..."
+            class="form-control" 
+            v-model="search" 
+            @focus="modal = true">                      
           <b-button v-b-tooltip.hover.bottom :title="toolTipText" variant="outline-secondary" v-if="modal == true" @click="modal = false">
               <small>^</small>
           </b-button>          
@@ -114,9 +119,9 @@ li{
     padding: 5px;
     margin-top: 0%;
     border: 1px solid #222;
-    margin-right: 100px;
+    margin-right: 115px;
     margin-left: auto;            
-    background-color: lightgray;
+    background-color: #E3E9BB;
 }
 
 li:hover {
