@@ -3,38 +3,20 @@
     <h3>Find My Bin</h3>
     <div id="map" class="w-100 p-3 container-fluid"></div>
     <div class="w-100 p-3 container">
-      <ul class="form-check">
-        <!-- <li v-show="!tooZoomedOut">
-          <input 
-            type="checkbox"
-            id="recyclebins"
-            value="recyclebins"
-            @change="setFilter($event)"
-            >
-          <label :for="recyclebins">Recycle Bins</label><br>
-        </li> -->
-
-        <!-- <li>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
-              <label class="form-check-label" for="flexCheckDisabled">
-              Recycle Bins (Disabled)
-              </label>
-          </div>
-        </li> -->
-
-                  <!-- // TODO: have a hover box (use Bootstrap) to show some details on that type of bin -->
-        <li v-for="binType in binTypes" :key="binType.id" class="list-inline-item">
+      <ul>
+                  <!-- // TODO: instead of tooltips, use popover box on hover (from Bootstrap) to show some details on binType-->
+        <li v-for="binType in binTypes" 
+          :key="binType.id" 
+          class="list-inline-item">
                       <!-- :for="binType.id"  -->
-          <label class="btn btn-outline-primary form-check-label">
+          <label :title="binType.info">
             <input 
             type="checkbox" 
             :id="binType.id"
             :value="binType.id"
             v-model="checkedBinTypes"
             @change="setFilter($event)"
-            class="btn-check form-check-input"
-            autocomplete="off" 
+            autocomplete="off"
             >
             {{binType.title}}
           </label><br>
@@ -56,26 +38,33 @@ export default {
       binTypes: [
                   {
                     'title': 'Recycle Bins',
-                    'id': 'recyclebins'
+                    'id': 'recyclebins',
+                    'info': 'Regular recycling bins, for paper, plastic and cans.'
                   }, 
                   {
                     'title': 'E-Waste',
-                    'id': 'ewaste'
+                    'id': 'ewaste',
+                    'info': 'Recycle electronic waste at these points!'
                   },
                   {
                     'title': 'Cash-For-Trash',
-                    'id': 'cashfortrash'
+                    'id': 'cashfortrash',
+                    'info': 'Cash-for-Trash is an incentive programme by Public Waste Collectors, where residents may bring their recyclables to the Cash-for-Trash stations and cash is given in exchange for recyclables.'
                   }, 
                   {
                     'title': '2nd Hand Collection Points',
-                    'id': 'secondhandcollecn'
+                    'id': 'secondhandcollecn',
+                    'info': 'Drop off your second-hand items here!'
                   }, 
                   {
                     'title': 'Reverse Vending Machines',
-                    'id': 'rvm'
-                  }, {
+                    'id': 'rvm',
+                    'info': 'Reverse Vending Machines (RVMs) are machines which are able to identify, sort and collect empty plastic drink bottles and aluminium drink cans and reward users when the containers have been accepted by the machines.'
+                  }, 
+                  {
                     'title': 'Lighting Waste',
-                    'id': 'lighting'
+                    'id': 'lighting',
+                    'info': 'Recycle light bulbs, fluorescent tubes, rechargeable batteries, power banks at IKEA stores.'
                   }
                 ],
       checkedBinTypes: [],
@@ -83,7 +72,6 @@ export default {
     }
   },
   // TODO: localhost:8080/map/ewaste => shows the ewaste checked
-      // use props?
   computed: {
     tooZoomedOut: function() {
       var bool = true;
@@ -113,15 +101,6 @@ export default {
       const showMarker = $event.target.checked;
       const binType = $event.target.id;
       this.filterMarkers(this.map.data, binType, showMarker);
-      // this.map.data.forEach(function(feature) {
-      //   // console.log('binType is....');
-      //   // console.log(binType);
-      //   if (feature.getProperty('binType') === binType){
-      //     // console.log('feature showMarker is...');
-      //     // console.log(feature.getProperty('showMarker'));
-      //     feature.setProperty('showMarker', showMarker);
-      //   }
-      // })
     },
     filterMarkers: function(data, binType, showMarker) {
       // console.log("filterMarkers called!");
@@ -143,7 +122,7 @@ export default {
               lat: position.coords.latitude, 
               lng: position.coords.longitude
             };
-            this.markLocation(map, infoWindow, pos_obj, "Location found.", zoom);
+            this.markLocation(map, infoWindow, pos_obj, "You are here", zoom);
           });
       } else {
         // Browser doesn't support Geolocation
@@ -217,7 +196,7 @@ export default {
         this.map.data.loadGeoJson(webServer + 'data/lightingGeo.json');
         // this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/testbins.json');
         
-        // file taken from local directory, only works on Firefox
+        // // file taken from local directory, only works on Firefox
         // this.map.data.loadGeoJson('data/recyclebinsGeo.json'); 
         // this.map.data.loadGeoJson('data/ewasteGeo.json');
         // this.map.data.loadGeoJson('data/cashfortrashGeo.json');
@@ -279,7 +258,7 @@ export default {
         // this.filterMarkers(this.map.data, binType, true);
       }
 
-      // Infowindow pops up with details for each bin when its marker is clicked
+      // InfoWindow pops up with details for each bin when its marker is clicked
       this.map.data.addListener('click', (event) => {
         console.log('event is ----- ' + event);
         const address = event.feature.getProperty('address');
@@ -292,7 +271,7 @@ export default {
                   <div style="margin-left:20px; margin-bottom:20px;">
                     <h5>${address}</h5>
                     <p>${postcode}</p><br>
-                    <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${lat}%2C${lng}', '_blank')">
+                    <button class="open-in-gmaps" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${lat}%2C${lng}', '_blank')">
                       Open in Google Maps
                     </button>
                   </div>
@@ -368,27 +347,10 @@ export default {
                   // in a particular area instead of using the user's location directly.
                   // then, restrict displayed markers to only within bounds of viewport.
                     // sub-task: getBounds
-      
-      // try pushing one of the checkboxes on to the map itself
+      // TODO: try pushing one of the checkboxes on to the map itself
       // const checky = document.getElementById("recyclebins");
       // this.map.controls.[this.google.maps.ControlPosition.BOTTOM_CENTER].push(checky);
 
-      // const searchHere = document.createElement("button");
-      // searchHere.textContent = "Search this area";
-      // this.map.controls[this.google.maps.ControlPosition.BOTTOM_CENTER].push(searchHere);
-      // searchHere.addEventListener("click", async () => {
-      //   const bounds = this.map.getBounds();
-      //   this.map.data.forEach((feature) => {
-      //     // if bin is within map viewport bounds
-      //     const showMarkerCurr = feature.getProperty('showMarker');
-      //     const isWithinViewport = bounds.contains(feature.getGeometry().get());
-      //     const showMarkerNext = showMarkerCurr && isWithinViewport;
-      //     feature.setProperty('showMarker', showMarkerNext);
-      //   });
-      // })
-        // Option 2: seamlessly display markers as user pans
-
-      // let infoWindow = new google.maps.InfoWindow();
       const nearMe = document.createElement("button");
       nearMe.textContent = "Pan to my location";
       nearMe.classList.add("custom-map-control-button");
@@ -400,6 +362,7 @@ export default {
       console.error(error);
     }
   },
+  // TODO: fix routing for checkedBinTypes
   created: function() {
     console.log("creating");
     console.log("this.$route.params.id is...");
@@ -427,30 +390,22 @@ export default {
 <style scoped>
   div {
     height: 600px;
-    /* width: 1000px; */
-    /* height: 370px; */
     padding-left: 15px;
     padding-right: 15px;
     margin: auto;
     white-space: normal;
-    /* display: flex;
-    justify-content: center; */
   }
   ul {
     list-style-type: none;
     overflow: hidden;
     float: center;
-    margin: 0 auto;   
-    /* display: flex; */
-    /* justify-content: center; */
+    margin: 0 auto;
   }
   :checked {
     background-color:#4d90fe !important;
   }
   #map {
     height: 85%;
-    /* height: 470px; */
-    /* width: 1000px; */
     overflow: hidden;
     float: left;
     border: thin solid #333;
@@ -548,27 +503,4 @@ export default {
     padding-right: 18px;
   }
 
-  #open-in-gmaps {
-  font: bold 11px Arial;
-  text-decoration: none;
-  background-color: #EEEEEE;
-  color: #333333;
-  padding: 2px 6px 2px 6px;
-  border-top: 1px solid #CCCCCC;
-  border-right: 1px solid #333333;
-  border-bottom: 1px solid #333333;
-  border-left: 1px solid #CCCCCC;
-  }
-  /* #open-in-gmaps {
-    background-color: #1c87c9;
-    border: none;
-    color: white;
-    padding: 20px 34px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    margin: 4px 2px;
-    cursor: pointer;
-  } */
 </style>
