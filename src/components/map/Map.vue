@@ -3,7 +3,7 @@
     <h3>Find My Bin</h3>
     <div id="map" class="w-100 p-3 container-fluid"></div>
     <div class="w-100 p-3 container">
-      <ul class="btn-group list-inline form-check" role="group">
+      <ul class="form-check">
         <!-- <li v-show="!tooZoomedOut">
           <input 
             type="checkbox"
@@ -26,9 +26,7 @@
                   <!-- // TODO: have a hover box (use Bootstrap) to show some details on that type of bin -->
         <li v-for="binType in binTypes" :key="binType.id" class="list-inline-item">
                       <!-- :for="binType.id"  -->
-          <label 
-            class="btn btn-outline-primary form-check-label"
-          >
+          <label class="btn btn-outline-primary form-check-label">
             <input 
             type="checkbox" 
             :id="binType.id"
@@ -141,32 +139,33 @@ export default {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            const pos = [position.coords.latitude, position.coords.longitude];
-            this.markLocation(map, infoWindow, pos, "Location found.", zoom);
+            const pos_obj = {
+              lat: position.coords.latitude, 
+              lng: position.coords.longitude
+            };
+            this.markLocation(map, infoWindow, pos_obj, "Location found.", zoom);
           });
       } else {
         // Browser doesn't support Geolocation
         this.handleLocationError(false, infoWindow, map.getCenter(), map);
       }
     },
-    markLocation: function(map, infoWindow, pos, content, zoom) {
-      const pos_obj = {
-        lat: pos[0],
-        lng: pos[1]
-      }
+    markLocation: function(map, infoWindow, pos_obj, content, zoom) {
       map.setCenter(pos_obj);
       map.setZoom(zoom);
-      if (this.isLocationFree(pos)) {
+      if (this.isLocationFree(pos_obj)) {
         const marker = new this.google.maps.Marker({
           position: pos_obj,
           map: map
         });
-        this.markersLatLng.push([pos.lat, pos.lng]);
-        console.log([pos.lat, pos.lng]);
+        const pos_arr = [pos_obj.lat, pos_obj.lng];
+        this.markersLatLng.push(pos_arr);
+        console.log("[pos.lat, pos.lng]");
+        console.log(pos_arr);
         console.log("this.markersLatLng.length");
         console.log(this.markersLatLng.length);     
         marker.addListener("click", () => {
-          infoWindow.setPosition(pos);
+          infoWindow.setPosition(pos_obj);
           infoWindow.setContent(content);
           infoWindow.setOptions({pixelOffset: new this.google.maps.Size(0, -30)});
           infoWindow.open(map);
@@ -175,12 +174,15 @@ export default {
         return;
       }
     },
-    isLocationFree: function(search) {
-      console.log([search[0], search[1]]);
+    isLocationFree: function(pos_obj) {
+      const pos_arr = [pos_obj.lat, pos_obj.lng]
+      console.log("isLocationFree called!");
+      console.log(pos_arr);
       for (var i = 0, l = this.markersLatLng.length; i < l; i++) {
-        if (this.markersLatLng[i][0] === search[0] && this.markersLatLng[i][1] === search[1]) {
-          console.log(this.markersLatLng[i])
+        if (this.markersLatLng[i][0] === pos_arr[0] && this.markersLatLng[i][1] === pos_arr[1]) {
           console.log("matching marker location found.");
+          console.log("this.markersLatLng.length");
+          console.log(this.markersLatLng.length);
           return false;
         }
       }
@@ -334,12 +336,9 @@ export default {
       const autocomplete = new this.google.maps.places.Autocomplete(input, options);
       autocomplete.setFields(['address_components', 'geometry','name']);
 
-      // const originMarker = new this.google.maps.Marker({map: this.map});
-      // originMarker.setVisible(false);
       let originLocation = this.map.getCenter();
 
       autocomplete.addListener('place_changed', async () => {
-        // originMarker.setVisible(false);
         originLocation = this.map.getCenter();
         const place = autocomplete.getPlace();
 
@@ -352,13 +351,15 @@ export default {
 
         // Recenter the map to the selected address
         originLocation = place.geometry.location;
-        const originLatLng = [originLocation.lat(), originLocation.lng()];
+        const originLatLng = { 
+          lat: originLocation.lat(), 
+          lng: originLocation.lng()
+        };
         this.markLocation(this.map, infoWindow, originLatLng, place.name);
       });
 
       // TODO: implement support for phone web view - plist (permissions list)
       // TODO: doesn't work for network server
-      // TODO: change icons back to markers, but with different colours for different binTypes
       // TODO: look into hosting data on firebase
       // TODO: consider not allowing users to see all recycle bins in Singapore 
       //        => remove checkbox, only allow searches within certain areas
@@ -367,19 +368,24 @@ export default {
                   // in a particular area instead of using the user's location directly.
                   // then, restrict displayed markers to only within bounds of viewport.
                     // sub-task: getBounds
-      const searchHere = document.createElement("button");
-      searchHere.textContent = "Search this area";
-      this.map.controls[this.google.maps.ControlPosition.BOTTOM_CENTER].push(searchHere);
-      searchHere.addEventListener("click", async () => {
-        const bounds = this.map.getBounds();
-        this.map.data.forEach((feature) => {
-          // if bin is within map viewport bounds
-          const showMarkerCurr = feature.getProperty('showMarker');
-          const isWithinViewport = bounds.contains(feature.getGeometry().get());
-          const showMarkerNext = showMarkerCurr && isWithinViewport;
-          feature.setProperty('showMarker', showMarkerNext);
-        });
-      })
+      
+      // try pushing one of the checkboxes on to the map itself
+      // const checky = document.getElementById("recyclebins");
+      // this.map.controls.[this.google.maps.ControlPosition.BOTTOM_CENTER].push(checky);
+
+      // const searchHere = document.createElement("button");
+      // searchHere.textContent = "Search this area";
+      // this.map.controls[this.google.maps.ControlPosition.BOTTOM_CENTER].push(searchHere);
+      // searchHere.addEventListener("click", async () => {
+      //   const bounds = this.map.getBounds();
+      //   this.map.data.forEach((feature) => {
+      //     // if bin is within map viewport bounds
+      //     const showMarkerCurr = feature.getProperty('showMarker');
+      //     const isWithinViewport = bounds.contains(feature.getGeometry().get());
+      //     const showMarkerNext = showMarkerCurr && isWithinViewport;
+      //     feature.setProperty('showMarker', showMarkerNext);
+      //   });
+      // })
         // Option 2: seamlessly display markers as user pans
 
       // let infoWindow = new google.maps.InfoWindow();
