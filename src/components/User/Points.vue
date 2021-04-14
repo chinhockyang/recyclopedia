@@ -69,6 +69,14 @@
             <li style="font-size: 14px">Not entitled to tax relief.</li> 
         </ul>
       </div> 
+      <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL9bNIk4c3ib8JXCfzqcOzqYxnAFzZQIGmjOa-WCNWJpzNisCg4aUzVD5KYTRmL4AeveU&usqp=CAU" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
     <div>  
     <br>
     <p style="font-size: 20px"><strong>Tier Levels</strong></p>
@@ -161,7 +169,7 @@ export default {
         if (this.countPoints < 300) {
             alert("Sorry, you do not have enough points to make a donation!")
         } else {
-            this.$router.push({path: '/donation'});
+            this.$router.push({path: '/donationForm'});
         }
     }
       
