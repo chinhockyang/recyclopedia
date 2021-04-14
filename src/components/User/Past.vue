@@ -39,6 +39,8 @@
            </ul>                        
        </nav> 
     <div>
+      <past-records></past-records>
+      <br>
       <h5>Past Recycling Records</h5>
       <table> 
         <tr>
@@ -94,8 +96,13 @@
 <script>
 import { mapGetters } from "vuex";
 import database from '../../firebase.js'
+import pastRecords from '.././charts/pastRecords.vue'
 
 export default {
+  components: {
+    'past-records': pastRecords
+  }, 
+
   data() {
     return {
       pastRecords: [], 
