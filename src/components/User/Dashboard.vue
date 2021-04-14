@@ -44,16 +44,16 @@
     <div id="center">
       <div id="center">
         <template v-if="this.now === 'Welcome Greener'">
-        <b-badge pill variant="success" style="width: 60%"><img src="https://www.flaticon.com/svg/vstatic/svg/628/628297.svg?token=exp=1618212197~hmac=1797f5b178d99fb91dc1f3a7b6981d42" style="width: 10%">  {{ this.now }}</b-badge>
+        <b-badge pill variant="success" style="width: 60%"><img src="https://i.ibb.co/f8J98b9/sprout.png" style="width: 10%">  {{ this.now }}</b-badge>
         </template> 
         <template v-if="this.now === 'Bronze Greener'">
-        <b-badge pill variant="danger" style="width: 30%"><img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583434.svg?token=exp=1618212295~hmac=ffd49f29b5d10deeae2e0bd3c1cc85bf" style="width: 10%">  {{ this.now }}</b-badge>
+        <b-badge pill variant="danger" style="width: 30%"><img src="https://i.ibb.co/FmqYLRk/medal.png" style="width: 10%">  {{ this.now }}</b-badge>
         </template> 
         <template v-if="this.now === 'Silver Greener'">
-        <b-badge pill variant="secondary" style="width: 28%"><img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583319.svg?token=exp=1618212397~hmac=46d735cc48cd11df12c6a3ac3bea638d" style="width: 10%">  {{ this.now }}</b-badge>
+        <b-badge pill variant="secondary" style="width: 28%"><img src="https://i.ibb.co/mRzBQ94/medal-1.png" style="width: 10%">  {{ this.now }}</b-badge>
         </template> 
         <template v-if="this.now === 'Gold Greener'">
-        <b-badge pill variant="warning" style="width: 28%"><img src="https://www.flaticon.com/svg/vstatic/svg/2583/2583344.svg?token=exp=1618212442~hmac=a46695df96d9319ebf095b98433bf18d" style="width: 10%">  {{ this.now }}</b-badge>
+        <b-badge pill variant="warning" style="width: 28%"><img src="https://i.ibb.co/R7L35jS/medal-2.png" style="width: 10%">  {{ this.now }}</b-badge>
         </template> 
       </div>
     </div>
@@ -233,16 +233,12 @@ export default {
     }, 
 
     updateUsername() {
-      this.error = null
-      this.pass = false 
-      if (this.update.name != "") {
-        database.collection('tier').doc(this.user.data.displayName).set({level: this.now, name: this.update.name})
-        this.pass = true 
-      }
-      if (this.pass == true) {
-        alert("Profile Information updated successfully!  Please sign in again.")
-         this.signOut()
-      }
+      database.collection('tier').doc(this.user.data.displayName).set({level: this.now, name: this.update.name})
+      alert("Profile Information updated successfully!  Please sign in again.")
+      firebaseApp.auth().signOut().then(() => {
+          this.$router.push({path: '/login'})
+      })
+
     },
 
     updateEmail() {
