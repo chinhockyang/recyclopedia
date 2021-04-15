@@ -30,7 +30,6 @@
             </li>
             </ul>
             <div id="top-right">
-              
               <template v-if="user.loggedIn">   
                 <div class = "dropdown">      
                 <a class="nav-link" data-toggle="dropdown" href="/dashboard">My Account</a>

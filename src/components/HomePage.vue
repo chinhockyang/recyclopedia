@@ -2,8 +2,8 @@
 <div>
     <section class="jumbotron py-3" id="recyclingjumb">
         <div class="container text-center">
-            <h1 class="display-4">Recyclopedia</h1>
-            <p class="lead text-muted" style="color: white">The Recycling Hub for Singaporeans</p> 
+            <h1 class="display-4"><strong>Recyclopedia</strong></h1>
+            <p class="lead text-muted" style="color: white"><strong>The Recycling Hub for Singaporeans</strong></p> 
         </div>
         <div class="card w-75 mx-auto text-center">
             <div class="card-header btn" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
