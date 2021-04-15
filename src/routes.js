@@ -1,4 +1,4 @@
-import Home from './components/Home.vue'
+import HomePage from './components/HomePage.vue'
 import myMap from './components/map/Map.vue'
 import Quiz from './components/Quiz/QuizStart.vue'
 import QuizQuestions from './components/Quiz/QuizQuestions.vue'
@@ -6,10 +6,7 @@ import QuizAnswers from './components/Quiz/QuizAnswers.vue'
 
 import EncyclopediaHome from './components/encyclopedia/EncyclopediaHome.vue'
 import QuickSearch from './components/encyclopedia/QuickSearch.vue'
-import BrowseCategory from './components/encyclopedia/BrowseCategory.vue'
-import BrowseCatalogue from './components/encyclopedia/BrowseCatalogue.vue'
 import CanRecycle from './components/encyclopedia/CanRecycle.vue'
-import CategoryInfoPage from './components/encyclopedia/CategoryInfoPage.vue'
 import AddItem from './components/encyclopedia/AddItem.vue'
 
 import Login from './components/User/Login.vue'
@@ -23,18 +20,14 @@ import Past from './components/User/Past.vue'
 import forgotPassword from './components/User/forgotPassword.vue'
 
 export default [
-  { path: '/', component: Home },
+  { path: '/', component: HomePage },
   { path: '/map/:id?', component: myMap, props: true },
   
   { path: '/encyclopedia', component: EncyclopediaHome, children: [
     { path: '', component: QuickSearch},
-    { path: '/encyclopedia/quick-search', component: QuickSearch},
-    { path: '/encyclopedia/browse/', component: BrowseCategory, children: [
-        { path: '', component: BrowseCatalogue},
-        { path: '/encyclopedia/browse/category-info/:id', component: CategoryInfoPage, props: true}
-    ]},
+    { path: '/encyclopedia/quick-search', component: QuickSearch},    
     { path: '/encyclopedia/can-recycle/:id/:category?', component: CanRecycle, props: true},        
-    { path: '/encyclopedia/add', component: AddItem}
+    { path: '/encyclopedia/add', component: AddItem}    
   ]}, 
 
   { path: '/login', component: Login }, 

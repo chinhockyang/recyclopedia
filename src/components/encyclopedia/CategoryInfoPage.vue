@@ -15,93 +15,7 @@
         <div class="col-2"></div>
       </div>
       
-      <div class="accordion col-12 col-md-8 mx-auto" role="tablist">
-        <div class="card">
-          <div class="card-header" id="headingOne">
-            <button class="btn btn-outline-light" style="text-decoration:none; color:green;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                <h5>About Recycling {{category}}</h5>
-            </button>               
-          </div>
-          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-            <div class="card-body">
-                  <div class="col-s-6 container">
-                        <div
-                          id="carouselBasicExample"
-                          class="carousel slide carousel-fade"
-                          data-ride="carousel"
-                          data-interval="false"
-                        >
-
-                        <!-- Inner -->
-                        <div class="carousel-inner">                            
-                            <div class="carousel-item active" style="overflow-x: auto; white-space: nowrap;">
-                                <img
-                                  :src="posters[0].imageUrl"
-                                  class="d-block mx-auto"
-                                  alt="..."
-                                  style="max-height: 600px; max-width: 1000px; overflow-x: visible;"                                  
-                                  v-b-modal="posters[0].imageUrl"                                  
-                                />
-                                <p class="card-subtitle text-muted mt-2 mb-3">
-                                      {{posters[0].description}}
-                                </p>         
-                                <b-modal :id="posters[0].imageUrl" hide-footer no-close-on-backdrop size="xl">
-                                  <img
-                                    :src="posters[0].imageUrl"
-                                    class="d-block w-100"
-                                    alt="..."                                                                        
-                                  />
-                                </b-modal>                       
-                            </div>
-
-                            <div class="carousel-item" style="overflow-x: auto; white-space: nowrap;" v-for="poster in posters.slice(1)" :key="poster">
-                                <img
-                                  :src="poster.imageUrl"
-                                  class="d-block mx-auto"
-                                  alt="..."
-                                  v-b-modal="poster.imageUrl"
-                                  style="max-height: 600px; max-width: 900px; overflow-x: visible;"                                  
-                                />
-                                <p class="card-subtitle text-muted mt-2 mb-3">
-                                      {{poster.description}}
-                                </p>         
-                                <b-modal :id="poster.imageUrl" hide-footer no-close-on-backdrop size="xl">
-                                  <img
-                                    :src="poster.imageUrl"
-                                    class="d-block w-100"
-                                    alt="..."                                                                   
-                                  />
-                                </b-modal>    
-                            </div>
-                        
-                          <!-- Inner -->
-
-                          <!-- Controls -->
-                          <button
-                            class="carousel-control-prev"
-                            type="button"
-                            data-target="#carouselBasicExample"
-                            data-slide="prev"
-                            style="border: none; background-color: transparent; cursor:pointer;"
-                          >
-                            <span class="carousel-control-top-prev-icon" aria-hidden="true"></span>    
-                          </button>
-
-                          <button
-                            class="carousel-control-next"
-                            type="button"
-                            data-target="#carouselBasicExample"
-                            data-slide="next"
-                            style="border: none; background-color: transparent;" 
-                          >
-                            <span class="carousel-control-top-next-icon" aria-hidden="true"></span>    
-                          </button>
-                        </div>
-                      </div>                        
-                  </div>
-            </div>
-          </div>
-        </div>
+      <div class="accordion col-12 mx-auto" role="tablist">        
         <div class="card">
           <div class="card-header" id="headingTwo">
             <button class="btn btn-outline-light" style="text-decoration:none; color:green;" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -189,13 +103,7 @@
               </button>            
           </div>
           <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordion">
-            <div class="card-body">
-                <p style="width: 80%; margin: auto;">
-                  Here are the most commonly browsed items of {{category}} in Recyclopedia, which means that 
-                  many users have the intention to dispose them in the Recycling Bins!
-                  However some of these items are non-recyclable, it is important for us to take note of what items can 
-                  and cannot be recycled!
-                </p>
+            <div class="card-body">                
                 <div class="card p-3 mt-3">
                   <h5 class="mt-3 ml-5">Commonly Searched {{category}}</h5>
                   <div
@@ -309,7 +217,7 @@ import ItemCard from './ItemCard.vue'
 export default {  
   data(){
     return{                
-        category: "",
+        //category: "",
         totalSearched: 0,
         totalRecycled: 0,
         canRecycle: [],
@@ -357,11 +265,11 @@ export default {
     },
 
     created: function() {                           
-        this.category = this.$route.params.id.charAt(0).toUpperCase() + this.$route.params.id.slice(1);
+        //this.category = this.$route.params.id.charAt(0).toUpperCase() + this.$route.params.id.slice(1);
         this.fetchItems();      
         this.fetchPoster();  
     },
-
+    /*
     watch: {
         $route: function(val) {
             this.category = val.params.id.charAt(0).toUpperCase() + val.params.id.slice(1);            
@@ -376,13 +284,17 @@ export default {
             this.fetchItems();
             this.fetchPoster();
         }
-    },
+    },*/
 
     components: {        
         'bar-chart': BarChart,
         'horizontal-bar-chart': HorizontalBarChart,
         'pie-chart': PieChart,
         'item-card': ItemCard
+    },
+
+    props: {
+      'category': String
     }
 }    
 

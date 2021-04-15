@@ -13,17 +13,6 @@
                     >Quick Search </router-link>
                </li>
 
-                <li>
-                    <router-link to="/encyclopedia/browse" 
-                    class="nav-link"
-                    id="browse-tab" 
-                    data-toggle="pill"
-                    role="tab" 
-                    aria-controls="browse" 
-                    aria-selected="false"
-                    >Browse by Category</router-link>
-               </li>
-
                <li>
                     <router-link to="/encyclopedia/can-recycle/true" 
                     class="nav-link"

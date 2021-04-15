@@ -75,10 +75,22 @@
                         <option value="Paper">Paper</option>
                         <option value="Metal">Metal</option>
                         <option value="Glass">Glass</option>
-                        <option value="E-waste">E-waste</option>
                         <option value="Electrical">Electrical</option>
+                        <option value="Others">Others</option>
                     </select>
                 </div>
+                
+                <div class="form-group">
+                  <label>Item Name <small><em>(if applicable, press "Pick Item" to select an item)</em></small></label><br>                  
+                  <p v-show="item">Selected: <badge class="badge badge-info p-1"> {{item}}</badge></p>
+                  <search-tool 
+                    :itemsList="itemsList"
+                    :buttonName="'Pick Item'"                    
+                    @searched="addItem"                 
+                    >
+                  </search-tool>                  
+                </div>
+
                 <div class="form-group">
                   <label for="quantity">Quantity<span style="color:red;" title="required"> *</span></label>
                     <br><input type="number" class="form-control" placeholder="0" id="quantity" name="quantity" min="0" v-model="form.quantity" required>
@@ -110,7 +122,7 @@
 <script>
 import { mapGetters } from "vuex";
 import database from '../../firebase.js'
-
+import SearchTool from '../encyclopedia/SearchTool.vue'
 
 export default {
   computed: {
@@ -121,6 +133,9 @@ export default {
 
   data() {
     return {
+      itemsList: [], 
+      item: "",
+
       form: {
         date: "",
         day: 0,
@@ -142,8 +157,40 @@ export default {
   },
 
   methods: {
+    fetchItems:function(val){      
+        database.collection('items').where('category', '==', val).get().then((querySnapShot)=>{
+        let item={}
+        querySnapShot.forEach(doc=>{
+            item=doc.data()
+            item.show=false
+            item.id=doc.id
+            if (item.approved & item.recyclable) {                            
+              this.itemsList.push(item.name) 
+            }            
+        })});
+      },
+
+      addItem: function(value) {        
+        this.item = value;
+      },
+
+      addItemCount: function(val) {          
+        database.collection('items')
+            .where('name', '==', val)
+            .get()
+            .then((querySnapShot) => {   
+                let item={}                
+                querySnapShot.forEach(doc=>{
+                    item=doc.data()
+                    item.show=false
+                    item.id=doc.id
+                    database.collection('items').doc(item.id).update({'amountRecycled' : parseInt(item.amountRecycled) + parseInt(this.form.quantity)});              
+            })});
+      },
+
       submitRecord() {
-          this.error=null
+          this.error=null          
+          this.addItemCount(this.item);          
           if (this.form.serialNo == "" || this.form.itemCat == "" || this.form.quantity=="") {
               this.error = "Please fill in all fields"
           } else if (this.form.serialNo.length != 6) {
@@ -176,7 +223,18 @@ export default {
           }
 
       }
+  },
 
+  watch: {
+    'form.itemCat': function(val) {  
+      this.itemsList = [];    
+      this.item = '';
+      this.fetchItems(val);
+    }
+  },
+
+  components: {
+    'search-tool': SearchTool
   }
 }
 
