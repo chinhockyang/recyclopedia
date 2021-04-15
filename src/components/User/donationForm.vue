@@ -130,7 +130,7 @@ export default {
               database.collection('users').add(this.deduct)
               database.collection('donation').add(this.form).then(() => {
                   if (this.error==null) {
-                     this.$router.push({path: './dashboard'})
+                     this.$router.push({path: './points'})
                     alert("Donation made successfully!")
                   }
              
