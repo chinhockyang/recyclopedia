@@ -23,7 +23,7 @@
   <div class='row align-items-center justify-content-center' style="height: 250px;">
   <div class="col-4 text-center" style="background-color: #E3E9BB; padding: 50px 0px 50px 0px">
   <p>You may only attempt this quiz once. Are you ready?</p>
-  <button @click="$router.push('/quiz/questions')" type="button" class="btn btn-primary btn-lg" style="background-color: #0A4C0A">I'm Ready. Let's Go!</button>
+  <button @click="$router.push('/quiz/questions')" type="button" class="btn btn-secondary btn-lg">I'm Ready. Let's Go!</button>
   </div>
   </div> 
 </div>
