@@ -1,6 +1,6 @@
 <template>
 <div> 
-    <div class="jumbotron jumbotron-fluid">
+    <div class="jumbotron jumbotron-fluid" id="donationjumb" >
   <div class="container">
     <h1 class="display-4"><strong>You can make a difference.</strong></h1>
     <p class="lead"><strong>Over the years, more corporations, foundations and individuals have stepped forward to support the Garden City Fund as they understood the 
@@ -107,7 +107,7 @@ export default {
 </script>
 
 <style> 
-.jumbotron {
+#donationjumb {
   background-image: url("https://athome.reachtheworld.org/wp-content/uploads/2020/09/Singapore.jpg");
   background-size: cover;
 }

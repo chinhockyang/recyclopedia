@@ -82,15 +82,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
-
 export default {
-  computed: {
-    ...mapGetters({
-      user: "user"
-    })
-  },
+
 
   data() {
     return {
@@ -122,7 +115,7 @@ export default {
           } else if (parseInt(this.form.amount) < 5) {
               this.error = "Invalid donation amount"
           } else {
-              alert("Donation made successfully!")
+              alert("Donation made successfully!  You will receive a confirmation letter by Garden City Fund in a few days.")
               this.$router.push({path: './donation'})
           }
       }

@@ -26,6 +26,7 @@ const myRouter = new VueRouter({
   linkExactActiveClass: "active" // active class for *exact* links.
 });
 
+
 firebaseApp.auth().onAuthStateChanged(user => {
   store.dispatch("fetchUser", user);
 });

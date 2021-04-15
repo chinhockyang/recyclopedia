@@ -157,7 +157,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-// import { Auth } from '@../../firebase/auth';
+//import { Auth } from '@../../firebase/auth';
 import { firebaseApp } from '../../firebase.js'
 import database from '../../firebase.js'
 

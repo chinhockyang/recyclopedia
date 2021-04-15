@@ -46,3 +46,4 @@ export default [
   { path: '/quiz/answers', component: QuizAnswers}
 
 ]
+
