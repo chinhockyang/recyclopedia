@@ -43,7 +43,9 @@
       <br>
     </div>
     <br>
-    <div id="center">
+    <div>
+      <h5 id="center">Activity History</h5><br>
+      <div id="center">
         <table> 
         <tr>
           <th>No.</th>
@@ -56,6 +58,7 @@
           <td v-for="(value, key, index) in item" v-bind:key="index">{{ value }}</td>
         </tr>
       </table>
+      </div>
       </div>
       <div id="center">
       <pagination 
