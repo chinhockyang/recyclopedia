@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <br>
-    <h2 id="center">Login</h2>
+    <h1 id="center">Login</h1>
     <div class="row p-3 mb-5">
     <div class="col-1 col-md-2 col-l-3"></div>
     <div class="col-10 col-md-8 col-l-6 bg-light rounded p-3">

@@ -1,20 +1,29 @@
 <template>
 <div class="text-center m-3">  
-  <h3 class="display-4" v-show="questionIndex != items.length & !showAnswers">Quiz</h3>
-  <h3 class="display-4" v-show="showAnswers">Quiz Answers</h3>
+  <h1 v-show="questionIndex != items.length & !showAnswers">Quiz</h1>
+  <h1 v-show="showAnswers">Quiz Answers</h1>  
+  <a href="/quiz" v-show="showAnswers">
+      <button type="button" class="btn btn-outline-secondary m-3">
+          Try the Quiz Again!
+      </button>
+  </a>
   <div id="quizQuestions" class="container bg bg-light my-3 p-3 mx-auto text-center">
     <div v-if="questionIndex == items.length & !showAnswers">
       <div class="card text-center w-75 mx-auto">        
           <h3 class="display-4 mb-3">End of quiz</h3>
           <h3>Total score:</h3> 
           <h3 class="display-4 mb-3">{{ score }} / 8</h3>
-          <div class="container rounded border border-secondary w-75 mx-auto">  
+          <div class="container w-75 mx-auto">  
           <template v-if="user.loggedIn">  
             <template v-if="this.done==false">    
-            <h3>You have earned {{ score * 10 }} points!</h3>
+              <div class="alert alert-success" role="alert">
+                You have earned {{ score * 10 }} points!                
+              </div>            
             </template>
             <template v-else>    
-            <h4>You have already earned the points for this quiz!</h4>
+              <div class="alert alert-warning" role="alert">
+                  You have already earned the points for this quiz!
+              </div>            
             </template>
           </template>
           </div>             
@@ -29,7 +38,7 @@
           <div class="col"></div>
           <div class="card text-center mx-auto mt-3 col-10 col-md-6">            
             <img :src="item.imageUrl" class="card-img mt-3 border border-light" style="max-height: 50%; max-width: 50%; margin-left: auto; margin-right: auto;"/>
-            <div class="card-body">
+            <div class="card-body text-center">
                 <h5 class="card-title">{{item.name}}</h5>     
                 <p class="card-subtitle text-muted">{{item.category}}</p> 
                 <div class="form-group mt-3">
@@ -59,7 +68,14 @@
         </div>
         <div v-else-if="(item.index == 0)">
         <div class="row align-items-center justify-content-center text-center mt-3">
-          <div class="col-8 text-right">
+          <div class="col-4 text-left">
+              <a href="/quiz">
+                  <button type="button" class="btn btn-secondary btn-lg">
+                      Back
+                  </button>
+              </a>            
+          </div>
+          <div class="col-4 text-right">
             <button v-on:click="next" type="button" class="btn btn-warning btn-lg">Next</button>
           </div>
         </div>
@@ -84,21 +100,21 @@
              <div class="col-5 col-md-3">
                <img :src="item.imageUrl" class="card-img mt-3 mx-3 border border-light" style="max-height: 100%; max-width: 100%;"/>
              </div>
-             <div class="col-6 col-md-8 my-5 text-center" style="align-content: center;">
+             <div class="col-7 col-md-9 my-5 mx-auto text-center">
                 <h5>{{item.name}}</h5>     
                 <p>{{item.category}}</p>                
                 <p>{{item.disposal}}</p>                 
-                <div class="alert alert-success" role="alert" v-if="item.recyclable">
+                <div class="alert alert-success mx-auto" role="alert" v-if="item.recyclable" style="width: 90%;">
                     This item is recyclable
                 </div>
-                <div class="alert alert-danger" role="alert" v-else>
+                <div class="alert alert-danger w-90 mx-auto" role="alert" style="width: 90%;" v-else>
                     This item is not recyclable
                 </div>
-                <div class="border border-success w-40 mx-auto" v-if="(Boolean(userResponses[item.index]) == Boolean(item.recyclable))">
-                    <p class="text-success">You are correct!</p>
+                <div class="border border-success mx-auto" v-if="(Boolean(userResponses[item.index]) == Boolean(item.recyclable))" style="width: 150px;">
+                    <p class="text-success">You are correct! <b-icon icon="check-circle-fill"></b-icon></p>
                 </div>              
-                <div class="border border-danger w-40 mx-auto" v-else>
-                    <p class="text-danger">You are wrong!</p>
+                <div class="border border-danger mx-auto" style="width: 150px;" v-else>
+                    <p class="text-danger">You are wrong! <b-icon icon="x-circle-fill"></b-icon></p>
                 </div>                
             </div>
           </div>                                 

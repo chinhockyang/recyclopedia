@@ -143,7 +143,7 @@
           <h6>Your Sustainable Store</h6>
           <br>
           <p class="card-text" style="font-size: 15px"><img src="https://i.ibb.co/1nMWYd4/coupon.png" style="width: 10%"><strong>    100 points</strong></p>
-          <a class="btn btn-success" v-on:click="claimReward1">Claim</a>
+          <a class="btn btn-success text-white" v-on:click="claimReward1">Claim</a>
         </div>
       </div>
      <div class="card" style="width: 15rem; margin-left: 20px">
@@ -154,7 +154,7 @@
           <h6>The Humble Co.</h6>
           <br>
           <p class="card-text" style="font-size: 15px"><img src="https://i.ibb.co/1nMWYd4/coupon.png" style="width: 10%"><strong>    200 points</strong></p>
-          <a class="btn btn-success" v-on:click="claimReward2">Claim</a>
+          <a class="btn btn-success text-white" v-on:click="claimReward2">Claim</a>
         </div>
       </div>
       <div class="card" style="width: 15rem; margin-left: 20px">
@@ -165,7 +165,7 @@
           <h6>The Green Collective SG</h6>
           <br>
           <p class="card-text" style="font-size: 15px"><img src="https://i.ibb.co/1nMWYd4/coupon.png" style="width: 10%"><strong>    200 points</strong></p>
-          <a class="btn btn-success" v-on:click="claimReward3">Claim</a>
+          <a class="btn btn-success text-white" v-on:click="claimReward3">Claim</a>
         </div>
       </div>
       <div class="card" style="width: 15rem; margin-left: 20px">
@@ -176,7 +176,7 @@
           <h6>Spectrum Store SG</h6>
           <br>
           <p class="card-text" style="font-size: 15px"><img src="https://i.ibb.co/1nMWYd4/coupon.png" style="width: 10%"><strong>    300 points</strong></p>
-          <a class="btn btn-success" v-on:click="claimReward4">Claim</a>
+          <a class="btn btn-success text-white" v-on:click="claimReward4">Claim</a>
         </div>
       </div>
       </div>
@@ -191,7 +191,7 @@
           <h6>ecoegg</h6>
           <br>
           <p class="card-text" style="font-size: 15px"><img src="https://i.ibb.co/1nMWYd4/coupon.png" style="width: 10%"><strong>    300 points</strong></p>
-          <a class="btn btn-success" v-on:click="claimReward5">Claim</a>
+          <a class="btn btn-success text-white" v-on:click="claimReward5">Claim</a>
         </div>
       </div>
      <div class="card" style="width: 15rem; margin-left: 20px">
@@ -202,7 +202,7 @@
           <h6>iHerb</h6>
           <br>
           <p class="card-text" style="font-size: 15px"><img src="https://i.ibb.co/1nMWYd4/coupon.png" style="width: 10%"><strong>    300 points</strong></p>
-          <a class="btn btn-success" v-on:click="claimReward6">Claim</a>
+          <a class="btn btn-success text-white" v-on:click="claimReward6">Claim</a>
         </div>
       </div>
       <div class="card" style="width: 15rem; margin-left: 20px">
@@ -213,7 +213,7 @@
           <h6>Forty Two</h6>
           <br>
           <p class="card-text" style="font-size: 15px"><img src="https://i.ibb.co/1nMWYd4/coupon.png" style="width: 10%"><strong>    300 points</strong></p>
-          <a class="btn btn-success" v-on:click="claimReward7">Claim</a>
+          <a class="btn btn-success text-white" v-on:click="claimReward7">Claim</a>
         </div>
       </div>
       <div class="card" style="width: 15rem; margin-left: 20px">
@@ -224,7 +224,7 @@
           <h6>Minimakers</h6>
           <br>
           <p class="card-text" style="font-size: 15px"><img src="https://i.ibb.co/1nMWYd4/coupon.png" style="width: 10%"><strong>    300 points</strong></p>
-          <a class="btn btn-success" v-on:click="claimReward8">Claim</a>
+          <a class="btn btn-success text-white" v-on:click="claimReward8">Claim</a>
         </div>
       </div>
       </div>

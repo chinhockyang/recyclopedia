@@ -40,16 +40,20 @@
        </nav> 
     <div class="containter px-3"> 
       <br>
-      <div>
-      <h4>Instructions</h4> 
-      <ol> 
-        <li>Identify the "AXXXXXX" Bin Serial Number which is located on the front face of the bin.</li> 
-        <img src="https://i.ibb.co/h9qB015/photo-2021-04-05-00-14-20.jpg" style="height: 200px">
-        <li>Choose the item category from the dropdown list provided.</li>
-        <li>Count the number of distinct items recycled for the specific item category.</li> 
-      </ol>
-      <h6>Recycling is a contribution to the environment.  We greatly appreciate if you can input your record honestly!</h6>
-      </div>
+      <div class="row">        
+          <div class="col"></div>
+          <div class="col-10 col-md-8">
+            <h4>Instructions</h4> 
+            <ol> 
+              <li>Identify the "AXXXXXX" Bin Serial Number which is located on the front face of the bin.</li> 
+              <img src="https://i.ibb.co/h9qB015/photo-2021-04-05-00-14-20.jpg" style="height: 200px">
+              <li>Choose the item category from the dropdown list provided.</li>
+              <li>Count the number of distinct items recycled for the specific item category.</li> 
+              </ol>
+              <h6>Recycling is a contribution to the environment.  We greatly appreciate if you can input your record honestly!</h6>
+          </div>
+          <div class="col"></div>
+      </div>      
     <br>
     <div>
       <h2 id="center">Add New Record</h2>
@@ -100,7 +104,7 @@
                 </div>
                 <br>
                 <div id="center">
-                  <button @click.prevent="submitRecord" class="btn btn-success" >Submit</button>
+                  <button @click.prevent="submitRecord" class="btn btn-success w-100" >Submit</button>
                 </div>
                 <div>
                   <div id="center">
