@@ -8,8 +8,15 @@
           <h3 class="display-4 mb-3">End of quiz</h3>
           <h3>Total score:</h3> 
           <h3 class="display-4 mb-3">{{ score }} / 8</h3>
-          <div class="container rounded border border-secondary w-75 mx-auto">            
-            <h3>You have earned {{ score * 10 }} points</h3>
+          <div class="container rounded border border-secondary w-75 mx-auto">  
+          <template v-if="user.loggedIn">  
+            <template v-if="this.done==false">    
+            <h3>You have earned {{ score * 10 }} points!</h3>
+            </template>
+            <template v-else>    
+            <h4>You have already earned the points for this quiz!</h4>
+            </template>
+          </template>
           </div>             
           <button @click="submit" type="button" class="btn btn-success w-50 mx-auto my-3">See Answers!</button>                  
       </div>
@@ -104,8 +111,15 @@
 
 <script>
 import database from '../../firebase.js'
+import { mapGetters } from "vuex";
 
 export default {
+  computed: {
+    ...mapGetters({
+      user: "user"
+    })
+  },
+
   data() {
     return {
       //quiz: quiz,
@@ -113,7 +127,19 @@ export default {
       questionIndex: 0,
       score: 0,
       items: [], 
-      showAnswers: false     
+      showAnswers: false , 
+      pointsRecord: {
+        username: "", 
+        pts: 0, 
+        action: "",
+        date: "", 
+        day: 0
+      },   
+      quiz: {
+        username: "", 
+        completed: false
+      }, 
+      done: false
     }
   },
   methods: {
@@ -153,7 +179,35 @@ export default {
           if (Boolean(this.userResponses[i]) == Boolean(this.items[i].recyclable)) {
             this.score = this.score + 1;
           }
-        }        
+        }  
+        if (this.done == false) { 
+          this.pointsRecord.username = this.user.data.displayName
+          this.quiz.username = this.user.data.displayName 
+          this.quiz.completed = true 
+          this.pointsRecord.pts = this.score*10 
+          this.pointsRecord.action = "Weekly Quiz Challenge"
+          var date = new Date
+          var options = {month: 'long'}
+          var d = new Intl.DateTimeFormat('en-US', options)
+          var month = d.format(date)
+          this.pointsRecord.day = parseInt(date.getDate())
+          this.pointsRecord.date = date.getDate() + ' ' + month + ' ' + date.getFullYear()
+          database.collection('users').add(this.pointsRecord)
+          database.collection('completedQuiz').add(this.quiz)
+        }
+        
+
+
+    },
+
+    check: function() {
+      database.collection('completedQuiz').get().then((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+          if (doc.data().username == this.user.data.displayName) {
+            this.done = true
+          }
+        })
+      })
     },
 
     next: function() {
@@ -169,6 +223,7 @@ export default {
 
   created() {
     this.fetchItems();
+    this.check();
   }
 }
 </script>

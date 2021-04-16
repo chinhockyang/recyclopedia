@@ -25,17 +25,14 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/Quiz">Quiz</router-link>
             </li>
-          </ul>
-          <ul class="navbar-nav m-3 ml-auto">
             <li class="nav-item">
               <router-link class="nav-link" to="/donation">Donation</router-link>
             </li>
             </ul>
             <div id="top-right">
-              
               <template v-if="user.loggedIn">   
                 <div class = "dropdown">      
-                <a class="nav-link" data-toggle="dropdown" href="/dashboard"><img src="https://i.ibb.co/8cNDMLq/user.png" style="width: 3.5%">  Account</a>
+                <a class="nav-link" data-toggle="dropdown" href="/dashboard">My Account</a>
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href="/dashboard">My Profile</a>
                     <button class="dropdown-item" @click.prevent="signOut">Sign Out</button>

@@ -98,7 +98,34 @@
       <div> 
         <p style="font-size: 20px" id="center"><strong>Browse Rewards</strong></p>
       </div> 
+      <div id="center"> 
+       <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#rewardsModal">View My Rewards</button>
+        <div class="modal fade" id="rewardsModal" tabindex="-1" role="dialog" aria-labelledby="rewardsModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="rewardsModalLabel">All Rewards</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body" v-for="(item, index) in allRewards" v-bind:key="index">
+                   <div class="card" style="width: 100%;">
+                    <img :src="item[3]" class="card-img-top" alt="Card image cap">
+                    <div class="card-body">
+                      <p class="card-text"><strong>{{ item[0] }}: {{ item[1] }}</strong><br>{{ item[2] }}<br>Expires: {{ item[4] }}</p>
+                    </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+        
   <div class="carousel-inner">
     <div class="carousel-item active">
       <div class="container w-80 mx-auto mt-3 row" id="center">  
@@ -208,17 +235,19 @@
     </div>
     <br>
     <div id="center"> 
-      <p style="font-size: 15px"><strong>Terms and Conditions</strong></p>
-    </div>
-    <div id="center">
-        <ul> 
-            <li style="font-size: 14px">Multiple redemptions allowed.</li>
-            <li style="font-size: 14px">Limited overall redemptions available.</li>
-            <li style="font-size: 14px">Valid for use in the respective stores only.</li>
-            <li style="font-size: 14px">Not entitled to tax relief.</li> 
-        </ul>
-    </div>
-  </div>
+        <p style="font-size: 20px"><strong>What else can your points do?</strong></p>
+        </div>
+        <div id="center"> 
+        <p style="font-size: 15px">Turn every <strong>300 points</strong> into a <strong>$2 donation</strong> to the <strong>Garden City Fund</strong>, managed by the National
+        Parks Board.</p></div>
+        <div id="center">
+        <p style="font-size: 15px">Your donation will go towards supporting the research and outreach efforts to help protect, conserve and enhance our natural heritage.</p></div>
+        <div id="center">
+        <p style="font-size: 15px">Learn more at <a href= "https://www.gardencityfund.gov.sg/">https://www.gardencityfund.gov.sg/</a></p></div><div id="center">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL9bNIk4c3ib8JXCfzqcOzqYxnAFzZQIGmjOa-WCNWJpzNisCg4aUzVD5KYTRmL4AeveU&usqp=CAU" style="display: inline">
+        <button style="margin-left: 40px" v-on:click="checkPoints" class="btn btn-success btn-lg" >Click to Donate</button>
+        </div>
+      </div> 
 </template> 
 
 <script>
@@ -305,10 +334,10 @@ export default {
     }, 
 
     fetchRewards() {
-      database.collection('rewards').get().then((snapshot) => {
+      database.collection('userRewards').get().then((snapshot) => {
         let rew = []
         snapshot.docs.forEach((doc) => {
-            rew = [doc.data().promo, doc.data().name, doc.data().place, doc.data().img, doc.data().points]
+            rew = [doc.data().promo, doc.data().name, doc.data().place, doc.data().img, doc.data().expiry]
             this.allRewards.push(rew);
           
         })

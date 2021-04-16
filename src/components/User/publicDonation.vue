@@ -2,7 +2,7 @@
 <div> 
     <img id="tree" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL9bNIk4c3ib8JXCfzqcOzqYxnAFzZQIGmjOa-WCNWJpzNisCg4aUzVD5KYTRmL4AeveU&usqp=CAU">
     <h4 id="hd"><strong>Garden City Fund Donation</strong></h4>
-    <p id="pd"><strong>Donate $2 for every 300 points</strong></p>
+    <br>
     <div id="center">
     <div> 
         <form class="containter px-3" id="form"> 
@@ -43,6 +43,21 @@
         </form>
         <form class ="containter px-3" id="form">
             <div class="form-group">
+                <label for="amount">Donation Amount: (Minimum $5)<span style="color:red;" title="required"> *</span></label>
+                <br>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <input type="text" style="width: 400px" class="form-control" aria-label="Amount (to the nearest dollar)" v-model="form.amount" required>
+                        <div class="input-group-append">
+                        <span class="input-group-text">.00</span>
+                        </div>
+                </div>
+            </div>
+        </form>
+        <form class ="containter px-3" id="form">
+            <div class="form-group">
                 <label for="comment">Leave us a comment:</label>
                 <br><textarea rows=2 cols=63 placeholder="We'd love to hear from you!" name="comment" v-model="form.comment"></textarea>
             </div>
@@ -67,16 +82,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import database from '../../firebase.js'
-
-
 export default {
-  computed: {
-    ...mapGetters({
-      user: "user"
-    })
-  },
+
 
   data() {
     return {
@@ -90,59 +97,30 @@ export default {
         phone: "",
         don: "",
         who: "",
+        amount: "",
         comment: "",
         check: "",
         points: 0
       },
 
-      deduct: {
-          pts: 0, 
-          username: "", 
-          action: "", 
-          date: "", 
-          day: 0
-      },
-      
       error: null
     };
   },
-
   methods: {
       submitDonation() {
           this.error=null
           if (this.form.fname == "" || this.form.lname == "" || this.form.email=="" || this.form.phone=="" || 
-          this.form.don =="" || this.form.who =="" || this.form.check=="") {
+          this.form.don =="" || this.form.who =="" || this.form.amount =="" || this.form.check=="") {
               this.error = "Please check that inputs are valid!"
+          } else if (parseInt(this.form.amount) < 5) {
+              this.error = "Invalid donation amount"
           } else {
-              this.form.date = new Date()
-              var options = {month: 'long'}
-              var d = new Intl.DateTimeFormat('en-US', options)
-              var month = d.format(this.form.date)
-              this.form.day = parseInt(this.form.date.getDate())
-              this.form.date= this.form.date.getDate() + ' ' + month + ' ' + this.form.date.getFullYear()
-              this.form.username = this.user.data.displayName
-              this.form.points = -300
-              this.deduct.pts = -300
-              this.deduct.username = this.user.data.displayName 
-              this.deduct.action = "Donated $2"
-              this.deduct.date = this.form.date
-              this.deduct.day = this.form.day
-              database.collection('users').add(this.deduct)
-              database.collection('donation').add(this.form).then(() => {
-                  if (this.error==null) {
-                     this.$router.push({path: './points'})
-                    alert("Donation made successfully!")
-                  }
-             
-            })
-            
-
+              alert("Donation made successfully!  You will receive a confirmation letter by Garden City Fund in a few days.")
+              this.$router.push({path: './donation'})
           }
-
       }
 
   }
-  
 }
 </script>
 

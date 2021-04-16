@@ -1,14 +1,25 @@
 <template>
-<div class="containter px-3"> 
-    <div> 
-        <p style="font-size: 20px"><strong>What can your points do?</strong></p>
-        <p style="font-size: 15px">Turn every <strong>300 points</strong> into a <strong>$2 donation</strong> to the <strong>Garden City Fund</strong>, managed by the National
-        Parks Board.</p>
-        <p style="font-size: 15px">Your donation will go towards supporting the research and outreach efforts to help protect, conserve and enhance our natural heritage.</p>
+<div> 
+    <div class="jumbotron jumbotron-fluid" id="donationjumb" >
+  <div class="container">
+    <h1 class="display-4"><strong>You can make a difference.</strong></h1>
+    <p class="lead"><strong>Over the years, more corporations, foundations and individuals have stepped forward to support the Garden City Fund as they understood the 
+      importance of their involvement to conserve our natural heritage and unique biodiversity.</strong></p>
+  </div>
+</div>
+<br>
+<div class="containter px-3" style="float:left">
+<iframe width="550" height="310" src="https://www.youtube.com/embed/l6P22HBnZ44" title="YouTube video player" 
+ frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen ></iframe>
+ </div>
+    <div class="containter px-3" style="float-right; margin-left: 10px"> 
+        <p style="font-size: 20px"><strong>Make a donation today!</strong></p>
+        <p style="font-size: 15px">You can  play a part in protecting and enhancing our natural heritage.</p>
+        <p style="font-size: 15px">Your donation will go towards <strong>supporting the research and outreach efforts</strong> to help protect, conserve and enhance our natural heritage.</p>
         <p style="font-size: 15px">Learn more at <a href= "https://www.gardencityfund.gov.sg/">https://www.gardencityfund.gov.sg/</a></p>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL9bNIk4c3ib8JXCfzqcOzqYxnAFzZQIGmjOa-WCNWJpzNisCg4aUzVD5KYTRmL4AeveU&usqp=CAU" style="display: inline">
-        <button style="margin-left: 100px" v-on:click="checkPoints" class="btn btn-success" >Click to Donate</button>
-        <br>
+        <button style="margin-left: 60px" v-on:click="checkPoints" class="btn btn-success btn-lg" >Click to Donate</button>
+        <br><br>
         <p style="font-size: 15px"><strong>Terms and Conditions</strong></p>
         <ul> 
             <li style="font-size: 14px">Multiple redemptions allowed.</li>
@@ -78,12 +89,12 @@ export default {
     }, 
     
     checkPoints() {
-        if (this.countPoints < 300) {
-            alert("Sorry, you do not have enough points to make a donation!")
-        } else {
-            this.$router.push({path: '/donationForm'});
+        // if (this.countPoints < 300) {
+        //     alert("Sorry, you do not have enough points to make a donation!")
+        // } else {
+            this.$router.push({path: '/publicDonation'});
         }
-    }
+    
       
   }, 
 
@@ -94,3 +105,11 @@ export default {
 };
 
 </script>
+
+<style> 
+#donationjumb {
+  background-image: url("https://athome.reachtheworld.org/wp-content/uploads/2020/09/Singapore.jpg");
+  background-size: cover;
+}
+
+</style>
