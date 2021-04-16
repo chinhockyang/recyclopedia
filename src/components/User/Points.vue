@@ -86,6 +86,12 @@
                   <td>> 1000</td> 
                 </tr> 
               </table>
+              <br>
+              <h6>How to earn more points?</h6>
+              <ol> 
+                <li>Recycle more!  Every recycled item earns you 5 points.</li> 
+                <li>Complete the Weekly Quiz Challenge!</li> 
+              </ol>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
