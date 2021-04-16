@@ -337,9 +337,10 @@ export default {
       database.collection('userRewards').get().then((snapshot) => {
         let rew = []
         snapshot.docs.forEach((doc) => {
+          if (doc.data().username == this.user.data.displayName) {
             rew = [doc.data().promo, doc.data().name, doc.data().place, doc.data().img, doc.data().expiry]
             this.allRewards.push(rew);
-          
+          }
         })
       })
     }, 
