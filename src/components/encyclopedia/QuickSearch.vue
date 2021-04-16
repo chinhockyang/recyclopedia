@@ -1,19 +1,19 @@
 <template>
-  <div class="container tab-pane fade show active" id="quick-search" role="tabpanel" aria-labelledby="quick-search-tab">      
-    <div class="jumbotron">
-      <h3 class="display-6">
-        Encyclopedia <b-icon icon="binoculars-fill"></b-icon>
+<div>
+    <div class="jumbotron" id="quickSearch">
+      <h3 class="display-3">
+        Encyclopedia
       </h3>
-      <p class="lead">Search to see if something is recyclable!</p>
-      <div class="container w-75 mx-auto">           
+      <p class="lead my-3">Search to see if something is recyclable!</p>
+      <div class="container w-75 mx-auto mt-3">           
         <search-tool        
           :itemsList="itemsList"
           :buttonName="'Search'"
           @searched="searchItem">
         </search-tool>
       </div>
-    </div>           
-
+    </div>      
+  <div class="container tab-pane fade show active" id="quick-search" role="tabpanel" aria-labelledby="quick-search-tab">             
     <div class="containter row mb-5">      
       <div class="col">
           <item-info            
@@ -31,6 +31,7 @@
     </div>
     </div>        
   </div>
+</div>
 </template>
 
 
@@ -152,6 +153,11 @@ li {
 .router-link-active{
     background: #444;
     color: #eee;
+}
+
+#quickSearch {
+  background-image: url("https://www.yardibreeze.com/wp-content/uploads/sites/24/2020/05/5-Simple-But-Genius-Tactics-To-Help-Residents-Recycle-10924-facebook.jpg");
+  background-size: cover;  
 }
 
 </style>

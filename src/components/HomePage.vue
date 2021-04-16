@@ -200,6 +200,7 @@
             <div class="col-s-6 col-md my-3">
                 <div class="card text-center" style="background-color: #E3E9BB;">
                     <div class="card-body">
+                        <div class="card-block">
                         <h5 class="card-title">Find My Bin <b-icon icon="map-fill"></b-icon></h5>
                         <img 
                             class="mb-3 rounded" 
@@ -216,12 +217,14 @@
                                 Find My Bin
                             </button>
                         </a>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-s-6 col-md my-3">
                 <div class="card text-center" style="background-color: #E3E9BB;">                                                                                              
                     <div class="card-body">
+                        <div class="card-block">
                         <h5 class="card-title">Encyclopedia <b-icon icon="search"></b-icon></h5>
                         <img 
                             class="mb-3 rounded" 
@@ -238,12 +241,14 @@
                                 Encyclopedia
                             </button>
                         </a>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-s-6 col-md my-3">
                 <div class="card text-center" style="background-color: #E3E9BB;">                                                                                              
                     <div class="card-body">
+                        <div class="card-block">
                         <h5 class="card-title">Quiz <b-icon icon="book"></b-icon></h5>
                         <img 
                             class="mb-3 rounded" 
@@ -260,6 +265,7 @@
                                 Quiz
                             </button>
                         </a>
+                        </div>
                     </div>
                 </div>
             </div>          
