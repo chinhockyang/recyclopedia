@@ -124,10 +124,10 @@
           </div>
         </div>
       </div>
-      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
-        
-  <div class="carousel-inner">
-    <div class="carousel-item active">
+  
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">        
+    <div class="carousel-inner">
+      <div class="carousel-item active">
       <div class="container w-80 mx-auto mt-3 row" id="center">  
       <div class="card" style="width: 15rem; margin-left: 20px">
         <img src="https://i.ibb.co/t2WFg71/639-6390556-lunch-break-bamboo-cutlery-set-sustainable-cutlery-hd.png" style="height:200px" alt="Card image cap">
@@ -174,8 +174,8 @@
         </div>
       </div>
       </div>
-    </div>
-    <div class="carousel-item">
+      </div>
+      <div class="carousel-item">
       <div class="container w-80 mx-auto mt-3 row" id="center">  
       <div class="card" style="width: 15rem; margin-left: 20px">
         <img src="https://i.ibb.co/tsqGBL5/eco-friendly-products-10.jpg" style="height:200px" alt="Card image cap">
@@ -222,17 +222,29 @@
         </div>
       </div>
       </div>
-    </div>
+      </div>
     </div>  
-    <a class="carousel-control-prev" style="width: 40px" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" style="width: 40px" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-    </div>
+    <ol class="carousel-indicator d-flex justify-content-center mb-4">
+        <li
+          class="carousel-control-prev position-relative m-3 p-1"
+          style="background-color:grey;"
+          type="button"
+          data-target="#carouselExampleIndicators"
+          data-slide="prev"          
+        >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>      
+        </li>                      
+        <li      
+            class="carousel-control-next position-relative m-3 p-1"
+            style="background-color:grey;"
+            type="button"
+            data-target="#carouselExampleIndicators"
+            data-slide="next"                            
+        >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>      
+        </li>
+      </ol>
+  </div>
     <br>
     <div id="center"> 
         <p style="font-size: 20px"><strong>What else can your points do?</strong></p>
@@ -661,5 +673,17 @@ th {
   text-align: left;
   padding: 8px;
 }
+
+.nav-tabs > li > a {
+    color: black;
+}
+.nav-tabs > li > a:hover {
+    background-color: lightgray;
+}
+.nav-tabs > li > a.active {
+    color: white;
+    background-color: olivedrab;
+}
+
 
 </style>

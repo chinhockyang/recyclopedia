@@ -310,4 +310,16 @@ export default {
 #error {
     color: red
 }
+
+.nav-tabs > li > a {
+    color: black;
+}
+.nav-tabs > li > a:hover {
+    background-color: lightgray;
+}
+.nav-tabs > li > a.active {
+    color: white;
+    background-color: olivedrab;
+}
+
 </style>
