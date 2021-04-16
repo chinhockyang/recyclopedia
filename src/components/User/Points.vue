@@ -391,8 +391,7 @@ export default {
           })
         })
         alert("You have successfully claimed this reward!")
-        this.$router.push({path: '/points'})
-        location.reload()
+        this.$router.push({path: '/past'})
       }
     }, 
 
@@ -424,8 +423,7 @@ export default {
           })
         })
         alert("You have successfully claimed this reward!")
-        this.$router.push({path: '/points'})
-        location.reload()
+        this.$router.push({path: '/past'})
       }
     }, 
 
@@ -457,8 +455,7 @@ export default {
           })
         })
         alert("You have successfully claimed this reward!")
-        this.$router.push({path: '/points'})
-        location.reload()
+        this.$router.push({path: '/past'})
       }
     }, 
 
@@ -490,8 +487,7 @@ export default {
           })
         })
         alert("You have successfully claimed this reward!")
-        this.$router.push({path: '/points'})
-        location.reload()
+        this.$router.push({path: '/past'})
       }
     }, 
 
@@ -523,8 +519,7 @@ export default {
           })
         })
         alert("You have successfully claimed this reward!")
-        this.$router.push({path: '/points'})
-        location.reload()
+        this.$router.push({path: '/past'})
       }
     }, 
 
@@ -556,8 +551,7 @@ export default {
           })
         })
         alert("You have successfully claimed this reward!")
-        this.$router.push({path: '/points'})
-        location.reload()
+        this.$router.push({path: '/past'})
       }
     }, 
 
@@ -589,8 +583,7 @@ export default {
           })
         })
         alert("You have successfully claimed this reward!")
-        this.$router.push({path: '/points'})
-        location.reload()
+        this.$router.push({path: '/past'})
       }
     }, 
 
@@ -622,8 +615,7 @@ export default {
           })
         })
         alert("You have successfully claimed this reward!")
-        this.$router.push({path: '/points'})
-        location.reload()
+        this.$router.push({path: '/past'})
       }
     }, 
 
