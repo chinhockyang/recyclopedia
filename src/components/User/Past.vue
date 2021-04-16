@@ -42,9 +42,6 @@
       <past-records></past-records>
       <br>
     </div>
-    <div id="center"> 
-        <h5>Records History</h5>
-    </div>
     <br>
     <div id="center">
         <table> 
@@ -54,11 +51,18 @@
           <th>Action</th> 
           <th>Points</th>
         </tr>
-        <tr v-for="(item, index) in pastTrans" v-bind:key="index">
+        <tr v-for="(item, index) in pastTransVisible" v-bind:key="index">
           <td>{{ index + 1}}</td>
           <td v-for="(value, key, index) in item" v-bind:key="index">{{ value }}</td>
         </tr>
       </table>
+
+      <pagination 
+        :items="pastTrans" 
+        @page:update="updatePageTrans"
+        :currentPage="currentPageTrans"
+        :pageSize="pageSize">
+      </pagination>
     </div>
 </div>
 
@@ -68,18 +72,29 @@
 import { mapGetters } from "vuex";
 import database from '../../firebase.js'
 import pastRecords from '.././charts/pastRecords.vue'
+import Pagination from '../encyclopedia/Pagination.vue'
 
 export default {
   components: {
-    'past-records': pastRecords
+    'past-records': pastRecords,
+    'pagination': Pagination
   }, 
 
   data() {
     return {
       pastRecords: [], 
       pastDonations: [], 
-      pastTrans : []
-    
+      pastTrans : [],
+
+      //currentPage: page of pagination - 1
+      //pageSize: number of items shown per page
+      currentPageRecycled: 0,
+      currentPageDonations: 0,
+      currentPageTrans: 0,
+      pageSize: 10,
+      pastRecordsVisible: [],
+      pastDonationsVisible: [],
+      pastTransVisible: []
     }
   },
   computed: {
@@ -100,7 +115,7 @@ export default {
           }
         })
       })
-    }, 
+    },
 
     fetchDonations() {
         database.collection('donation').orderBy("day", "asc").get().then((snapshot) => {
@@ -124,7 +139,51 @@ export default {
           }
         })
       })
-    }
+    },
+
+    //updates the page number of pagination
+    updatePageRecycled: function(pageNumber) {
+      this.currentPageRecycled = pageNumber;        
+    },
+    updatePageDonations: function(pageNumber) {
+      this.currentPageDonations = pageNumber;        
+    },
+    updatePageTrans: function(pageNumber) {
+      this.currentPageTrans = pageNumber;        
+    },
+
+    //slice list to get only the items on the current page
+    updateVisibleRecycled() {
+      this.pastRecordsVisible = this.pastRecords.slice(this.currentPageRecycled * this.pageSize, parseInt((this.currentPageRecycled * this.pageSize) + this.pageSize));
+      console.log("this.pastRecords.length is...");
+      console.log(this.pastRecords.length);
+      console.log("this.pastRecordsVisible.length is...");
+      console.log(this.pastRecordsVisible.length);
+      // if there are 0 items on current page, go back 1 page
+      if (this.pastRecordsVisible.length == 0 && this.currentPage > 0) {
+        this.updatePageRecycled(this.currentPageRecycled - 1);
+      }
+    },
+
+    updateVisibleDonated() {
+      this.pastDonationsVisible = this.pastDonations.slice(this.currentPageDonations * this.pageSize, parseInt((this.currentPageDonations * this.pageSize) + this.pageSize));
+      console.log("this.pastDonationsVisible.length is...");
+      console.log(this.pastDonationsVisible.length);
+      // if there are 0 items on current page, go back 1 page
+      if (this.pastDonationsVisible.length == 0 && this.currentPage > 0) {
+        this.updatePageDonations(this.currentPageDonations - 1);
+      }
+    },
+
+    updateVisibleTrans() {
+      this.pastTransVisible = this.pastTrans.slice(this.currentPageTrans * this.pageSize, parseInt((this.currentPageTrans * this.pageSize) + this.pageSize));
+      console.log("this.pastTransVisible.length is...");
+      console.log(this.pastTransVisible.length);
+      // if there are 0 items on current page, go back 1 page
+      if (this.pastTransVisible.length == 0 && this.currentPage > 0) {
+        this.updatePageTrans(this.currentPageTrans - 1);
+      }
+    },
   
   }, 
 
@@ -134,7 +193,11 @@ export default {
     this.fetchPast()
   }, 
 
-
+  beforeUpdate() {
+    this.updateVisibleRecycled();
+    this.updateVisibleDonated();
+    this.updateVisibleTrans();
+  }
 
 };
 </script>
