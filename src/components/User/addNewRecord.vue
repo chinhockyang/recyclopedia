@@ -17,7 +17,7 @@
                     id="quick-search-tab" 
                     data-toggle="pill"                     
                     role="tab" 
-                    >My Points</router-link>
+                    >My Rewards</router-link>
                </li>
 
                <li>
@@ -152,6 +152,9 @@ export default {
         date: "", 
         day: 0
       },
+      count: {
+        category: {}
+      },
       error: null
     };
   },
@@ -211,6 +214,7 @@ export default {
               this.pointsRecord.action = "Recycled " + this.form.quantity + " " + this.form.itemCat
               this.form.points = this.form.quantity*5
               this.pointsRecord.pts = this.form.quantity*5
+              this.count.category[this.form.itemCat] 
               database.collection('users').add(this.pointsRecord);
               database.collection('records').add(this.form).then(() => {
                   if (this.error==null) {
@@ -273,5 +277,17 @@ export default {
     justify-content: center;
     align-items:center
 }
+
+.nav-tabs > li > a {
+    color: black;
+}
+.nav-tabs > li > a:hover {
+    background-color: lightgray;
+}
+.nav-tabs > li > a.active {
+    color: white;
+    background-color: olivedrab;
+}
+
 </style>
 

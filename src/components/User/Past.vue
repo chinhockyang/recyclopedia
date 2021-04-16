@@ -17,7 +17,7 @@
                     id="quick-search-tab" 
                     data-toggle="pill"                     
                     role="tab" 
-                    >My Points</router-link>
+                    >My Rewards</router-link>
                </li>
 
                <li>
@@ -41,61 +41,13 @@
     <div>
       <past-records></past-records>
       <br>
-      <h5>Past Recycling Records</h5>
-      <table> 
-        <tr>
-          <th>No.</th>
-          <th>Date Recycled</th>
-          <th>Bin Serial Number</th> 
-          <th>Item Category</th>
-          <th>Quantity</th>
-          <th>Points Earned</th>
-        </tr>
-        <tr v-for="(item, index) in pastRecordsVisible" v-bind:key="index">
-          <td>{{ index + 1}}</td>
-          <td v-for="(value, key, index) in item" v-bind:key="index">{{ value }}</td>
-        </tr>
-      </table>
-
-      <pagination 
-        :items="pastRecords" 
-        @page:update="updatePageRecycled"
-        :currentPage="currentPageRecycled"
-        :pageSize="pageSize">
-      </pagination>
-
     </div>
     <br>
-    <div> 
-        <h5>Past Donations</h5>
+    <div id="center">
         <table> 
         <tr>
           <th>No.</th>
-          <th>Date Donated</th>
-          <th>Organization/Honoree Name</th> 
-          <th>Donation Amount</th>
-        </tr>
-        <tr v-for="(item, index) in pastDonationsVisible" v-bind:key="index">
-          <td>{{ index + 1}}</td>
-          <td v-for="(value, key, index) in item" v-bind:key="index">{{ value }}</td>
-        </tr>
-      </table>
-
-      <pagination 
-        :items="pastDonations" 
-        @page:update="updatePageDonations"
-        :currentPage="currentPageDonations"
-        :pageSize="pageSize">
-      </pagination>
-
-    </div>
-    <br>
-    <div> 
-        <h5>Past Points Transactions</h5>
-        <table> 
-        <tr>
-          <th>No.</th>
-          <th>Date Transacted</th>
+          <th>Date</th>
           <th>Action</th> 
           <th>Points</th>
         </tr>
@@ -254,7 +206,7 @@ export default {
 table {
   font-family: "Inconsolata", sans-serif;
   border-collapse: collapse;
-  width: 60%;
+  width: 100%;
 }
 
 td {
@@ -268,6 +220,17 @@ th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+}
+
+.nav-tabs > li > a {
+    color: black;
+}
+.nav-tabs > li > a:hover {
+    background-color: lightgray;
+}
+.nav-tabs > li > a.active {
+    color: white;
+    background-color: olivedrab;
 }
 
 </style>

@@ -1,9 +1,9 @@
 <template>
 <div>
-    <section class="jumbotron py-3">
+    <section class="jumbotron py-3" id="recyclingjumb">
         <div class="container text-center">
-            <h1 class="display-4">Recyclopedia</h1>
-            <p class="lead text-muted">The Recycling Hub for Singaporeans</p> 
+            <h1 class="display-4"><strong>Recyclopedia</strong></h1>
+            <p class="lead text-muted" style="color: white"><strong>The Recycling Hub for Singaporeans</strong></p> 
         </div>
         <div class="card w-75 mx-auto text-center">
             <div class="card-header btn" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -200,6 +200,7 @@
             <div class="col-s-6 col-md my-3">
                 <div class="card text-center" style="background-color: #E3E9BB;">
                     <div class="card-body">
+                        <div class="card-block">
                         <h5 class="card-title">Find My Bin <b-icon icon="map-fill"></b-icon></h5>
                         <img 
                             class="mb-3 rounded" 
@@ -216,12 +217,14 @@
                                 Find My Bin
                             </button>
                         </a>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-s-6 col-md my-3">
                 <div class="card text-center" style="background-color: #E3E9BB;">                                                                                              
                     <div class="card-body">
+                        <div class="card-block">
                         <h5 class="card-title">Encyclopedia <b-icon icon="search"></b-icon></h5>
                         <img 
                             class="mb-3 rounded" 
@@ -238,12 +241,14 @@
                                 Encyclopedia
                             </button>
                         </a>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-s-6 col-md my-3">
                 <div class="card text-center" style="background-color: #E3E9BB;">                                                                                              
                     <div class="card-body">
+                        <div class="card-block">
                         <h5 class="card-title">Quiz <b-icon icon="book"></b-icon></h5>
                         <img 
                             class="mb-3 rounded" 
@@ -260,6 +265,7 @@
                                 Quiz
                             </button>
                         </a>
+                        </div>
                     </div>
                 </div>
             </div>          
@@ -369,4 +375,8 @@ export default {
     cursor: pointer;
 }
 
+#recyclingjumb {
+  background-image: url("https://www.selwoodhousing.com/wp-content/uploads/2018/07/hands-holding-plastic-bottle-picture-id829504010.jpg");
+  background-size: cover;
+}
 </style>

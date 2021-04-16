@@ -17,7 +17,7 @@
                     id="quick-search-tab" 
                     data-toggle="pill"                     
                     role="tab" 
-                    >My Points</router-link>
+                    >My Rewards</router-link>
                </li>
 
                <li>
@@ -44,16 +44,16 @@
     <div id="center">
       <div id="center">
         <template v-if="this.now === 'Welcome Greener'">
-        <b-badge pill variant="success" style="width: 60%"><img src="https://i.ibb.co/f8J98b9/sprout.png" style="width: 10%">  {{ this.now }}</b-badge>
+        <b-badge pill variant="success" style="width: 30%"><img src="https://i.ibb.co/f8J98b9/sprout.png" style="width: 10%">  {{ this.now }}</b-badge>
         </template> 
         <template v-if="this.now === 'Bronze Greener'">
         <b-badge pill variant="danger" style="width: 30%"><img src="https://i.ibb.co/FmqYLRk/medal.png" style="width: 10%">  {{ this.now }}</b-badge>
         </template> 
         <template v-if="this.now === 'Silver Greener'">
-        <b-badge pill variant="secondary" style="width: 28%"><img src="https://i.ibb.co/mRzBQ94/medal-1.png" style="width: 10%">  {{ this.now }}</b-badge>
+        <b-badge pill variant="secondary" style="width: 30%"><img src="https://i.ibb.co/mRzBQ94/medal-1.png" style="width: 10%">  {{ this.now }}</b-badge>
         </template> 
         <template v-if="this.now === 'Gold Greener'">
-        <b-badge pill variant="warning" style="width: 28%"><img src="https://i.ibb.co/R7L35jS/medal-2.png" style="width: 10%">  {{ this.now }}</b-badge>
+        <b-badge pill variant="warning" style="width: 30%"><img src="https://i.ibb.co/R7L35jS/medal-2.png" style="width: 10%">  {{ this.now }}</b-badge>
         </template> 
       </div>
     </div>
@@ -79,9 +79,6 @@
             </form>
           </div>
        </div>
-    </div>
-    <div id="center">
-      <button class="btn btn-success" @click.prevent="signOut">Sign out</button>
     </div>
     <div class="modal fade" id="usernamemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -160,7 +157,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-// import { Auth } from '@../../firebase/auth';
+//import { Auth } from '@../../firebase/auth';
 import { firebaseApp } from '../../firebase.js'
 import database from '../../firebase.js'
 
@@ -313,4 +310,16 @@ export default {
 #error {
     color: red
 }
+
+.nav-tabs > li > a {
+    color: black;
+}
+.nav-tabs > li > a:hover {
+    background-color: lightgray;
+}
+.nav-tabs > li > a.active {
+    color: white;
+    background-color: olivedrab;
+}
+
 </style>
