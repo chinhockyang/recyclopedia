@@ -113,7 +113,7 @@
                         v-for="cat in category.slice(0,3)" 
                         :key="cat.name"
                         v-b-tooltip:hover.bottom
-                        :title="'Click to see more information of ' + cat.name + ' Recycling'"
+                        :title="'Click to see more recycling information of ' + cat.name"
                         @click="$bvModal.show(cat.name)">
                             <div class="card-body">                                         
                                 <h3 class="display-3 my-2" v-if="cat.name == 'Plastic'">{{ shownPlastic.toFixed(0) }}</h3>

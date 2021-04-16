@@ -85,7 +85,7 @@
             class="col-s-8 col-md-6 col-l-4 m-3 justify-content-center"  
             style="max-width: 285px;"
             v-bind:key="item.name"            
-            :title="'Click for more ' + item.name + ' information'">            
+            :title="'Click for more information on ' + item.name">            
             <item-card :item="item"></item-card>
         </li>
     </ul>

@@ -4,7 +4,7 @@
       <h3 class="display-3">
         Encyclopedia
       </h3>
-      <p class="lead my-3">Search to see if something is recyclable!</p>
+      <h3 class="my-3">Search to see if something is recyclable!</h3>
       <div class="container w-75 mx-auto mt-3">           
         <search-tool        
           :itemsList="itemsList"
