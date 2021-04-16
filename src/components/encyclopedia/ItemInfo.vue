@@ -1,7 +1,7 @@
 <template>
 <div class="containter">
     <div class="row">      
-        <div class="col-12 col-md-8 card mx-auto bg-light rounded">
+        <div class="col-12 col-md-10 card mx-auto bg-light rounded">
             <img 
             :src="item.imageUrl" 
             class="card-img-thumbnail 

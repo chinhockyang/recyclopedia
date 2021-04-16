@@ -66,15 +66,15 @@
             <form class="containter px-3"> 
                 <div class="form-group">
                   <p style="font-size: 20px"><strong>Username:</strong> {{ this.yourName }}</p>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#usernamemodal">Change Username</button>
+                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#usernamemodal">Change Username</button>
                 </div>
                 <div class="form-group">
                   <p style="font-size: 20px"><strong>Email:</strong> {{ this.user.data.email }} </p>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailmodal">Change Email</button>
+                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#emailmodal">Change Email</button>
                 </div>
                 <div class="form-group">
                   <p style="font-size: 20px"><strong>Password </strong></p>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#passwordmodal">Change Password</button>
+                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#passwordmodal">Change Password</button>
                 </div>
             </form>
           </div>

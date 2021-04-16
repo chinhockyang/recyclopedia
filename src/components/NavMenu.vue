@@ -32,15 +32,19 @@
             <div id="top-right">
               <template v-if="user.loggedIn">   
                 <div class = "dropdown">      
-                <a class="nav-link" data-toggle="dropdown" href="/dashboard">My Account</a>
-                  <div class="dropdown-menu">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="/dashboard" id="navbarDropdownMenuLink" style="color: black;">My Account</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="/dashboard">My Profile</a>
                     <button class="dropdown-item" @click.prevent="signOut">Sign Out</button>
                   </div>
                 </div>
               </template> 
               <template v-else>  
-                <a class="nav-link" href="/login">Account</a> 
+                <a class="nav-link" href="/login">
+                  <button class="btn btn-outline-success">
+                    Login
+                  </button>
+                </a> 
               </template>
             </div>    
       </div>

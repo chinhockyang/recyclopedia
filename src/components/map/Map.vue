@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Find My Bin</h3>
+    <h1 class="text-center my-3">Find My Bin</h1>
     <div id="map" class="w-100 p-3 container-fluid"></div>
     <div class="w-100 p-3 container">
       <ul>

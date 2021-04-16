@@ -2,20 +2,20 @@
     <div class="container my-3">
         <div class="row">
             <div class="col-2"></div>
-            <div class="col-2">
+            <div class="col-2 text-center">
                 <button
                     v-if="showPreviousLink()"
-                    class="btn btn-warning"
+                    class="btn btn-warning text-center"
                     v-on:click="updatePage(currentPage - 1)"> Prev </button>                        
                 <button v-else class="btn btn-secondary" disabled> Prev </button>
             </div>            
-            <div class="col-4">
+            <div class="col-4 text-center">
                 <span 
                     v-if="totalPages() !=0">
                     {{ currentPage + 1 }}</span>
                     <span v-else>{{ currentPage }}</span> of {{ totalPages() }}    
             </div>
-            <div class="col-2">
+            <div class="col-2 text-center">
                 <button
                     v-if="showNextLink()"
                     class="btn btn-warning"

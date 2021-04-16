@@ -25,9 +25,8 @@
   <div class="modal fade" :id="item.name" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">        
-        <div class="modal-header">
-          <h3 class="modal-title display-5" id="itemModalLabel">{{item.name}}</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-header">          
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
