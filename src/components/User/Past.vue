@@ -52,18 +52,19 @@
           <th>Points</th>
         </tr>
         <tr v-for="(item, index) in pastTransVisible" v-bind:key="index">
-          <td>{{ index + 1}}</td>
+          <td>{{ (index + 1) + (currentPageTrans*pageSize) }}</td>
           <td v-for="(value, key, index) in item" v-bind:key="index">{{ value }}</td>
         </tr>
       </table>
-
+      </div>
+      <div id="center">
       <pagination 
         :items="pastTrans" 
         @page:update="updatePageTrans"
         :currentPage="currentPageTrans"
         :pageSize="pageSize">
       </pagination>
-    </div>
+      </div>
 </div>
 
 </template>
@@ -82,18 +83,12 @@ export default {
 
   data() {
     return {
-      pastRecords: [], 
-      pastDonations: [], 
       pastTrans : [],
 
       //currentPage: page of pagination - 1
       //pageSize: number of items shown per page
-      currentPageRecycled: 0,
-      currentPageDonations: 0,
       currentPageTrans: 0,
       pageSize: 10,
-      pastRecordsVisible: [],
-      pastDonationsVisible: [],
       pastTransVisible: []
     }
   },
@@ -104,30 +99,6 @@ export default {
   },
 
   methods: {
-    
-    fetchRecords() {
-      database.collection('records').orderBy("day", "asc").get().then((snapshot) => {
-        let rec = {}
-        snapshot.docs.forEach((doc) => {
-          if (doc.data().username == this.user.data.displayName) {
-            rec = [doc.data().date, 'A'+doc.data().serialNo, doc.data().itemCat, doc.data().quantity, doc.data().points]
-            this.pastRecords.push(rec);
-          }
-        })
-      })
-    },
-
-    fetchDonations() {
-        database.collection('donation').orderBy("day", "asc").get().then((snapshot) => {
-            let donation = {}
-            snapshot.docs.forEach((doc) => {
-                if (doc.data().username == this.user.data.displayName) {
-                    donation = [doc.data().date, doc.data().who,'$2.00'] 
-                    this.pastDonations.push(donation)
-                }
-            })
-        })
-    },
 
     fetchPast() {
       database.collection('users').orderBy("day", "asc").get().then((snapshot) => {
@@ -142,38 +113,11 @@ export default {
     },
 
     //updates the page number of pagination
-    updatePageRecycled: function(pageNumber) {
-      this.currentPageRecycled = pageNumber;        
-    },
-    updatePageDonations: function(pageNumber) {
-      this.currentPageDonations = pageNumber;        
-    },
     updatePageTrans: function(pageNumber) {
       this.currentPageTrans = pageNumber;        
     },
 
     //slice list to get only the items on the current page
-    updateVisibleRecycled() {
-      this.pastRecordsVisible = this.pastRecords.slice(this.currentPageRecycled * this.pageSize, parseInt((this.currentPageRecycled * this.pageSize) + this.pageSize));
-      console.log("this.pastRecords.length is...");
-      console.log(this.pastRecords.length);
-      console.log("this.pastRecordsVisible.length is...");
-      console.log(this.pastRecordsVisible.length);
-      // if there are 0 items on current page, go back 1 page
-      if (this.pastRecordsVisible.length == 0 && this.currentPage > 0) {
-        this.updatePageRecycled(this.currentPageRecycled - 1);
-      }
-    },
-
-    updateVisibleDonated() {
-      this.pastDonationsVisible = this.pastDonations.slice(this.currentPageDonations * this.pageSize, parseInt((this.currentPageDonations * this.pageSize) + this.pageSize));
-      console.log("this.pastDonationsVisible.length is...");
-      console.log(this.pastDonationsVisible.length);
-      // if there are 0 items on current page, go back 1 page
-      if (this.pastDonationsVisible.length == 0 && this.currentPage > 0) {
-        this.updatePageDonations(this.currentPageDonations - 1);
-      }
-    },
 
     updateVisibleTrans() {
       this.pastTransVisible = this.pastTrans.slice(this.currentPageTrans * this.pageSize, parseInt((this.currentPageTrans * this.pageSize) + this.pageSize));
@@ -188,14 +132,10 @@ export default {
   }, 
 
   created() {
-    this.fetchRecords()
-    this.fetchDonations()
     this.fetchPast()
   }, 
 
   beforeUpdate() {
-    this.updateVisibleRecycled();
-    this.updateVisibleDonated();
     this.updateVisibleTrans();
   }
 
