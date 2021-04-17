@@ -53,18 +53,7 @@ export default {
         itemSearched: "",
         item: "",        
 
-        alert: false,
-
-        dummyItem:{
-               name:"For Testing",
-               category: "For Testing",               
-               recyclable: true,
-               amountRecycled: 0,
-               amountSearched: 0,
-               imageUrl: "",
-               description: "",               
-               approved: true
-           }
+        alert: false
     }
   },
 
