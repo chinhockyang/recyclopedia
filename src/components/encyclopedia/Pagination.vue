@@ -16,10 +16,11 @@
                     <span v-else>{{ currentPage }}</span> of {{ totalPages() }}    
             </div>
             <div class="col-2 text-center">
+                <button v-if="totalPages() == 0" class="btn btn-secondary" disabled> Next </button>
                 <button
-                    v-if="showNextLink()"
+                    v-else-if="showNextLink()"
                     class="btn btn-warning"
-                    v-on:click="updatePage(currentPage + 1)"> Next </button>                
+                    v-on:click="updatePage(currentPage + 1)"> Next </button>                                
                 <button v-else class="btn btn-secondary" disabled> Next </button>                        
             </div>
             <div class="col-2"></div>
