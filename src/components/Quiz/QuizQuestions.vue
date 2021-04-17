@@ -3,7 +3,7 @@
   <h1 v-show="questionIndex != items.length & !showAnswers">Quiz</h1>
   <h1 v-show="showAnswers">Quiz Answers</h1>  
   <a href="/quiz" v-show="showAnswers">
-      <button type="button" class="btn btn-outline-secondary m-3">
+      <button type="button" class="btn btn-outline-secondary my-3 w-50 mx-auto">
           Try the Quiz Again!
       </button>
   </a>
@@ -13,7 +13,21 @@
           <h3 class="display-4 mb-3">End of quiz</h3>
           <h3>Total score:</h3> 
           <h3 class="display-4 mb-3">{{ score }} / 8</h3>
-          <div class="container w-75 mx-auto">  
+
+          <div v-if="score > 4">
+            <h5 class="text-success">
+              <b-icon icon="hand-thumbs-up"></b-icon>
+              Well Done! You have an impressive recycling knowledge, keep up your great efforts!
+            </h5>
+          </div>
+          <div v-else>
+            <h5 class="text-info">              
+              You are getting there! Continue to learn more about recycling through Recyclopedia!
+              <b-icon icon="emoji-smile"></b-icon>
+            </h5>
+          </div>          
+          
+          <div class="container w-75 mx-auto mt-3">  
           <template v-if="user.loggedIn">  
             <template v-if="this.done==false">    
               <div class="alert alert-success" role="alert">
@@ -36,7 +50,7 @@
         <h3>Question {{ parseInt(item.index) + 1 }} of 8</h3>
         <div class="row">
           <div class="col"></div>
-          <div class="card text-center mx-auto mt-3 col-10 col-md-6">            
+          <div class="card text-center mx-auto mt-3 col-10 col-md-6" style="border: outset lightgreen;">            
             <img :src="item.imageUrl" class="card-img mt-3 border border-light" style="max-height: 50%; max-width: 50%; margin-left: auto; margin-right: auto;"/>
             <div class="card-body text-center">
                 <h5 class="card-title">{{item.name}}</h5>     
@@ -95,7 +109,7 @@
 
     <div v-if="showAnswers">
       <div v-for="item in items" :key="item.index">
-         <div class="card text-center w-80 mx-auto mt-3">   
+         <div class="card text-center w-80 mx-auto mt-3" style="border: outset lightgreen;">   
            <div class="row">             
              <div class="col-5 col-md-3">
                <img :src="item.imageUrl" class="card-img mt-3 mx-3 border border-light" style="max-height: 100%; max-width: 100%;"/>

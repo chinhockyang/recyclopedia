@@ -216,8 +216,7 @@ import ItemCard from './ItemCard.vue'
 
 export default {  
   data(){
-    return{                
-        //category: "",
+    return{                        
         totalSearched: 0,
         totalRecycled: 0,
         canRecycle: [],
@@ -264,27 +263,10 @@ export default {
      }
     },
 
-    created: function() {                           
-        //this.category = this.$route.params.id.charAt(0).toUpperCase() + this.$route.params.id.slice(1);
+    created: function() {                                   
         this.fetchItems();      
         this.fetchPoster();  
     },
-    /*
-    watch: {
-        $route: function(val) {
-            this.category = val.params.id.charAt(0).toUpperCase() + val.params.id.slice(1);            
-            this.canRecycle = []
-            this.cannotRecycle = []
-            this.allItem = []
-            this.mostSearched = []
-            this.mostRecycled = []
-            this.totalSearched = 0
-            this.totalRecycled = 0
-            this.posters = []
-            this.fetchItems();
-            this.fetchPoster();
-        }
-    },*/
 
     components: {        
         'bar-chart': BarChart,
