@@ -1,7 +1,8 @@
 <template>
   <div id="parent">
     <h1 class="display-3 text-center my-3">Find My Bin</h1>
-    <h4 class="text-center my-3">Singapore has more than 13,000 recycling bins and collection points. Find yours now!</h4>
+    <h4 class="text-center my-3">Singapore has more than 13,000 recycling bins and collection points.</h4>
+    <p class="text-center my-3">Check the boxes to choose which types of bin or collection point you want to see, <br>and click on the icon for more details on its exact location!</p><br>
     <div id="checkboxes" class="text-center w-100 p-3 container">
       <ul>
         <li v-for="binType in binTypes" 
