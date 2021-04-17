@@ -4,11 +4,9 @@
     <div id="map" class="w-100 p-3 container-fluid"></div>
     <div class="w-100 p-3 container">
       <ul>
-                  <!-- // TODO: instead of tooltips, use popover box on hover (from Bootstrap) to show some details on binType-->
         <li v-for="binType in binTypes" 
           :key="binType.id" 
           class="list-inline-item">
-                      <!-- :for="binType.id"  -->
           <label :title="binType.info">
             <input 
             type="checkbox" 
@@ -71,19 +69,8 @@ export default {
       markersLatLng: []
     }
   },
-  // TODO: localhost:8080/map/ewaste => shows the ewaste checked
-  computed: {
-    tooZoomedOut: function() {
-      var bool = true;
-      if (this.map != null) {
-        bool = this.map.getZoom() < 15;
-      }
-      return bool;
-    }
-  },
+  
   methods: {
-    initMap: function() {
-    },
     handleLocationError: function(browserHasGeolocation, infoWindow, pos, map) {
       infoWindow.setPosition(pos);
       infoWindow.setContent(
@@ -93,7 +80,7 @@ export default {
       );
       infoWindow.open(map);
     },
-    setFilter: function($event) { // (data, showMarker, binType) {
+    setFilter: function($event) {
       console.log('checkbox clicked! event.checked is...');
       console.log($event.target.checked);
       console.log('checkedBinTypes is...');
@@ -103,13 +90,8 @@ export default {
       this.filterMarkers(this.map.data, binType, showMarker);
     },
     filterMarkers: function(data, binType, showMarker) {
-      // console.log("filterMarkers called!");
       data.forEach(function(feature) {
-        // console.log('binType is....');
-        // console.log(binType);
         if (feature.getProperty('binType') === binType){
-          // console.log('feature showMarker is...');
-          // console.log(feature.getProperty('showMarker'));
           feature.setProperty('showMarker', showMarker);
         }
       })
@@ -138,11 +120,7 @@ export default {
           map: map
         });
         const pos_arr = [pos_obj.lat, pos_obj.lng];
-        this.markersLatLng.push(pos_arr);
-        console.log("[pos.lat, pos.lng]");
-        console.log(pos_arr);
-        console.log("this.markersLatLng.length");
-        console.log(this.markersLatLng.length);     
+        this.markersLatLng.push(pos_arr);   
         marker.addListener("click", () => {
           infoWindow.setPosition(pos_obj);
           infoWindow.setContent(content);
@@ -155,12 +133,8 @@ export default {
     },
     isLocationFree: function(pos_obj) {
       const pos_arr = [pos_obj.lat, pos_obj.lng]
-      console.log("isLocationFree called!");
-      console.log(pos_arr);
       for (var i = 0, l = this.markersLatLng.length; i < l; i++) {
         if (this.markersLatLng[i][0] === pos_arr[0] && this.markersLatLng[i][1] === pos_arr[1]) {
-          console.log("matching marker location found.");
-          console.log("this.markersLatLng.length");
           console.log(this.markersLatLng.length);
           return false;
         }
@@ -182,28 +156,14 @@ export default {
 
       // Load the GeoJson bins data onto the map 
       try {
-        // console.log('loading GeoJson here!');
-        // file hosted using Google Drive, doesn't bypass CORS issue with Chrome
-        // map.data.loadGeoJson('http://drive.google.com/uc?id=1_LivKGKN37UCxgIMlBqJRPzj4lBY8rip');
-
-        // file hosted on Web Server for Chrome, bypasses CORS issues
-        const webServer = 'http://127.0.0.1:8887/src/components/map/'
-        this.map.data.loadGeoJson(webServer + 'data/recyclebinsGeo.json'); 
-        this.map.data.loadGeoJson(webServer + 'data/ewasteGeo.json');
-        this.map.data.loadGeoJson(webServer + 'data/cashfortrashGeo.json');
-        this.map.data.loadGeoJson(webServer + 'data/rvmGeo.json');
-        this.map.data.loadGeoJson(webServer + 'data/secondhandcollecnGeo.json');
-        this.map.data.loadGeoJson(webServer + 'data/lightingGeo.json');
-        // this.map.data.loadGeoJson('http://127.0.0.1:8887/src/components/map/data/testbins.json');
-        
-        // // file taken from local directory, only works on Firefox
-        // this.map.data.loadGeoJson('data/recyclebinsGeo.json'); 
-        // this.map.data.loadGeoJson('data/ewasteGeo.json');
-        // this.map.data.loadGeoJson('data/cashfortrashGeo.json');
-        // this.map.data.loadGeoJson('data/rvmGeo.json');
-        // this.map.data.loadGeoJson('data/secondhandcollecnGeo.json');
-        // this.map.data.loadGeoJson('data/lightingGeo.json');    
-        // var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+        // file hosted on Google Cloud Platform
+        const GCPpath = 'https://storage.googleapis.com/map-bins-data/';
+        this.map.data.loadGeoJson(GCPpath + 'data/recyclebinsGeo.json');
+        this.map.data.loadGeoJson(GCPpath + 'data/ewasteGeo.json');
+        this.map.data.loadGeoJson(GCPpath + 'data/rvmGeo.json');
+        this.map.data.loadGeoJson(GCPpath + 'data/secondhandcollecnGeo.json');
+        this.map.data.loadGeoJson(GCPpath + 'data/cashfortrashGeo.json');
+        this.map.data.loadGeoJson(GCPpath + 'data/lightingGeo.json'); 
         
         // style icons based on binType
         this.map.data.setStyle(function(feature) {
@@ -211,26 +171,26 @@ export default {
           var iconPath = '';
           switch(feature.getProperty('binType')) {
             case 'recyclebins':
-              iconPath = webServer + 'icons/recycle.png';
-              // iconPath = 'icons/recycle.png';
+              // iconPath = webServer + 'icons/recycle.png';
+              iconPath = GCPpath + 'icons/recycle.png';
               break;
             case 'ewaste':
-              iconPath = webServer + 'icons/magnet.png';
-              // iconPath = 'icons/magnet.png';
+              // iconPath = webServer + 'icons/magnet.png';
+              iconPath = GCPpath + 'icons/magnet.png';
               break;
             case 'cashfortrash':
               iconPath = 'http://maps.google.com/mapfiles/ms/icons/dollar.png';
               break;
             case 'secondhandcollecn':
-              iconPath = webServer + 'icons/toy.png';
-              // iconPath = 'icons/toy.png';
+              // iconPath = webServer + 'icons/toy.png';
+              iconPath = GCPpath + 'icons/toy.png';
               break;
             case 'rvm':
               iconPath = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
               break;
             case 'lighting':
-              iconPath = webServer + 'icons/lamp.png';
-              // iconPath = 'icons/lamp.png';
+              // iconPath = webServer + 'icons/lamp.png';
+              iconPath = GCPpath + 'icons/lamp.png';
               break;
           }
           return /** @type {this.google.maps.Data.StyleOptions } */ {
@@ -246,16 +206,6 @@ export default {
       } catch(error) {
         console.log('Error happened here!');
         console.error(error);
-      }
-    
-      // filter Markers by VueJS route here
-      if (this.checkedBinTypes.length != 0) {
-        for (const binType of this.checkedBinTypes) {
-          this.filterMarkers(this.map.data, binType, true);
-        }
-        // const binType = this.checkedBinTypes[0];
-        // this.checkedBinTypes = [binType];
-        // this.filterMarkers(this.map.data, binType, true);
       }
 
       // InfoWindow pops up with details for each bin when its marker is clicked
@@ -290,7 +240,6 @@ export default {
       const title = document.createElement('div');
       const container = document.createElement('div');
       const input = document.createElement('input');
-            // TODO: make search bar bigger
       const options = {
         types: ['address'],
         componentRestrictions: {country: 'sg'},
@@ -337,20 +286,6 @@ export default {
         this.markLocation(this.map, infoWindow, originLatLng, place.name);
       });
 
-      // TODO: implement support for phone web view - plist (permissions list)
-      // TODO: doesn't work for network server
-      // TODO: look into hosting data on firebase
-      // TODO: consider not allowing users to see all recycle bins in Singapore 
-      //        => remove checkbox, only allow searches within certain areas
-      // TODO: 
-        // Option 1: implement another button "Search this area" for users to manually pan then search
-                  // in a particular area instead of using the user's location directly.
-                  // then, restrict displayed markers to only within bounds of viewport.
-                    // sub-task: getBounds
-      // TODO: try pushing one of the checkboxes on to the map itself
-      // const checky = document.getElementById("recyclebins");
-      // this.map.controls.[this.google.maps.ControlPosition.BOTTOM_CENTER].push(checky);
-
       const nearMe = document.createElement("button");
       nearMe.textContent = "Pan to my location";
       nearMe.classList.add("custom-map-control-button");
@@ -361,28 +296,6 @@ export default {
     } catch (error) {
       console.error(error);
     }
-  },
-  // TODO: fix routing for checkedBinTypes
-  created: function() {
-    console.log("creating");
-    console.log("this.$route.params.id is...");
-    console.log(this.$route.params.id);
-    const binType = this.$route.params.id;
-    this.checkedBinTypes = [binType];
-    // this.filterMarkers(this.map.data, binType, true);
-    // this.mounted();
-  },
-  watch: {
-    $route: function(val) {
-      const binType = val.params.id;
-      this.checkedBinTypes = [binType];
-      this.filterMarkers(this.map.data, binType, true);
-    },
-    // checkedBinTypes: function(val) {
-      // for (const binType of val) {
-      //   this.filterMarkers(this.map.data, binType, true);
-      // }
-    // }
   }
 }
 </script>
