@@ -85,10 +85,6 @@ export default {
       infoWindow.open(map);
     },
     setFilter: function($event) {
-      console.log('checkbox clicked! event.checked is...');
-      console.log($event.target.checked);
-      console.log('checkedBinTypes is...');
-      console.log(this.checkedBinTypes);
       const showMarker = $event.target.checked;
       const binType = $event.target.id;
       this.filterMarkers(this.map.data, binType, showMarker);
@@ -139,7 +135,6 @@ export default {
       const pos_arr = [pos_obj.lat, pos_obj.lng]
       for (var i = 0, l = this.markersLatLng.length; i < l; i++) {
         if (this.markersLatLng[i][0] === pos_arr[0] && this.markersLatLng[i][1] === pos_arr[1]) {
-          console.log(this.markersLatLng.length);
           return false;
         }
       }
@@ -210,7 +205,6 @@ export default {
 
       // InfoWindow pops up with details for each bin when its marker is clicked
       this.map.data.addListener('click', (event) => {
-        console.log('event is ----- ' + event);
         const address = event.feature.getProperty('address');
         const postcode = event.feature.getProperty('postcode');
         const position = event.feature.getGeometry().get();
@@ -226,7 +220,6 @@ export default {
                     </button>
                   </div>
                       `;
-        // TODO: style Info window nicely
         infoWindow.setContent(content);
         infoWindow.setPosition(position);
         // Info window pops up above marker
