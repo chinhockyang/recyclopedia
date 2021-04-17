@@ -124,10 +124,12 @@
                 <div class="alert alert-danger w-90 mx-auto" role="alert" style="width: 90%;" v-else>
                     This item is not recyclable
                 </div>
-                <div class="border border-success mx-auto" v-if="(Boolean(userResponses[item.index]) == Boolean(item.recyclable))" style="width: 150px;">
+                <div class="border border-success mx-auto" v-if="(Boolean(userResponses[item.index]) == Boolean(item.recyclable))" style="width: 220px;">
+                    <span class="text-muted">You picked: <span v-if="userResponses[item.index]">Recyclable</span><span v-else>Not Recyclable</span></span>
                     <p class="text-success">You are correct! <b-icon icon="check-circle-fill"></b-icon></p>
                 </div>              
-                <div class="border border-danger mx-auto" style="width: 150px;" v-else>
+                <div class="border border-danger mx-auto" style="width: 220px;" v-else>
+                    <span class="text-muted">You picked: <span v-if="userResponses[item.index]">Recyclable</span><span v-else>Not Recyclable</span></span>
                     <p class="text-danger">You are wrong! <b-icon icon="x-circle-fill"></b-icon></p>
                 </div>                
             </div>
