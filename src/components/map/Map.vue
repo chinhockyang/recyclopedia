@@ -1,9 +1,11 @@
 <template>
   <div id="parent">
-    <h1 class="display-3 text-center my-3">Find My Bin</h1>
-    <h4 class="text-center my-3">Singapore has more than 13,000 recycling bins and collection points.</h4>
-    <p class="text-center my-3">Check the boxes to choose which types of bin or collection point you want to see, <br>and click on the icon for more details on its exact location!</p><br>
-    <div id="checkboxes" class="text-center w-100 p-3 container">
+    <div class="h-22">
+      <h1 class="display-3 text-center my-3">Find My Bin</h1>
+      <h4 class="text-center my-3">Singapore has more than 13,000 recycling bins and collection points.</h4>
+      <p class="text-center my-3">Check the boxes to choose which types of bin or collection point you want to see, <br>and click on the icon for more details on its exact location!</p><br>
+    </div>
+    <div id="checkboxes" class="text-center w-100 h-18 p-3 container">
       <ul>
         <li v-for="binType in binTypes" 
           :key="binType.id" 
@@ -23,7 +25,7 @@
       </ul>
       <!-- <div></div> -->
     </div>
-    <div id="map" class="w-100 p-3 container-fluid"></div>
+    <div id="map" class="w-100 h-60 p-3 container-fluid"></div>
   </div>
 </template>
 
@@ -173,25 +175,21 @@ export default {
           var iconPath = '';
           switch(feature.getProperty('binType')) {
             case 'recyclebins':
-              // iconPath = webServer + 'icons/recycle.png';
               iconPath = GCPpath + 'icons/recycle.png';
               break;
             case 'ewaste':
-              // iconPath = webServer + 'icons/magnet.png';
               iconPath = GCPpath + 'icons/magnet.png';
               break;
             case 'cashfortrash':
-              iconPath = 'http://maps.google.com/mapfiles/ms/icons/dollar.png';
+              iconPath = GCPpath + 'icons/dollar.png';
               break;
             case 'secondhandcollecn':
-              // iconPath = webServer + 'icons/toy.png';
               iconPath = GCPpath + 'icons/toy.png';
               break;
             case 'rvm':
-              iconPath = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+              iconPath = GCPpath + 'icons/history-fill.svg';
               break;
             case 'lighting':
-              // iconPath = webServer + 'icons/lamp.png';
               iconPath = GCPpath + 'icons/lamp.png';
               break;
           }
@@ -220,10 +218,10 @@ export default {
         const lat = position.lat();
         const lng = position.lng();
         const content = `
-                  <div style="margin-left:20px; margin-bottom:20px;">
-                    <h5>${address}</h5>
-                    <p>${postcode}</p><br>
-                    <button class="open-in-gmaps" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${lat}%2C${lng}', '_blank')">
+                  <div style="width: 200px; margin-left:5px; margin-top:5px; margin-bottom:5px;">
+                    <p><strong>${address}</strong><br>
+                    Singapore ${postcode}</p>
+                    <button style="margin-top:3px;" class="open-in-gmaps" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${lat}%2C${lng}', '_blank')">
                       Open in Google Maps
                     </button>
                   </div>
@@ -258,7 +256,7 @@ export default {
       container.appendChild(input);
       card.appendChild(titleBar);
       card.appendChild(container);
-      this.map.controls[this.google.maps.ControlPosition.TOP_RIGHT].push(card);
+      this.map.controls[this.google.maps.ControlPosition.BOTTOM_LEFT].push(card);
       
       // Make the search bar into a Places Autocomplete search bar and select
       // which detail fields should be returned about the place that
@@ -291,7 +289,7 @@ export default {
       const nearMe = document.createElement("button");
       nearMe.textContent = "Pan to my location";
       nearMe.classList.add("custom-map-control-button");
-      this.map.controls[this.google.maps.ControlPosition.TOP_CENTER].push(nearMe);
+      this.map.controls[this.google.maps.ControlPosition.TOP_RIGHT].push(nearMe);
       nearMe.addEventListener("click", async () => {
         this.markUserLocation(navigator, this.map, infoWindow);
       });
@@ -304,7 +302,7 @@ export default {
 
 <style scoped>
   #parent {
-    height: 140vh;
+    height: 160vh;
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 15px;
@@ -328,20 +326,12 @@ export default {
   }
   #map {
     height: 60%;
-    overflow: hidden;
+    /* height: 500px; */
+    overflow: visible;
     float: left;
     border: thin solid #333;
     margin: auto;
     padding-bottom: 15px
-  }
-  #capture {
-    height: 360px;
-    width: 480px;
-    overflow: hidden;
-    float: left;
-    background-color: #ECECFB;
-    border: thin solid #333;
-    border-left: none;
   }
   .custom-map-control-button {
     color: green
@@ -389,41 +379,6 @@ export default {
   
   .hidden {
     display: none;
-  }
-
-  /* Styling for an info pane that slides out from the left. 
-    * Hidden by default. */
-  #panel {
-    height: 100%;
-    width: null;
-    background-color: white;
-    position: fixed;
-    z-index: 1;
-    overflow-x: hidden;
-    transition: all .2s ease-out;
-  }
-  
-  .open {
-    width: 250px;
-  }
-  
-  .place {
-    font-family: 'open sans', arial, sans-serif;
-    font-size: 1.2em;
-    font-weight: 500;
-    margin-block-end: 0px;
-    padding-left: 18px;
-    padding-right: 18px;
-  }
-  
-  .distanceText {
-    color: silver;
-    font-family: 'open sans', arial, sans-serif;
-    font-size: 1em;
-    font-weight: 400;
-    margin-block-start: 0.25em;
-    padding-left: 18px;
-    padding-right: 18px;
   }
 
 </style>
