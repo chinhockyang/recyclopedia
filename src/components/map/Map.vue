@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <h1 class="text-center my-3">Find My Bin</h1>
-    <div id="map" class="w-100 p-3 container-fluid"></div>
-    <div class="w-100 p-3 container">
+  <div id="parent">
+    <h1 class="display-3 text-center my-3">Find My Bin</h1>
+    <h4 class="text-center my-3">Singapore has more than 13,000 recycling bins and collection points. Find yours now!</h4>
+    <div id="checkboxes" class="text-center w-100 p-3 container">
       <ul>
         <li v-for="binType in binTypes" 
           :key="binType.id" 
           class="list-inline-item">
-          <label :title="binType.info">
+          <label v-b-tooltip.hover.bottom="binType.info">
             <input 
             type="checkbox" 
             :id="binType.id"
@@ -20,8 +20,9 @@
           </label><br>
         </li>
       </ul>
-      <div></div>
+      <!-- <div></div> -->
     </div>
+    <div id="map" class="w-100 p-3 container-fluid"></div>
   </div>
 </template>
 
@@ -301,8 +302,15 @@ export default {
 </script>
 
 <style scoped>
-  div {
-    height: 600px;
+  #parent {
+    height: 140vh;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    margin: auto;
+    white-space: normal;
+  }
+  #checkboxes {
     padding-left: 15px;
     padding-right: 15px;
     margin: auto;
@@ -318,11 +326,12 @@ export default {
     background-color:#4d90fe !important;
   }
   #map {
-    height: 85%;
+    height: 60%;
     overflow: hidden;
     float: left;
     border: thin solid #333;
-    margin: auto
+    margin: auto;
+    padding-bottom: 15px
   }
   #capture {
     height: 360px;
