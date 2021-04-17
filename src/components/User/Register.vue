@@ -34,6 +34,7 @@
           <div id="center">
               <button @click.prevent="submit" class="btn btn-success">Register</button>
           </div>
+          <br>
         </div>
         <div id="center">
         <p>Already have an account? <router-link to="/login">Login here!</router-link></p>
