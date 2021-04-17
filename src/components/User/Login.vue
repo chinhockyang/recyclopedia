@@ -55,10 +55,6 @@ export default {
   },
   methods: {
     submit() {
-      this.error=null
-      if (this.form.email=="" || this.form.password=="") {
-        this.error = "Please fill in all fields."
-      }
       firebaseApp.auth().signInWithEmailAndPassword(this.form.email, this.form.password)
         .then(() => {
           this.$router.push({ path: './dashboard' });
