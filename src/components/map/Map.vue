@@ -25,7 +25,7 @@
       </ul>
       <!-- <div></div> -->
     </div>
-    <div id="map" class="w-100 h-60 p-3 container-fluid"></div>
+    <div id="map" class="w-100 p-3 container-fluid"></div>
   </div>
 </template>
 
@@ -318,8 +318,7 @@ export default {
     background-color:#4d90fe !important;
   }
   #map {
-    height: 60%;
-    /* height: 500px; */
+    height: 50%;
     overflow: visible;
     float: left;
     border: thin solid #333;
