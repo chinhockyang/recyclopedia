@@ -249,7 +249,7 @@ export default {
       container.appendChild(input);
       card.appendChild(titleBar);
       card.appendChild(container);
-      this.map.controls[this.google.maps.ControlPosition.BOTTOM_LEFT].push(card);
+      this.map.controls[this.google.maps.ControlPosition.TOP_RIGHT].push(card);
       
       // Make the search bar into a Places Autocomplete search bar and select
       // which detail fields should be returned about the place that
@@ -282,7 +282,7 @@ export default {
       const nearMe = document.createElement("button");
       nearMe.textContent = "Pan to my location";
       nearMe.classList.add("custom-map-control-button");
-      this.map.controls[this.google.maps.ControlPosition.TOP_RIGHT].push(nearMe);
+      this.map.controls[this.google.maps.ControlPosition.BOTTOM_LEFT].push(nearMe);
       nearMe.addEventListener("click", async () => {
         this.markUserLocation(navigator, this.map, infoWindow);
       });
