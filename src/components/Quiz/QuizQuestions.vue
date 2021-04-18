@@ -171,38 +171,43 @@ export default {
         username: "", 
         completed: false
       }, 
-      done: false
+      done: false,          
     }
   },
   methods: {
-    fetchItems: function() {                      
-        let rand = Math.floor(Math.random() * 50);        
-        let rand2 = Math.floor(Math.random() * 2) + 1;
-        let randNumbers = [];
-        for (let i = 0; i < 8; i++) {
-          randNumbers.push(rand);
-          rand = rand + rand2;
-        }
-
-        for (let i in randNumbers) {            
-            database.collection('items').where('index', '==', randNumbers[i]).get().then((querySnapShot)=>{
-                let item={}
-                querySnapShot.forEach(doc=>{
-                item=doc.data()
-                item.show=false
-                item.id=doc.id                           
-                this.items.push(
-                  {
-                      'name': item.name,
-                      'imageUrl': item.imageUrl,
-                      'category': item.category,
-                      'recyclable': item.recyclable,
-                      'disposal': item.disposal,
-                      'index': i
-                  }
-                )
+    fetchItems: function() {                  
+        database.collection('items').orderBy('index', 'desc').limit(1).get()
+          .then(querySnapshot => {
+             let itemOne = querySnapshot.docs[0].data()             
+             let maxIndex = itemOne.index;  
+             let maxRand = maxIndex - 24;
+             let rand = Math.floor(Math.random() * maxRand);
+             let rand2 = Math.floor(Math.random() * 2) + 1;
+             let randNumbers = [];
+              for (let i = 0; i < 8; i++) {
+                    randNumbers.push(rand);
+                    rand = rand + rand2;
+              }
+              for (let i in randNumbers) {            
+                  database.collection('items').where('index', '==', randNumbers[i]).get().then((querySnapShot)=>{
+                      let item={}
+                      querySnapShot.forEach(doc=>{
+                      item=doc.data()
+                      item.show=false
+                      item.id=doc.id                           
+                      this.items.push(
+                        {
+                          'name': item.name,
+                          'imageUrl': item.imageUrl,
+                          'category': item.category,
+                          'recyclable': item.recyclable,
+                          'disposal': item.disposal,
+                          'index': i
+                        }
+                      )
               })});
-        }
+            }
+        });   
                 
     },
     
