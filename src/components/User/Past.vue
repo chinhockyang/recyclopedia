@@ -104,7 +104,7 @@ export default {
   methods: {
 
     fetchPast() {
-      database.collection('users').orderBy("day", "asc").get().then((snapshot) => {
+      database.collection('users').orderBy("day", "dsc").get().then((snapshot) => {
         let old = {} 
         snapshot.docs.forEach((doc) => {
           if (doc.data().username == this.user.data.displayName) {

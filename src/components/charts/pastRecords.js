@@ -14,7 +14,7 @@ export default {
     data: function() {
         return {
             datacollection: {
-                labels: ['Plastic', 'Paper', 'Metal', 'Glass', 'E-waste', 'Electrical'],
+                labels: ['Plastic', 'Paper', 'Metal', 'Glass', 'Electronics', 'Others'],
                 datasets: [{
                     label: "Number", 
                     backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#c0c0c0"], 
