@@ -88,7 +88,7 @@ export default {
             firebaseApp.auth().signInWithEmailAndPassword(this.form.email, this.form.password)
             database.collection('tier').doc(this.form.username).set({level: "Welcome Greener", name: this.form.username})
             firebaseApp.auth().currentUser.sendEmailVerification()
-            this.$router.push({path: './points'})
+            this.$router.push({path: './dashboard'})
           }
         });
       }       

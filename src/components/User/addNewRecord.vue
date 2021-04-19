@@ -79,7 +79,7 @@
                         <option value="Paper">Paper</option>
                         <option value="Metal">Metal</option>
                         <option value="Glass">Glass</option>
-                        <option value="Electrical">Electrical</option>
+                        <option value="Electrical">Electronics</option>
                         <option value="Others">Others</option>
                     </select>
                 </div>
